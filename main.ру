@@ -33,8 +33,9 @@ logger = logging.getLogger(__name__)
 # Токен бота
 TOKEN = "8714221053:AAFDGwKzPKOTf0ZUnqj9WbaM6Gn-DNXX_ls"
 
-# ID главного администратора
-MAIN_ADMIN_ID = 5596589260
+# ID главного администратора (создатель)
+CREATOR_ID = 5596589260
+MAIN_ADMIN_ID = CREATOR_ID  # Для совместимости
 
 # Инициализация бота и диспетчера
 bot = Bot(token=TOKEN)
@@ -146,18 +147,18 @@ class Database:
                 )
             ''')
             
-            # Добавляем главного администратора, если его нет
-            cursor.execute("SELECT * FROM users WHERE user_id = ?", (MAIN_ADMIN_ID,))
+            # Добавляем создателя, если его нет
+            cursor.execute("SELECT * FROM users WHERE user_id = ?", (CREATOR_ID,))
             if not cursor.fetchone():
                 cursor.execute('''
                     INSERT INTO users (user_id, nickname, telegram_username, age, timezone, pc_access, vk_link, forum_link, discord_username, rank)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (MAIN_ADMIN_ID, "Главный администратор", "admin", 18, "МСК", "Да", "vk.com/admin", "forum.ru/admin", "admin#0000", Rank.SENIOR_ADMIN.value))
+                ''', (CREATOR_ID, "Создатель", "creator", 18, "МСК", "Да", "vk.com/creator", "forum.blackrussia.online/members/creator", "creator#0000", Rank.SENIOR_ADMIN.value))
                 
                 cursor.execute('''
                     INSERT INTO bot_admins (user_id, admin_level, added_by)
                     VALUES (?, ?, ?)
-                ''', (MAIN_ADMIN_ID, 999, MAIN_ADMIN_ID))
+                ''', (CREATOR_ID, 999, CREATOR_ID))
             
             conn.commit()
     
@@ -299,7 +300,7 @@ class Database:
             return cursor.fetchone() is not None
     
     def get_admin_level(self, user_id: int) -> int:
-        if user_id == MAIN_ADMIN_ID:
+        if user_id == CREATOR_ID:
             return 999
         with self.get_connection() as conn:
             cursor = conn.cursor()
@@ -349,14 +350,18 @@ class Database:
 db = Database()
 
 # ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+def is_creator(user_id: int) -> bool:
+    """Проверяет, является ли пользователь создателем"""
+    return user_id == CREATOR_ID
+
 def is_bot_admin(user_id: int) -> bool:
-    return db.is_bot_admin(user_id) or user_id == MAIN_ADMIN_ID
+    return db.is_bot_admin(user_id) or user_id == CREATOR_ID
 
 def is_super_admin(user_id: int) -> bool:
-    return user_id == MAIN_ADMIN_ID or db.get_admin_level(user_id) >= 999
+    return user_id == CREATOR_ID or db.get_admin_level(user_id) >= 999
 
 def can_manage_users(user_id: int) -> bool:
-    return user_id == MAIN_ADMIN_ID or db.get_admin_level(user_id) >= 100
+    return user_id == CREATOR_ID or db.get_admin_level(user_id) >= 100
 
 def is_blocked(user_id: int) -> bool:
     return db.is_user_blocked(user_id)
@@ -372,6 +377,132 @@ def get_promotion_cost(current_rank: Rank, next_rank: Rank) -> int:
     """Возвращает стоимость повышения"""
     return PROMOTION_COSTS.get((current_rank, next_rank), 0)
 
+# ==================== ФУНКЦИИ ПРОВЕРКИ ====================
+def validate_vk_link(vk_input: str) -> Tuple[bool, str]:
+    """
+    Проверяет ссылку ВК и существование пользователя
+    Возвращает (True/False, сообщение)
+    """
+    vk_input = vk_input.strip()
+    
+    # Проверяем формат ссылки
+    patterns = [
+        r'^https?://vk\.com/([a-zA-Z0-9_.]+)$',
+        r'^https?://vk\.ru/([a-zA-Z0-9_.]+)$',
+        r'^vk\.com/([a-zA-Z0-9_.]+)$',
+        r'^vk\.ru/([a-zA-Z0-9_.]+)$',
+        r'^([a-zA-Z0-9_.]+)$'
+    ]
+    
+    username = None
+    for pattern in patterns:
+        match = re.match(pattern, vk_input, re.IGNORECASE)
+        if match:
+            username = match.group(1) if len(match.groups()) > 0 else vk_input
+            break
+    
+    if not username:
+        return False, "❌ Неверный формат ссылки ВК. Пример: https://vk.ru/artem_suguru или vk.com/durov"
+    
+    # Проверяем существование пользователя через VK API
+    try:
+        # Используем VK API для проверки существования пользователя
+        url = f"https://api.vk.com/method/users.get?user_ids={username}&v=5.131"
+        
+        with urllib.request.urlopen(url, timeout=5) as response:
+            data = json.loads(response.read().decode())
+            
+            if 'response' in data and len(data['response']) > 0:
+                user = data['response'][0]
+                full_name = f"{user.get('first_name', '')} {user.get('last_name', '')}".strip()
+                return True, f"✅ Профиль найден: {full_name}"
+            else:
+                return False, "❌ Пользователь ВК не найден"
+                
+    except Exception as e:
+        # Если API не работает, хотя бы проверяем формат
+        logger.error(f"Ошибка при проверке VK: {e}")
+        return True, "✅ Формат ссылки корректный (проверка через API временно недоступна)"
+
+def validate_forum_link(link: str) -> Tuple[bool, str]:
+    """
+    Проверяет ссылку на форум Black Russia
+    Должна быть: https://forum.blackrussia.online/members/.../
+    """
+    link = link.strip()
+    
+    # Проверяем точное соответствие формату форума
+    pattern = r'^https?://forum\.blackrussia\.online/members/[a-zA-Z0-9_.]+\.\d+/?$'
+    
+    if re.match(pattern, link, re.IGNORECASE):
+        return True, "✅ Ссылка на форум корректна"
+    else:
+        return False, "❌ Неверная ссылка на форум!\n\nСсылка должна быть такого формата:\nhttps://forum.blackrussia.online/members/artem_suguru.1983519/"
+
+def validate_timezone_msk(tz: str) -> bool:
+    tz = tz.upper().replace(' ', '')
+    pattern = r'^МСК([+-][0-9]{1,2})?$'
+    return bool(re.match(pattern, tz))
+
+def validate_telegram_username(username: str) -> bool:
+    username = username.replace('@', '').strip()
+    pattern = r'^[a-zA-Z][a-zA-Z0-9_]{4,}$'
+    return bool(re.match(pattern, username))
+
+def validate_discord_username(username: str) -> bool:
+    pattern = r'^[a-zA-Z0-9_]{3,32}(#[0-9]{4})?$'
+    return bool(re.match(pattern, username.strip()))
+
+def validate_age(age: str) -> bool:
+    try:
+        age_num = int(age)
+        return 10 <= age_num <= 100
+    except ValueError:
+        return False
+
+def validate_pc_access(access: str) -> bool:
+    return access.lower() in ['да', 'нет', 'yes', 'no', 'есть', 'нету']
+
+def validate_rank(rank: str) -> bool:
+    """Проверяет, является ли строка допустимой должностью"""
+    return rank in VALID_RANKS
+
+# ==================== FSM СОСТОЯНИЯ ====================
+class RegistrationStates(StatesGroup):
+    waiting_for_nickname = State()
+    waiting_for_age = State()
+    waiting_for_timezone = State()
+    waiting_for_pc_access = State()
+    waiting_for_vk = State()
+    waiting_for_tg_username = State()
+    waiting_for_forum = State()
+    waiting_for_discord = State()
+
+class ApplicationStates(StatesGroup):
+    extra_work_desc = State()
+    extra_work_photo = State()
+    inactive_reason = State()
+    inactive_days = State()
+    reprisal_work = State()
+    promotion_current_rank = State()
+    promotion_target_rank = State()
+    promotion_screenshot = State()
+    norm_photo = State()
+
+class AdminReviewStates(StatesGroup):
+    waiting_for_rejection_reason = State()
+    waiting_for_points_amount = State()
+
+# ==================== FSM ДЛЯ НАСТРОЕК (ТОЛЬКО ДЛЯ СОЗДАТЕЛЯ) ====================
+class SettingsStates(StatesGroup):
+    waiting_for_new_nickname = State()
+    waiting_for_new_vk = State()
+    waiting_for_new_tg = State()
+    waiting_for_new_forum = State()
+    waiting_for_new_timezone = State()
+    waiting_for_new_age = State()
+    waiting_for_new_pc = State()
+
 # ==================== КЛАВИАТУРЫ ====================
 def get_main_reply_keyboard(user_id: int = None):
     builder = ReplyKeyboardBuilder()
@@ -380,6 +511,8 @@ def get_main_reply_keyboard(user_id: int = None):
     builder.add(KeyboardButton(text="📋 Меню"))
     if user_id and is_bot_admin(user_id):
         builder.add(KeyboardButton(text="👑 Админ панель"))
+    if user_id and is_creator(user_id):
+        builder.add(KeyboardButton(text="⚙️ Настройки"))  # Только для создателя
     builder.adjust(2)
     return builder.as_markup(resize_keyboard=True)
 
@@ -400,6 +533,22 @@ def get_start_inline_keyboard(user_id: int = None):
     builder.add(InlineKeyboardButton(text="📝 Заявки", callback_data="apps"))
     if user_id and is_bot_admin(user_id):
         builder.add(InlineKeyboardButton(text="👑 Админка", callback_data="admin_panel"))
+    if user_id and is_creator(user_id):
+        builder.add(InlineKeyboardButton(text="⚙️ Настройки", callback_data="settings"))
+    builder.adjust(1)
+    return builder.as_markup()
+
+def get_settings_inline_keyboard():
+    """Клавиатура для настроек (только для создателя)"""
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(text="👤 Сменить никнейм", callback_data="set_nickname"))
+    builder.add(InlineKeyboardButton(text="🔗 Сменить ссылку ВК", callback_data="set_vk"))
+    builder.add(InlineKeyboardButton(text="📱 Сменить Telegram username", callback_data="set_tg"))
+    builder.add(InlineKeyboardButton(text="🌐 Сменить ссылку форум", callback_data="set_forum"))
+    builder.add(InlineKeyboardButton(text="🌍 Сменить часовой пояс", callback_data="set_timezone"))
+    builder.add(InlineKeyboardButton(text="🎂 Сменить возраст", callback_data="set_age"))
+    builder.add(InlineKeyboardButton(text="💻 Сменить доступ к ПК", callback_data="set_pc"))
+    builder.add(InlineKeyboardButton(text="🔙 Назад", callback_data="back_to_menu"))
     builder.adjust(1)
     return builder.as_markup()
 
@@ -475,80 +624,6 @@ def format_user_stats(user: dict) -> str:
 • Выговоры: {user.get('reprisals', 0)}
 """
     return stats
-
-# ==================== ФУНКЦИИ ПРОВЕРКИ ====================
-def validate_timezone_msk(tz: str) -> bool:
-    tz = tz.upper().replace(' ', '')
-    pattern = r'^МСК([+-][0-9]{1,2})?$'
-    return bool(re.match(pattern, tz))
-
-def validate_vk_link(vk_input: str) -> bool:
-    vk_input = vk_input.strip()
-    patterns = [
-        r'^https?://(www\.)?vk\.com/[a-zA-Z0-9_.]+$',
-        r'^https?://(www\.)?vkontakte\.ru/[a-zA-Z0-9_.]+$',
-        r'^vk\.com/[a-zA-Z0-9_.]+$',
-        r'^[a-zA-Z0-9_.]+$',
-        r'^id[0-9]+$'
-    ]
-    return any(re.match(pattern, vk_input, re.IGNORECASE) for pattern in patterns)
-
-def validate_telegram_username(username: str) -> bool:
-    username = username.replace('@', '').strip()
-    pattern = r'^[a-zA-Z][a-zA-Z0-9_]{4,}$'
-    return bool(re.match(pattern, username))
-
-def validate_forum_link(link: str) -> bool:
-    patterns = [
-        r'^https?://forum\.blackrussia\.ru/.*$',
-        r'^https?://blackrussia\.forum/.*$',
-        r'^[a-zA-Z0-9_.]+$'
-    ]
-    return any(re.match(pattern, link, re.IGNORECASE) for pattern in patterns)
-
-def validate_discord_username(username: str) -> bool:
-    pattern = r'^[a-zA-Z0-9_]{3,32}(#[0-9]{4})?$'
-    return bool(re.match(pattern, username.strip()))
-
-def validate_age(age: str) -> bool:
-    try:
-        age_num = int(age)
-        return 10 <= age_num <= 100
-    except ValueError:
-        return False
-
-def validate_pc_access(access: str) -> bool:
-    return access.lower() in ['да', 'нет', 'yes', 'no', 'есть', 'нету']
-
-def validate_rank(rank: str) -> bool:
-    """Проверяет, является ли строка допустимой должностью"""
-    return rank in VALID_RANKS
-
-# ==================== FSM СОСТОЯНИЯ ====================
-class RegistrationStates(StatesGroup):
-    waiting_for_nickname = State()
-    waiting_for_age = State()
-    waiting_for_timezone = State()
-    waiting_for_pc_access = State()
-    waiting_for_vk = State()
-    waiting_for_tg_username = State()
-    waiting_for_forum = State()
-    waiting_for_discord = State()
-
-class ApplicationStates(StatesGroup):
-    extra_work_desc = State()
-    extra_work_photo = State()
-    inactive_reason = State()
-    inactive_days = State()
-    reprisal_work = State()
-    promotion_current_rank = State()
-    promotion_target_rank = State()
-    promotion_screenshot = State()
-    norm_photo = State()
-
-class AdminReviewStates(StatesGroup):
-    waiting_for_rejection_reason = State()
-    waiting_for_points_amount = State()  # Для ввода количества баллов за доп работу
 
 # ==================== ОБРАБОТЧИК КОМАНДЫ START ====================
 @dp.message(Command("start"))
@@ -668,25 +743,17 @@ async def reg_pc_access(message: types.Message, state: FSMContext):
     await state.update_data(pc_access=pc_access)
     await message.answer(
         "🔗 Введите ссылку на ВКонтакте\n\n"
-        "Примеры:\n"
-        "• vk.com/durov\n"
-        "• https://vk.com/durov\n"
-        "• durov\n"
-        "• id123456789"
+        "Пример: https://vk.ru/artem_suguru или vk.com/durov"
     )
     await state.set_state(RegistrationStates.waiting_for_vk)
 
 @dp.message(RegistrationStates.waiting_for_vk)
 async def reg_vk(message: types.Message, state: FSMContext):
-    if not validate_vk_link(message.text):
-        await message.answer(
-            "❌ Неверная ссылка ВК!\n\n"
-            "Примеры правильных ссылок:\n"
-            "• vk.com/durov\n"
-            "• https://vk.com/durov\n"
-            "• durov\n"
-            "• id123456789"
-        )
+    # Проверяем ссылку ВК
+    is_valid, msg = validate_vk_link(message.text)
+    
+    if not is_valid:
+        await message.answer(msg)
         return
     
     if db.check_vk_link_exists(message.text):
@@ -722,14 +789,17 @@ async def reg_tg_username(message: types.Message, state: FSMContext):
     await state.update_data(tg_username=username)
     await message.answer(
         "🔗 Введите ссылку на форум\n\n"
-        "Пример: forum.blackrussia.ru/username"
+        "Формат: https://forum.blackrussia.online/members/artem_suguru.1983519/"
     )
     await state.set_state(RegistrationStates.waiting_for_forum)
 
 @dp.message(RegistrationStates.waiting_for_forum)
 async def reg_forum(message: types.Message, state: FSMContext):
-    if not validate_forum_link(message.text):
-        await message.answer("❌ Неверная ссылка на форум. Попробуйте снова:")
+    # Проверяем ссылку на форум
+    is_valid, msg = validate_forum_link(message.text)
+    
+    if not is_valid:
+        await message.answer(msg)
         return
     
     if db.check_forum_link_exists(message.text):
@@ -787,7 +857,7 @@ async def reg_discord(message: types.Message, state: FSMContext):
         )
         
         await bot.send_message(
-            MAIN_ADMIN_ID,
+            CREATOR_ID,
             f"👤 Новый пользователь!\n"
             f"Ник: {data['nickname']}\n"
             f"Username: @{data['tg_username']}"
@@ -795,6 +865,308 @@ async def reg_discord(message: types.Message, state: FSMContext):
     else:
         await message.answer("❌ Ошибка при регистрации. Попробуйте позже или обратитесь к администратору.")
         await state.clear()
+
+# ==================== ОБРАБОТЧИКИ НАСТРОЕК (ТОЛЬКО ДЛЯ СОЗДАТЕЛЯ) ====================
+@dp.message(F.text == "⚙️ Настройки")
+async def settings_start(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    
+    if not is_creator(user_id):
+        await message.answer("❌ Эта функция доступна только создателю бота!")
+        return
+    
+    # Сбрасываем состояние
+    await state.clear()
+    
+    await message.answer(
+        "⚙️ *Настройки профиля*\n\n"
+        "Выберите, что хотите изменить:",
+        parse_mode="Markdown",
+        reply_markup=get_settings_inline_keyboard()
+    )
+
+@dp.callback_query(F.data == "settings")
+async def callback_settings(callback: CallbackQuery, state: FSMContext):
+    user_id = callback.from_user.id
+    
+    if not is_creator(user_id):
+        await callback.answer("❌ Нет доступа!")
+        return
+    
+    await state.clear()
+    
+    await callback.message.edit_text(
+        "⚙️ Настройки профиля\n\n"
+        "Выберите, что хотите изменить:",
+        reply_markup=get_settings_inline_keyboard()
+    )
+    await callback.answer()
+
+@dp.callback_query(F.data == "set_nickname")
+async def set_nickname_start(callback: CallbackQuery, state: FSMContext):
+    if not is_creator(callback.from_user.id):
+        await callback.answer("❌ Нет доступа!")
+        return
+    
+    await callback.message.edit_text(
+        "👤 Введите новый никнейм:"
+    )
+    await state.set_state(SettingsStates.waiting_for_new_nickname)
+    await callback.answer()
+
+@dp.message(SettingsStates.waiting_for_new_nickname)
+async def set_nickname_process(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    
+    if not is_creator(user_id):
+        await state.clear()
+        return
+    
+    new_nickname = message.text
+    
+    if len(new_nickname) < 3 or len(new_nickname) > 30:
+        await message.answer("❌ Никнейм должен быть от 3 до 30 символов. Попробуйте еще раз:")
+        return
+    
+    # Проверяем, не занят ли никнейм другим пользователем
+    if db.check_nickname_exists(new_nickname):
+        user = db.get_user(user_id)
+        if user and user['nickname'] != new_nickname:
+            await message.answer("❌ Этот никнейм уже занят другим пользователем! Введите другой:")
+            return
+    
+    # Обновляем никнейм
+    db.update_user(user_id, nickname=new_nickname)
+    
+    await message.answer("✅ Никнейм успешно изменен!")
+    await state.clear()
+
+@dp.callback_query(F.data == "set_vk")
+async def set_vk_start(callback: CallbackQuery, state: FSMContext):
+    if not is_creator(callback.from_user.id):
+        await callback.answer("❌ Нет доступа!")
+        return
+    
+    await callback.message.edit_text(
+        "🔗 Введите новую ссылку ВКонтакте\n\n"
+        "Пример: https://vk.ru/artem_suguru или vk.com/durov"
+    )
+    await state.set_state(SettingsStates.waiting_for_new_vk)
+    await callback.answer()
+
+@dp.message(SettingsStates.waiting_for_new_vk)
+async def set_vk_process(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    
+    if not is_creator(user_id):
+        await state.clear()
+        return
+    
+    # Проверяем ссылку ВК
+    is_valid, msg = validate_vk_link(message.text)
+    
+    if not is_valid:
+        await message.answer(msg)
+        return
+    
+    # Проверяем, не занята ли ссылка другим пользователем
+    if db.check_vk_link_exists(message.text):
+        user = db.get_user(user_id)
+        if user and user['vk_link'] != message.text:
+            await message.answer("❌ Эта ссылка ВК уже используется другим пользователем! Введите другую:")
+            return
+    
+    # Обновляем ссылку
+    db.update_user(user_id, vk_link=message.text)
+    
+    await message.answer("✅ Ссылка ВКонтакте успешно изменена!")
+    await state.clear()
+
+@dp.callback_query(F.data == "set_tg")
+async def set_tg_start(callback: CallbackQuery, state: FSMContext):
+    if not is_creator(callback.from_user.id):
+        await callback.answer("❌ Нет доступа!")
+        return
+    
+    await callback.message.edit_text(
+        "📱 Введите новый Telegram username\n\n"
+        "Пример: durov (без @)"
+    )
+    await state.set_state(SettingsStates.waiting_for_new_tg)
+    await callback.answer()
+
+@dp.message(SettingsStates.waiting_for_new_tg)
+async def set_tg_process(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    
+    if not is_creator(user_id):
+        await state.clear()
+        return
+    
+    username = message.text.replace('@', '').strip()
+    
+    if not validate_telegram_username(username):
+        await message.answer(
+            "❌ Неверный username!\n\n"
+            "Требования:\n"
+            "• Только латиница\n"
+            "• Можно использовать цифры и _\n"
+            "• Минимум 5 символов\n"
+            "• Пример: durov"
+        )
+        return
+    
+    # Проверяем, не занят ли username другим пользователем
+    if db.check_telegram_username_exists(username):
+        user = db.get_user(user_id)
+        if user and user['telegram_username'] != username:
+            await message.answer("❌ Этот Telegram username уже используется другим пользователем! Введите другой:")
+            return
+    
+    # Обновляем username
+    db.update_user(user_id, telegram_username=username)
+    
+    await message.answer("✅ Telegram username успешно изменен!")
+    await state.clear()
+
+@dp.callback_query(F.data == "set_forum")
+async def set_forum_start(callback: CallbackQuery, state: FSMContext):
+    if not is_creator(callback.from_user.id):
+        await callback.answer("❌ Нет доступа!")
+        return
+    
+    await callback.message.edit_text(
+        "🌐 Введите новую ссылку на форум\n\n"
+        "Формат: https://forum.blackrussia.online/members/artem_suguru.1983519/"
+    )
+    await state.set_state(SettingsStates.waiting_for_new_forum)
+    await callback.answer()
+
+@dp.message(SettingsStates.waiting_for_new_forum)
+async def set_forum_process(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    
+    if not is_creator(user_id):
+        await state.clear()
+        return
+    
+    # Проверяем ссылку на форум
+    is_valid, msg = validate_forum_link(message.text)
+    
+    if not is_valid:
+        await message.answer(msg)
+        return
+    
+    # Проверяем, не занята ли ссылка другим пользователем
+    if db.check_forum_link_exists(message.text):
+        user = db.get_user(user_id)
+        if user and user['forum_link'] != message.text:
+            await message.answer("❌ Эта ссылка на форум уже используется другим пользователем! Введите другую:")
+            return
+    
+    # Обновляем ссылку
+    db.update_user(user_id, forum_link=message.text)
+    
+    await message.answer("✅ Ссылка на форум успешно изменена!")
+    await state.clear()
+
+@dp.callback_query(F.data == "set_timezone")
+async def set_timezone_start(callback: CallbackQuery, state: FSMContext):
+    if not is_creator(callback.from_user.id):
+        await callback.answer("❌ Нет доступа!")
+        return
+    
+    await callback.message.edit_text(
+        "🌍 Введите новый часовой пояс\n\n"
+        "Формат: МСК, МСК+1, МСК-4 и т.д.\n"
+        "Пример: МСК, МСК+3, МСК-2"
+    )
+    await state.set_state(SettingsStates.waiting_for_new_timezone)
+    await callback.answer()
+
+@dp.message(SettingsStates.waiting_for_new_timezone)
+async def set_timezone_process(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    
+    if not is_creator(user_id):
+        await state.clear()
+        return
+    
+    if not validate_timezone_msk(message.text):
+        await message.answer(
+            "❌ Неверный формат!\n"
+            "Используйте: МСК, МСК+1, МСК-4 и т.д.\n"
+            "Пример: МСК, МСК+3, МСК-2"
+        )
+        return
+    
+    # Обновляем часовой пояс
+    db.update_user(user_id, timezone=message.text.upper())
+    
+    await message.answer("✅ Часовой пояс успешно изменен!")
+    await state.clear()
+
+@dp.callback_query(F.data == "set_age")
+async def set_age_start(callback: CallbackQuery, state: FSMContext):
+    if not is_creator(callback.from_user.id):
+        await callback.answer("❌ Нет доступа!")
+        return
+    
+    await callback.message.edit_text(
+        "🎂 Введите новый возраст (от 10 до 100):"
+    )
+    await state.set_state(SettingsStates.waiting_for_new_age)
+    await callback.answer()
+
+@dp.message(SettingsStates.waiting_for_new_age)
+async def set_age_process(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    
+    if not is_creator(user_id):
+        await state.clear()
+        return
+    
+    if not validate_age(message.text):
+        await message.answer("❌ Неверный формат возраста. Введите число от 10 до 100:")
+        return
+    
+    # Обновляем возраст
+    db.update_user(user_id, age=int(message.text))
+    
+    await message.answer("✅ Возраст успешно изменен!")
+    await state.clear()
+
+@dp.callback_query(F.data == "set_pc")
+async def set_pc_start(callback: CallbackQuery, state: FSMContext):
+    if not is_creator(callback.from_user.id):
+        await callback.answer("❌ Нет доступа!")
+        return
+    
+    await callback.message.edit_text(
+        "💻 Есть ли у вас доступ к ПК? (Да/Нет):"
+    )
+    await state.set_state(SettingsStates.waiting_for_new_pc)
+    await callback.answer()
+
+@dp.message(SettingsStates.waiting_for_new_pc)
+async def set_pc_process(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    
+    if not is_creator(user_id):
+        await state.clear()
+        return
+    
+    if not validate_pc_access(message.text):
+        await message.answer("❌ Ответьте Да или Нет:")
+        return
+    
+    pc_access = "Да" if message.text.lower() in ['да', 'yes', 'есть'] else "Нет"
+    
+    # Обновляем доступ к ПК
+    db.update_user(user_id, pc_access=pc_access)
+    
+    await message.answer("✅ Доступ к ПК успешно изменен!")
+    await state.clear()
 
 # ==================== ОБРАБОТЧИКИ REPLY КНОПОК ====================
 @dp.message(F.text == "📊 Статистика")
@@ -1413,6 +1785,8 @@ async def callback_back_to_menu(callback: CallbackQuery, state: FSMContext):
     builder.add(InlineKeyboardButton(text="📝 Заявки", callback_data="apps"))
     if is_bot_admin(user_id):
         builder.add(InlineKeyboardButton(text="👑 Админка", callback_data="admin_panel"))
+    if is_creator(user_id):
+        builder.add(InlineKeyboardButton(text="⚙️ Настройки", callback_data="settings"))
     builder.adjust(1)
     
     await callback.message.edit_text(
@@ -2132,7 +2506,7 @@ async def cmd_admin_list(message: types.Message, state: FSMContext):
     text = "👑 Администраторы бота:\n\n"
     
     for admin in admins:
-        level_text = "⭐ ГЛАВНЫЙ" if admin['user_id'] == MAIN_ADMIN_ID else "👨‍💼 Админ"
+        level_text = "⭐ ГЛАВНЫЙ" if admin['user_id'] == CREATOR_ID else "👨‍💼 Админ"
         text += f"• {admin['nickname']} (@{admin['telegram_username']}) - {level_text}\n"
     
     await message.answer(text)
@@ -2161,8 +2535,8 @@ async def cmd_unadmin(message: types.Message, state: FSMContext):
             await message.answer(f"❌ Пользователь @{username} не найден!")
             return
         
-        if user['user_id'] == MAIN_ADMIN_ID:
-            await message.answer("❌ Нельзя снять права главного администратора!")
+        if user['user_id'] == CREATOR_ID:
+            await message.answer("❌ Нельзя снять права создателя!")
             return
         
         if db.is_bot_admin(user['user_id']):
@@ -2199,8 +2573,8 @@ async def cmd_unlist(message: types.Message, state: FSMContext):
             await message.answer(f"❌ Пользователь @{username} не найден!")
             return
         
-        if user['user_id'] == MAIN_ADMIN_ID:
-            await message.answer("❌ Нельзя заблокировать главного администратора!")
+        if user['user_id'] == CREATOR_ID:
+            await message.answer("❌ Нельзя заблокировать создателя!")
             return
         
         if not db.is_user_blocked(user['user_id']):
@@ -2257,7 +2631,7 @@ async def cmd_unblock(message: types.Message, state: FSMContext):
 # ==================== ЗАПУСК БОТА ====================
 async def main():
     print("🚀 Бот Black Russia запущен!")
-    print(f"👑 Главный администратор ID: {MAIN_ADMIN_ID}")
+    print(f"👑 Создатель ID: {CREATOR_ID}")
     print("📋 Доступные команды:")
     print("  • /start - начать работу")
     print("  • /adminlist - список админов")
