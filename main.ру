@@ -49,6 +49,26 @@ class Rank(Enum):
     ADMIN = "Администратор"
     SENIOR_ADMIN = "Старший администратор"
 
+# Список допустимых должностей для проверки
+VALID_RANKS = [rank.value for rank in Rank]
+
+# Порядок должностей для повышения
+RANK_ORDER = [
+    Rank.JUNIOR_MODER,
+    Rank.MODER,
+    Rank.SENIOR_MODER,
+    Rank.ADMIN,
+    Rank.SENIOR_ADMIN
+]
+
+# Стоимость повышений (сколько баллов нужно списать)
+PROMOTION_COSTS = {
+    (Rank.JUNIOR_MODER, Rank.MODER): 50,
+    (Rank.MODER, Rank.SENIOR_MODER): 70,
+    (Rank.SENIOR_MODER, Rank.ADMIN): 100,
+    (Rank.ADMIN, Rank.SENIOR_ADMIN): 150
+}
+
 # Нормы для должностей
 RANK_NORMS = {
     Rank.JUNIOR_MODER: {"online": 150, "answers": 150},
@@ -210,6 +230,17 @@ class Database:
                 return dict(row)
             return None
     
+    def get_user_by_username(self, username: str) -> Optional[dict]:
+        """Получает пользователя по telegram username"""
+        username = username.replace('@', '').strip()
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM users WHERE telegram_username = ?", (username,))
+            row = cursor.fetchone()
+            if row:
+                return dict(row)
+            return None
+    
     def update_user(self, user_id: int, **kwargs) -> bool:
         with self.get_connection() as conn:
             cursor = conn.cursor()
@@ -329,6 +360,17 @@ def can_manage_users(user_id: int) -> bool:
 
 def is_blocked(user_id: int) -> bool:
     return db.is_user_blocked(user_id)
+
+def get_next_rank(current_rank_value: str) -> Optional[Rank]:
+    """Возвращает следующую должность по порядку"""
+    for i, rank in enumerate(RANK_ORDER):
+        if rank.value == current_rank_value and i < len(RANK_ORDER) - 1:
+            return RANK_ORDER[i + 1]
+    return None
+
+def get_promotion_cost(current_rank: Rank, next_rank: Rank) -> int:
+    """Возвращает стоимость повышения"""
+    return PROMOTION_COSTS.get((current_rank, next_rank), 0)
 
 # ==================== КЛАВИАТУРЫ ====================
 def get_main_reply_keyboard(user_id: int = None):
@@ -477,6 +519,10 @@ def validate_age(age: str) -> bool:
 def validate_pc_access(access: str) -> bool:
     return access.lower() in ['да', 'нет', 'yes', 'no', 'есть', 'нету']
 
+def validate_rank(rank: str) -> bool:
+    """Проверяет, является ли строка допустимой должностью"""
+    return rank in VALID_RANKS
+
 # ==================== FSM СОСТОЯНИЯ ====================
 class RegistrationStates(StatesGroup):
     waiting_for_nickname = State()
@@ -532,6 +578,38 @@ async def cmd_start(message: types.Message, state: FSMContext):
             "Выберите действие:",
             reply_markup=get_start_inline_keyboard(user_id)
         )
+
+# ==================== КОМАНДА /stats ====================
+@dp.message(Command("stats"))
+async def cmd_stats(message: types.Message, state: FSMContext):
+    """Показывает статистику игрока по username"""
+    if not is_bot_admin(message.from_user.id):
+        await message.answer("❌ У вас нет прав для этой команды!")
+        return
+    
+    # Сбрасываем состояние
+    await state.clear()
+    
+    try:
+        args = message.text.split()
+        if len(args) < 2:
+            await message.answer("❌ Использование: /stats @username")
+            return
+        
+        username = args[1].replace('@', '')
+        
+        # Ищем пользователя в базе
+        user = db.get_user_by_username(username)
+        
+        if not user:
+            await message.answer(f"❌ Пользователь @{username} не найден в базе!")
+            return
+        
+        stats_text = format_user_stats(user)
+        await message.answer(stats_text)
+        
+    except Exception as e:
+        await message.answer(f"❌ Ошибка: {e}")
 
 # ==================== РЕГИСТРАЦИЯ ====================
 @dp.message(RegistrationStates.waiting_for_nickname)
@@ -786,7 +864,8 @@ async def reply_admin_panel(message: types.Message, state: FSMContext):
     text += "• /givewarn - выдать выговор\n"
     text += "• /giveball - начислить баллы\n"
     text += "• /unadmin - снять админа\n"
-    text += "• /unlist - заблокировать игрока\n\n"
+    text += "• /unlist - заблокировать игрока\n"
+    text += "• /stats @username - статистика игрока\n\n"
     text += "Команды для проверки заявок:\n"
     text += "• /norma - проверить нормы\n"
     text += "• /povishenie - проверить повышения\n"
@@ -1046,25 +1125,92 @@ async def promotion_start(message: types.Message, state: FSMContext):
     if is_blocked(user_id):
         return
     
+    # Проверяем, есть ли пользователь в базе
+    user = db.get_user(user_id)
+    if not user:
+        await message.answer("❌ Сначала зарегистрируйтесь через /start")
+        return
+    
+    # Показываем текущую должность
+    current_rank = user.get('rank', Rank.JUNIOR_MODER.value)
+    
     await message.answer(
-        "⬆️ Заявка на повышение\n\n"
-        "1️⃣ Какая у вас сейчас должность?"
+        f"⬆️ Заявка на повышение\n\n"
+        f"📋 Ваша текущая должность: {current_rank}\n\n"
+        f"1️⃣ Подтвердите вашу текущую должность (напишите её точно так же, как указано выше):"
     )
     await state.set_state(ApplicationStates.promotion_current_rank)
 
 @dp.message(ApplicationStates.promotion_current_rank)
 async def promotion_current_rank(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    user = db.get_user(user_id)
+    
+    if not user:
+        await message.answer("❌ Ошибка! Начните заново.")
+        await state.clear()
+        return
+    
+    current_rank = user.get('rank', Rank.JUNIOR_MODER.value)
+    
+    # Проверяем, что пользователь правильно указал текущую должность
+    if message.text != current_rank:
+        await message.answer(
+            f"❌ Неверная должность!\n"
+            f"Ваша текущая должность: {current_rank}\n"
+            f"Напишите её точно так же:"
+        )
+        return
+    
     await state.update_data(current_rank=message.text)
+    
+    # Показываем доступные должности для повышения
+    next_rank = get_next_rank(current_rank)
+    if not next_rank:
+        await message.answer("❌ Вы уже имеете максимальную должность! Повышение невозможно.")
+        await state.clear()
+        return
+    
+    cost = get_promotion_cost(Rank(current_rank), next_rank)
+    current_points = user.get('points', 0)
+    
+    if current_points < cost:
+        await message.answer(
+            f"❌ У вас недостаточно баллов для повышения!\n\n"
+            f"Требуется: {cost} баллов\n"
+            f"У вас: {current_points} баллов"
+        )
+        await state.clear()
+        return
+    
     await message.answer(
-        "2️⃣ На какую должность вы хотите подать заявление?"
+        f"2️⃣ На какую должность вы хотите повыситься?\n\n"
+        f"Доступно: {next_rank.value}\n"
+        f"Стоимость: {cost} баллов"
     )
     await state.set_state(ApplicationStates.promotion_target_rank)
 
 @dp.message(ApplicationStates.promotion_target_rank)
 async def promotion_target_rank(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    user = db.get_user(user_id)
+    data = await state.get_data()
+    current_rank = data.get('current_rank')
+    
+    next_rank = get_next_rank(current_rank)
+    
+    if not next_rank or message.text != next_rank.value:
+        await message.answer(
+            f"❌ Неверная должность!\n"
+            f"Вы можете повыситься только до: {next_rank.value}\n"
+            f"Напишите точно так же:"
+        )
+        return
+    
     await state.update_data(target_rank=message.text)
     await message.answer(
-        "3️⃣ Отправьте скриншот проделанной работы:"
+        "3️⃣ Отправьте скриншот вашей статистики за всё время.\n\n"
+        "На скриншоте должны быть видны все ваши показатели."
     )
     await state.set_state(ApplicationStates.promotion_screenshot)
 
@@ -1114,6 +1260,8 @@ async def promotion_screenshot(message: types.Message, state: FSMContext):
                     admin['user_id'],
                     f"⬆️ Новая заявка на повышение\n"
                     f"👤 От: {user.get('nickname', 'Неизвестно')}\n"
+                    f"📋 Текущая: {current_rank}\n"
+                    f"🎯 Желаемая: {target_rank}\n"
                     f"🆔 ID: {app_id}\n\n"
                     f"Используйте /povishenie для просмотра"
                 )
@@ -1129,9 +1277,21 @@ async def reprisal_start(message: types.Message, state: FSMContext):
     if is_blocked(user_id):
         return
     
+    # Проверяем, есть ли выговоры
+    user = db.get_user(user_id)
+    if not user:
+        await message.answer("❌ Сначала зарегистрируйтесь через /start")
+        return
+    
+    current_reprisals = user.get('reprisals', 0)
+    if current_reprisals <= 0:
+        await message.answer("✅ У вас нет выговоров!")
+        return
+    
     await message.answer(
-        "✅ Снятие выговора\n\n"
-        "Отправьте выполненную работу для снятия выговора:"
+        f"✅ Снятие выговора\n\n"
+        f"У вас {current_reprisals} выговор(ов)\n\n"
+        "Отправьте выполненную работу для снятия одного выговора:"
     )
     await state.set_state(ApplicationStates.reprisal_work)
 
@@ -1269,7 +1429,8 @@ async def callback_admin_panel(callback: CallbackQuery, state: FSMContext):
     text = "👑 Панель администратора\n\n"
     text += "Используйте команды:\n"
     text += "• /adminlist\n• /setadminbot\n• /setadmin\n• /givewarn\n• /giveball\n"
-    text += "• /unadmin\n• /unlist\n• /norma\n• /povishenie\n• /balli\n• /neaktiv\n• /vigovor"
+    text += "• /unadmin\n• /unlist\n• /stats @username\n"
+    text += "• /norma\n• /povishenie\n• /balli\n• /neaktiv\n• /vigovor"
     
     await callback.message.edit_text(text)
     await callback.answer()
@@ -1283,27 +1444,73 @@ async def callback_app_handler(callback: CallbackQuery, state: FSMContext):
         await callback.answer("⛔ Доступ запрещен")
         return
     
+    # Проверяем, есть ли пользователь в базе
+    user = db.get_user(user_id)
+    if not user:
+        await callback.message.answer("❌ Сначала зарегистрируйтесь через /start")
+        await callback.answer()
+        return
+    
     messages = {
         "norm": "📸 Сдача норматива\n\nПришлите фото с показателями Онлайн и Ответы.",
         "extra": "➕ Дополнительные баллы\n\nОпишите выполненную работу:",
-        "inactive": "💤 Заявка на неактив\n\nНапишите причину неактива:",
-        "promotion": "⬆️ Заявка на повышение\n\nКакая у вас сейчас должность?",
-        "reprisal": "✅ Снятие выговора\n\nОтправьте выполненную работу:"
+        "inactive": "💤 Заявка на неактив\n\nНапишите причину неактива:"
     }
     
     states = {
         "norm": ApplicationStates.norm_photo,
         "extra": ApplicationStates.extra_work_desc,
-        "inactive": ApplicationStates.inactive_reason,
-        "promotion": ApplicationStates.promotion_current_rank,
-        "reprisal": ApplicationStates.reprisal_work
+        "inactive": ApplicationStates.inactive_reason
     }
     
-    if app_type in messages:
+    # Для повышения нужна особая обработка
+    if app_type == "promotion":
+        current_rank = user.get('rank', Rank.JUNIOR_MODER.value)
+        next_rank = get_next_rank(current_rank)
+        
+        if not next_rank:
+            await callback.message.answer("❌ Вы уже имеете максимальную должность! Повышение невозможно.")
+            await callback.answer()
+            return
+        
+        cost = get_promotion_cost(Rank(current_rank), next_rank)
+        current_points = user.get('points', 0)
+        
+        if current_points < cost:
+            await callback.message.answer(
+                f"❌ У вас недостаточно баллов для повышения!\n\n"
+                f"Требуется: {cost} баллов\n"
+                f"У вас: {current_points} баллов"
+            )
+            await callback.answer()
+            return
+        
+        await callback.message.answer(
+            f"⬆️ Заявка на повышение\n\n"
+            f"📋 Ваша текущая должность: {current_rank}\n\n"
+            f"1️⃣ Подтвердите вашу текущую должность (напишите её точно так же, как указано выше):"
+        )
+        await state.set_state(ApplicationStates.promotion_current_rank)
+    
+    elif app_type == "reprisal":
+        current_reprisals = user.get('reprisals', 0)
+        if current_reprisals <= 0:
+            await callback.message.answer("✅ У вас нет выговоров!")
+            await callback.answer()
+            return
+        
+        await callback.message.answer(
+            f"✅ Снятие выговора\n\n"
+            f"У вас {current_reprisals} выговор(ов)\n\n"
+            "Отправьте выполненную работу для снятия одного выговора:"
+        )
+        await state.set_state(ApplicationStates.reprisal_work)
+    
+    elif app_type in messages:
         await callback.message.answer(messages[app_type])
         await state.set_state(states[app_type])
-        await callback.message.delete()
     
+    await callback.message.delete()
     await callback.answer()
 
 # ==================== ХРАНИЛИЩА ЗАЯВОК ====================
@@ -1541,27 +1748,42 @@ async def approve_application(callback: CallbackQuery, state: FSMContext):
     # Обновляем статус в базе данных
     db.update_application_status(app_id, "approved")
     
-    # Начисляем баллы в зависимости от типа заявки
     if app_type == "norm":
+        # За норму даем 3 балла
         user = db.get_user(user_id)
         if user:
+            current_points = user.get('points', 0)
             db.update_user(user_id, 
-                          points=user.get('points', 0) + 20,
+                          points=current_points + 3,
                           online=user.get('online', 0) + 50,
                           answers=user.get('answers', 0) + 50)
-        await bot.send_message(user_id, "✅ Ваша норма одобрена!\n➕ Начислено 20 баллов")
+        await bot.send_message(user_id, "✅ Ваша норма одобрена!\n➕ Начислено 3 балла")
     
     elif app_type == "promotion":
         user = db.get_user(user_id)
         if user:
-            db.update_user(user_id, points=user.get('points', 0) + 30)
-        await bot.send_message(user_id, "✅ Ваше повышение одобрено!\n➕ Начислено 30 баллов")
+            current_rank = app_data['current_rank']
+            target_rank = app_data['target_rank']
+            current_points = user.get('points', 0)
+            
+            # Находим стоимость повышения
+            cost = get_promotion_cost(Rank(current_rank), Rank(target_rank))
+            
+            # Списываем баллы и повышаем должность
+            db.update_user(user_id, 
+                          rank=target_rank,
+                          points=current_points - cost)
+            
+            await bot.send_message(
+                user_id, 
+                f"✅ Ваше повышение одобрено!\n"
+                f"📋 Новая должность: {target_rank}\n"
+                f"➖ Списано {cost} баллов"
+            )
     
     elif app_type == "extra":
-        user = db.get_user(user_id)
-        if user:
-            db.update_user(user_id, points=user.get('points', 0) + 15)
-        await bot.send_message(user_id, "✅ Ваши доп баллы одобрены!\n➕ Начислено 15 баллов")
+        # Доп баллы без начисления (просто работа)
+        await bot.send_message(user_id, "✅ Ваша работа принята!\n➕ Дополнительные баллы не начисляются")
     
     elif app_type == "inactive":
         end_date = datetime.now() + timedelta(days=app_data['days'])
@@ -1576,10 +1798,9 @@ async def approve_application(callback: CallbackQuery, state: FSMContext):
             current_warns = user.get('reprisals', 0)
             if current_warns > 0:
                 db.update_user(user_id, reprisals=current_warns - 1)
-            db.update_user(user_id, points=user.get('points', 0) + 10)
         await bot.send_message(
             user_id,
-            f"✅ Ваш выговор снят!\n➕ Начислено 10 баллов"
+            f"✅ Ваш выговор снят!"
         )
     
     # Удаляем из словаря
@@ -1673,10 +1894,18 @@ async def cmd_set_admin_bot(message: types.Message, state: FSMContext):
         username = args[1].replace('@', '')
         
         # Ищем пользователя в базе
-        # Здесь нужно добавить поиск по username
-        # Для простоты пока заглушка
+        user = db.get_user_by_username(username)
         
-        await message.answer("⚠️ Функция в разработке")
+        if not user:
+            await message.answer(f"❌ Пользователь @{username} не найден в базе!")
+            return
+        
+        # Добавляем как админа бота
+        if db.add_bot_admin(user['user_id'], message.from_user.id, 50):
+            await message.answer(f"✅ Пользователь @{username} добавлен как администратор бота!")
+            await bot.send_message(user['user_id'], "✅ Вам выданы права администратора бота!")
+        else:
+            await message.answer(f"❌ Пользователь @{username} уже является администратором!")
         
     except Exception as e:
         await message.answer(f"❌ Ошибка: {e}")
@@ -1712,9 +1941,20 @@ async def cmd_set_admin(message: types.Message, state: FSMContext):
         }
         
         # Ищем пользователя в базе
-        # Для простоты пока заглушка
+        user = db.get_user_by_username(username)
         
-        await message.answer("⚠️ Функция в разработке")
+        if not user:
+            await message.answer(f"❌ Пользователь @{username} не найден в базе!")
+            return
+        
+        # Обновляем должность
+        db.update_user(user['user_id'], rank=rank_map[level].value, added_by=message.from_user.first_name)
+        
+        await message.answer(f"✅ Пользователю @{username} выдана должность: {rank_map[level].value}")
+        await bot.send_message(
+            user['user_id'],
+            f"✅ Вам выдана должность: {rank_map[level].value}"
+        )
         
     except ValueError:
         await message.answer("❌ Уровень должен быть числом!")
@@ -1744,7 +1984,25 @@ async def cmd_give_warn(message: types.Message, state: FSMContext):
             await message.answer("❌ Количество выговоров должно быть от 1 до 3!")
             return
         
-        await message.answer("⚠️ Функция в разработке")
+        # Ищем пользователя в базе
+        user = db.get_user_by_username(username)
+        
+        if not user:
+            await message.answer(f"❌ Пользователь @{username} не найден!")
+            return
+        
+        # Выдаем выговор
+        current_warns = user.get('reprisals', 0)
+        db.update_user(user['user_id'], reprisals=current_warns + count)
+        
+        await message.answer(f"✅ Пользователю @{username} выдано {count} выговор(ов)\nПричина: {reason}")
+        await bot.send_message(
+            user['user_id'],
+            f"⚠️ Вам выдан выговор!\n"
+            f"Количество: {count}\n"
+            f"Причина: {reason}\n"
+            f"Всего выговоров: {current_warns + count}"
+        )
         
     except ValueError:
         await message.answer("❌ Количество должно быть числом!")
@@ -1770,7 +2028,25 @@ async def cmd_give_ball(message: types.Message, state: FSMContext):
         count = int(parts[2])
         reason = parts[3]
         
-        await message.answer("⚠️ Функция в разработке")
+        # Ищем пользователя в базе
+        user = db.get_user_by_username(username)
+        
+        if not user:
+            await message.answer(f"❌ Пользователь @{username} не найден!")
+            return
+        
+        # Начисляем баллы
+        current_points = user.get('points', 0)
+        db.update_user(user['user_id'], points=current_points + count)
+        
+        await message.answer(f"✅ Пользователю @{username} начислено {count} баллов\nПричина: {reason}")
+        await bot.send_message(
+            user['user_id'],
+            f"➕ Вам начислены баллы!\n"
+            f"Количество: {count}\n"
+            f"Причина: {reason}\n"
+            f"Всего баллов: {current_points + count}"
+        )
         
     except ValueError:
         await message.answer("❌ Количество должно быть числом!")
@@ -1805,8 +2081,31 @@ async def cmd_unadmin(message: types.Message, state: FSMContext):
     await state.clear()
     
     try:
-        username = message.text.split()[1].replace('@', '')
-        await message.answer("⚠️ Функция в разработке")
+        args = message.text.split()
+        if len(args) < 2:
+            await message.answer("❌ Использование: /unadmin @username")
+            return
+        
+        username = args[1].replace('@', '')
+        
+        # Ищем пользователя в базе
+        user = db.get_user_by_username(username)
+        
+        if not user:
+            await message.answer(f"❌ Пользователь @{username} не найден!")
+            return
+        
+        if user['user_id'] == MAIN_ADMIN_ID:
+            await message.answer("❌ Нельзя снять права главного администратора!")
+            return
+        
+        if db.is_bot_admin(user['user_id']):
+            db.remove_bot_admin(user['user_id'])
+            await message.answer(f"✅ У @{username} отозваны права администратора бота")
+            await bot.send_message(user['user_id'], "⚠️ У вас отозваны права администратора бота")
+        else:
+            await message.answer("❌ Пользователь не является администратором бота")
+            
     except Exception as e:
         await message.answer(f"❌ Ошибка: {e}")
 
@@ -1820,8 +2119,72 @@ async def cmd_unlist(message: types.Message, state: FSMContext):
     await state.clear()
     
     try:
-        username = message.text.split()[1].replace('@', '')
-        await message.answer("⚠️ Функция в разработке")
+        args = message.text.split()
+        if len(args) < 2:
+            await message.answer("❌ Использование: /unlist @username")
+            return
+        
+        username = args[1].replace('@', '')
+        
+        # Ищем пользователя в базе
+        user = db.get_user_by_username(username)
+        
+        if not user:
+            await message.answer(f"❌ Пользователь @{username} не найден!")
+            return
+        
+        if user['user_id'] == MAIN_ADMIN_ID:
+            await message.answer("❌ Нельзя заблокировать главного администратора!")
+            return
+        
+        if not db.is_user_blocked(user['user_id']):
+            db.block_user(user['user_id'])
+            # Также добавляем в список blocked_users для быстрой проверки
+            if user['user_id'] not in blocked_users:
+                blocked_users.append(user['user_id'])
+            await message.answer(f"✅ Пользователь @{username} заблокирован")
+            await bot.send_message(user['user_id'], "⛔ Вы заблокированы в боте администрацией")
+        else:
+            await message.answer("❌ Пользователь уже заблокирован")
+            
+    except Exception as e:
+        await message.answer(f"❌ Ошибка: {e}")
+
+# Добавляем команду для разблокировки (опционально)
+@dp.message(Command("unblock"))
+async def cmd_unblock(message: types.Message, state: FSMContext):
+    if not can_manage_users(message.from_user.id):
+        await message.answer("❌ У вас нет прав для этой команды!")
+        return
+    
+    # Сбрасываем состояние
+    await state.clear()
+    
+    try:
+        args = message.text.split()
+        if len(args) < 2:
+            await message.answer("❌ Использование: /unblock @username")
+            return
+        
+        username = args[1].replace('@', '')
+        
+        # Ищем пользователя в базе
+        user = db.get_user_by_username(username)
+        
+        if not user:
+            await message.answer(f"❌ Пользователь @{username} не найден!")
+            return
+        
+        if db.is_user_blocked(user['user_id']):
+            db.unblock_user(user['user_id'])
+            # Удаляем из списка blocked_users
+            if user['user_id'] in blocked_users:
+                blocked_users.remove(user['user_id'])
+            await message.answer(f"✅ Пользователь @{username} разблокирован")
+            await bot.send_message(user['user_id'], "✅ Вы разблокированы в боте")
+        else:
+            await message.answer("❌ Пользователь не заблокирован")
+            
     except Exception as e:
         await message.answer(f"❌ Ошибка: {e}")
 
@@ -1832,12 +2195,14 @@ async def main():
     print("📋 Доступные команды:")
     print("  • /start - начать работу")
     print("  • /adminlist - список админов")
-    print("  • /setadminbot - добавить админа бота")
-    print("  • /setadmin [1-5] - выдать должность")
-    print("  • /givewarn - выдать выговор")
-    print("  • /giveball - начислить баллы")
-    print("  • /unadmin - снять админа")
-    print("  • /unlist - заблокировать игрока")
+    print("  • /setadminbot @username - добавить админа бота")
+    print("  • /setadmin [1-5] @username - выдать должность")
+    print("  • /givewarn [1-3] @username [причина] - выдать выговор")
+    print("  • /giveball @username [количество] [причина] - начислить баллы")
+    print("  • /unadmin @username - снять админа")
+    print("  • /unlist @username - заблокировать игрока")
+    print("  • /unblock @username - разблокировать игрока")
+    print("  • /stats @username - статистика игрока")
     print("  • /norma - проверить нормы")
     print("  • /povishenie - проверить повышения")
     print("  • /balli - проверить доп баллы")
