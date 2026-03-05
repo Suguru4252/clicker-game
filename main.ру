@@ -1,12 +1,9 @@
 import asyncio
 import logging
 import re
-import json
 import sqlite3
-import urllib.request
-import urllib.error
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from enum import Enum
 from uuid import uuid4
 from contextlib import contextmanager
@@ -105,9 +102,9 @@ class Database:
                     user_id INTEGER PRIMARY KEY,
                     nickname TEXT UNIQUE NOT NULL,
                     telegram_username TEXT UNIQUE NOT NULL,
-                    vk_link TEXT UNIQUE,
-                    forum_link TEXT UNIQUE,
-                    discord_username TEXT UNIQUE,
+                    vk_link TEXT,
+                    forum_link TEXT,
+                    discord_username TEXT,
                     age INTEGER,
                     timezone TEXT,
                     pc_access TEXT,
@@ -377,68 +374,7 @@ def get_promotion_cost(current_rank: Rank, next_rank: Rank) -> int:
     """Возвращает стоимость повышения"""
     return PROMOTION_COSTS.get((current_rank, next_rank), 0)
 
-# ==================== ФУНКЦИИ ПРОВЕРКИ ====================
-def validate_vk_link(vk_input: str) -> Tuple[bool, str]:
-    """
-    Проверяет ссылку ВК и существование пользователя
-    Возвращает (True/False, сообщение)
-    """
-    vk_input = vk_input.strip()
-    
-    # Проверяем формат ссылки
-    patterns = [
-        r'^https?://vk\.com/([a-zA-Z0-9_.]+)$',
-        r'^https?://vk\.ru/([a-zA-Z0-9_.]+)$',
-        r'^vk\.com/([a-zA-Z0-9_.]+)$',
-        r'^vk\.ru/([a-zA-Z0-9_.]+)$',
-        r'^([a-zA-Z0-9_.]+)$'
-    ]
-    
-    username = None
-    for pattern in patterns:
-        match = re.match(pattern, vk_input, re.IGNORECASE)
-        if match:
-            username = match.group(1) if len(match.groups()) > 0 else vk_input
-            break
-    
-    if not username:
-        return False, "❌ Неверный формат ссылки ВК. Пример: https://vk.ru/artem_suguru или vk.com/durov"
-    
-    # Проверяем существование пользователя через VK API
-    try:
-        # Используем VK API для проверки существования пользователя
-        url = f"https://api.vk.com/method/users.get?user_ids={username}&v=5.131"
-        
-        with urllib.request.urlopen(url, timeout=5) as response:
-            data = json.loads(response.read().decode())
-            
-            if 'response' in data and len(data['response']) > 0:
-                user = data['response'][0]
-                full_name = f"{user.get('first_name', '')} {user.get('last_name', '')}".strip()
-                return True, f"✅ Профиль найден: {full_name}"
-            else:
-                return False, "❌ Пользователь ВК не найден"
-                
-    except Exception as e:
-        # Если API не работает, хотя бы проверяем формат
-        logger.error(f"Ошибка при проверке VK: {e}")
-        return True, "✅ Формат ссылки корректный (проверка через API временно недоступна)"
-
-def validate_forum_link(link: str) -> Tuple[bool, str]:
-    """
-    Проверяет ссылку на форум Black Russia
-    Должна быть: https://forum.blackrussia.online/members/.../
-    """
-    link = link.strip()
-    
-    # Проверяем точное соответствие формату форума
-    pattern = r'^https?://forum\.blackrussia\.online/members/[a-zA-Z0-9_.]+\.\d+/?$'
-    
-    if re.match(pattern, link, re.IGNORECASE):
-        return True, "✅ Ссылка на форум корректна"
-    else:
-        return False, "❌ Неверная ссылка на форум!\n\nСсылка должна быть такого формата:\nhttps://forum.blackrussia.online/members/artem_suguru.1983519/"
-
+# ==================== ФУНКЦИИ ПРОВЕРКИ (ТОЛЬКО ФОРМАТЫ) ====================
 def validate_timezone_msk(tz: str) -> bool:
     tz = tz.upper().replace(' ', '')
     pattern = r'^МСК([+-][0-9]{1,2})?$'
@@ -448,10 +384,6 @@ def validate_telegram_username(username: str) -> bool:
     username = username.replace('@', '').strip()
     pattern = r'^[a-zA-Z][a-zA-Z0-9_]{4,}$'
     return bool(re.match(pattern, username))
-
-def validate_discord_username(username: str) -> bool:
-    pattern = r'^[a-zA-Z0-9_]{3,32}(#[0-9]{4})?$'
-    return bool(re.match(pattern, username.strip()))
 
 def validate_age(age: str) -> bool:
     try:
@@ -743,19 +675,13 @@ async def reg_pc_access(message: types.Message, state: FSMContext):
     await state.update_data(pc_access=pc_access)
     await message.answer(
         "🔗 Введите ссылку на ВКонтакте\n\n"
-        "Пример: https://vk.ru/artem_suguru или vk.com/durov"
+        "Пример: https://vk.com/ваш_профиль или vk.com/durov"
     )
     await state.set_state(RegistrationStates.waiting_for_vk)
 
 @dp.message(RegistrationStates.waiting_for_vk)
 async def reg_vk(message: types.Message, state: FSMContext):
-    # Проверяем ссылку ВК
-    is_valid, msg = validate_vk_link(message.text)
-    
-    if not is_valid:
-        await message.answer(msg)
-        return
-    
+    # Просто сохраняем то, что написал пользователь
     if db.check_vk_link_exists(message.text):
         await message.answer("❌ Эта ссылка ВК уже используется другим пользователем! Введите другую ссылку:")
         return
@@ -789,19 +715,13 @@ async def reg_tg_username(message: types.Message, state: FSMContext):
     await state.update_data(tg_username=username)
     await message.answer(
         "🔗 Введите ссылку на форум\n\n"
-        "Формат: https://forum.blackrussia.online/members/artem_suguru.1983519/"
+        "Пример: https://forum.blackrussia.online/members/ваш_ник.12345/"
     )
     await state.set_state(RegistrationStates.waiting_for_forum)
 
 @dp.message(RegistrationStates.waiting_for_forum)
 async def reg_forum(message: types.Message, state: FSMContext):
-    # Проверяем ссылку на форум
-    is_valid, msg = validate_forum_link(message.text)
-    
-    if not is_valid:
-        await message.answer(msg)
-        return
-    
+    # Просто сохраняем то, что написал пользователь
     if db.check_forum_link_exists(message.text):
         await message.answer("❌ Эта ссылка на форум уже используется другим пользователем! Введите другую:")
         return
@@ -815,15 +735,7 @@ async def reg_forum(message: types.Message, state: FSMContext):
 
 @dp.message(RegistrationStates.waiting_for_discord)
 async def reg_discord(message: types.Message, state: FSMContext):
-    if not validate_discord_username(message.text):
-        await message.answer(
-            "❌ Неверный Discord ник!\n\n"
-            "Примеры:\n"
-            "• username\n"
-            "• username#1234"
-        )
-        return
-    
+    # Просто сохраняем то, что написал пользователь (без проверки формата)
     if db.check_discord_username_exists(message.text):
         await message.answer("❌ Этот Discord ник уже используется другим пользователем! Введите другой:")
         return
@@ -879,9 +791,8 @@ async def settings_start(message: types.Message, state: FSMContext):
     await state.clear()
     
     await message.answer(
-        "⚙️ *Настройки профиля*\n\n"
+        "⚙️ Настройки профиля\n\n"
         "Выберите, что хотите изменить:",
-        parse_mode="Markdown",
         reply_markup=get_settings_inline_keyboard()
     )
 
@@ -949,7 +860,7 @@ async def set_vk_start(callback: CallbackQuery, state: FSMContext):
     
     await callback.message.edit_text(
         "🔗 Введите новую ссылку ВКонтакте\n\n"
-        "Пример: https://vk.ru/artem_suguru или vk.com/durov"
+        "Пример: https://vk.com/ваш_профиль"
     )
     await state.set_state(SettingsStates.waiting_for_new_vk)
     await callback.answer()
@@ -960,13 +871,6 @@ async def set_vk_process(message: types.Message, state: FSMContext):
     
     if not is_creator(user_id):
         await state.clear()
-        return
-    
-    # Проверяем ссылку ВК
-    is_valid, msg = validate_vk_link(message.text)
-    
-    if not is_valid:
-        await message.answer(msg)
         return
     
     # Проверяем, не занята ли ссылка другим пользователем
@@ -1037,7 +941,7 @@ async def set_forum_start(callback: CallbackQuery, state: FSMContext):
     
     await callback.message.edit_text(
         "🌐 Введите новую ссылку на форум\n\n"
-        "Формат: https://forum.blackrussia.online/members/artem_suguru.1983519/"
+        "Пример: https://forum.blackrussia.online/members/ваш_ник.12345/"
     )
     await state.set_state(SettingsStates.waiting_for_new_forum)
     await callback.answer()
@@ -1048,13 +952,6 @@ async def set_forum_process(message: types.Message, state: FSMContext):
     
     if not is_creator(user_id):
         await state.clear()
-        return
-    
-    # Проверяем ссылку на форум
-    is_valid, msg = validate_forum_link(message.text)
-    
-    if not is_valid:
-        await message.answer(msg)
         return
     
     # Проверяем, не занята ли ссылка другим пользователем
