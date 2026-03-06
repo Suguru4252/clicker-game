@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BLACK RUSSIA MANAGER</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0f1e 0%, #1a1f35 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+        }
+        
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            height: 98vh;
+            background: rgba(10, 5, 20, 0.97);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #ffd700;
+        }
+        
+        /* Шапка */
+        .header {
+            background: linear-gradient(135deg, #2a1b3d 0%, #1a0f2a 100%);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 3px solid #ffd700;
+        }
+        
+        .username {
+            font-size: 14px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .balance-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .balance-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 3px;
+            border-radius: 10px;
+            flex: 1;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+        }
+        
+        .balance-label {
+            font-size: 9px;
+            color: #aaa;
+        }
+        
+        .balance-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        /* Контент */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            color: white;
+        }
+        
+        /* Карточки */
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 5px;
+        }
+        
+        /* Кнопки */
+        .btn {
+            background: linear-gradient(135deg, #3a2a4d 0%, #2a1a3d 100%);
+            border: 2px solid #ffd700;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin: 8px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        
+        .btn:active {
+            transform: scale(0.97);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+            color: black;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50 0%, #2e7d32 100%);
+        }
+        
+        /* Нижняя навигация */
+        .bottom-nav {
+            display: flex;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 8px 5px;
+            gap: 5px;
+            border-top: 3px solid #ffd700;
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px 2px;
+            color: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        
+        .nav-item span {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        
+        .nav-item.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+        }
+        
+        /* Список пользователей */
+        .user-item {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            cursor: pointer;
+        }
+        
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .user-name {
+            font-weight: bold;
+            color: #ffd700;
+            font-size: 16px;
+        }
+        
+        .user-rank {
+            color: #4CAF50;
+            font-size: 14px;
+        }
+        
+        .user-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+        }
+        
+        .stat-badge {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #1a1025;
+            border-radius: 25px;
+            padding: 20px;
+            max-width: 340px;
+            width: 90%;
+            color: white;
+            border: 3px solid #ffd700;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .close-btn {
+            background: #f44336;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 1px solid #ffd700;
+        }
+        
+        /* Формы */
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            color: white;
+            padding: 12px;
+            border-radius: 25px;
+            width: 100%;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Статусы */
+        .status-online {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .status-offline {
+            color: #f44336;
+        }
+        
+        .warning-badge {
+            background: #f44336;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+        }
+        
+        /* Таблицы */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 10px 0;
+        }
+        
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка -->
+        <div class="header">
+            <div class="username" id="username">BLACK RUSSIA MANAGER</div>
+            <div class="balance-container">
+                <div class="balance-box">
+                    <div class="balance-label">СОСТАВ</div>
+                    <div class="balance-value" id="totalUsers">0</div>
+                </div>
+                <div class="balance-box">
+                    <div class="balance-label">ОНЛАЙН</div>
+                    <div class="balance-value" id="onlineUsers">0</div>
+                </div>
+                <div class="balance-box">
+                    <div class="balance-label">ЗАЯВКИ</div>
+                    <div class="balance-value" id="pendingApps">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Контент -->
+        <div class="content" id="content"></div>
+        
+        <!-- Нижняя навигация -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-tab="staff"><span>👥</span>СОСТАВ</div>
+            <div class="nav-item" data-tab="applications"><span>📝</span>ЗАЯВКИ</div>
+            <div class="nav-item" data-tab="stats"><span>📊</span>СТАТИС</div>
+            <div class="nav-item" data-tab="profile"><span>👤</span>ПРОФИЛЬ</div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно профиля -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content" id="profileModalContent"></div>
+    </div>
+    
+    <!-- Модальное окно заявки -->
+    <div class="modal" id="appModal">
+        <div class="modal-content" id="appModalContent"></div>
+    </div>
+
+    <script>
+        // Состояние приложения
+        let appState = {
+            currentUser: {
+                id: 1,
+                username: "creator",
+                nickname: "Создатель",
+                rank: "Создатель",
+                points: 9999,
+                reprisals: 0,
+                online: 150,
+                answers: 200,
+                isAdmin: true,
+                isCreator: true
+            },
+            users: [
+                { id: 1, username: "creator", nickname: "Создатель", rank: "Создатель", points: 9999, reprisals: 0, online: 150, answers: 200, isOnline: true },
+                { id: 2, username: "admin1", nickname: "Главный Админ", rank: "Старший администратор", points: 500, reprisals: 0, online: 145, answers: 180, isOnline: true },
+                { id: 3, username: "moder1", nickname: "Модератор Иван", rank: "Модератор", points: 120, reprisals: 1, online: 120, answers: 110, isOnline: false },
+                { id: 4, username: "junior1", nickname: "Мл.Модератор Петр", rank: "Младший модератор", points: 45, reprisals: 2, online: 80, answers: 70, isOnline: true }
+            ],
+            applications: [
+                { id: 1, type: "norm", user: "Модератор Иван", desc: "Сдача нормы", status: "pending" },
+                { id: 2, type: "promotion", user: "Мл.Модератор Петр", desc: "Повышение до Модератора", status: "pending" },
+                { id: 3, type: "extra", user: "Модератор Иван", desc: "Доп работа", status: "pending" }
+            ],
+            ranks: ["Младший модератор", "Модератор", "Старший модератор", "Администратор", "Старший администратор", "Создатель"]
+        };
+        
+        // Должности с цветами
+        const rankColors = {
+            "Младший модератор": "#4CAF50",
+            "Модератор": "#2196F3",
+            "Старший модератор": "#9C27B0",
+            "Администратор": "#FF9800",
+            "Старший администратор": "#f44336",
+            "Создатель": "#ffd700"
+        };
+        
+        // Загрузка состояния
+        function loadState() {
+            const saved = localStorage.getItem('brManagerState');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch(e) {}
+            }
+            updateUI();
+        }
+        
+        // Сохранение
+        function saveState() {
+            localStorage.setItem('brManagerState', JSON.stringify(appState));
+        }
+        
+        // Обновление UI
+        function updateUI() {
+            document.getElementById('totalUsers').textContent = appState.users.length;
+            document.getElementById('onlineUsers').textContent = appState.users.filter(u => u.isOnline).length;
+            document.getElementById('pendingApps').textContent = appState.applications.filter(a => a.status === 'pending').length;
+            
+            const activeTab = document.querySelector('.nav-item.active').dataset.tab;
+            renderTab(activeTab);
+        }
+        
+        // Отрисовка вкладок
+        function renderTab(tab) {
+            const content = document.getElementById('content');
+            
+            if (tab === 'staff') {
+                renderStaff(content);
+            } else if (tab === 'applications') {
+                renderApplications(content);
+            } else if (tab === 'stats') {
+                renderStats(content);
+            } else if (tab === 'profile') {
+                renderProfile(content);
+            }
+        }
+        
+        // Вкладка СОСТАВ
+        function renderStaff(content) {
+            let html = '<div class="card"><div class="card-title">👥 СОСТАВ КОМАНДЫ</div>';
+            
+            // Фильтры
+            html += `
+                <div style="display:flex; gap:5px; margin-bottom:10px;">
+                    <button class="btn btn-small" style="padding:8px;" onclick="filterStaff('all')">ВСЕ</button>
+                    <button class="btn btn-small" style="padding:8px;" onclick="filterStaff('online')">ОНЛАЙН</button>
+                    <button class="btn btn-small" style="padding:8px;" onclick="filterStaff('offline')">ОФФЛАЙН</button>
+                </div>
+            `;
+            
+            // Сортировка по рангу
+            const sortedUsers = [...appState.users].sort((a, b) => {
+                const rankA = appState.ranks.indexOf(a.rank);
+                const rankB = appState.ranks.indexOf(b.rank);
+                return rankB - rankA;
+            });
+            
+            sortedUsers.forEach(user => {
+                const rankColor = rankColors[user.rank] || "#fff";
+                html += `
+                    <div class="user-item" onclick="openUserProfile(${user.id})">
+                        <div class="user-header">
+                            <span class="user-name">${user.nickname}</span>
+                            <span class="user-rank" style="color:${rankColor}">${user.rank}</span>
+                        </div>
+                        <div class="user-stats">
+                            <span>👤 @${user.username}</span>
+                            <span class="${user.isOnline ? 'status-online' : 'status-offline'}">${user.isOnline ? '🟢 ONLINE' : '⚫ OFFLINE'}</span>
+                        </div>
+                        <div class="user-stats">
+                            <span>⭐ Баллы: ${user.points}</span>
+                            <span>⚠️ Выговоры: ${user.reprisals}</span>
+                        </div>
+                        <div class="user-stats">
+                            <span>📊 Онлайн: ${user.online}</span>
+                            <span>💬 Ответы: ${user.answers}</span>
+                        </div>
+                        ${user.reprisals > 0 ? '<span class="warning-badge">ВЫГОВОР</span>' : ''}
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div style="display:flex; gap:5px; margin-top:15px;">
+                    <button class="btn btn-gold" onclick="showAddUser()" style="flex:1;">➕ ДОБАВИТЬ</button>
+                    <button class="btn btn-danger" onclick="showMassAction()" style="flex:1;">⚡ ДЕЙСТВИЯ</button>
+                </div>
+            `;
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        // Вкладка ЗАЯВКИ
+        function renderApplications(content) {
+            let html = '<div class="card"><div class="card-title">📝 ЗАЯВКИ НА ПРОВЕРКУ</div>';
+            
+            const pending = appState.applications.filter(a => a.status === 'pending');
+            
+            if (pending.length === 0) {
+                html += '<div style="text-align:center; padding:30px;">✅ НЕТ ОЖИДАЮЩИХ ЗАЯВОК</div>';
+            } else {
+                pending.forEach(app => {
+                    const typeEmoji = {
+                        'norm': '📸',
+                        'promotion': '⬆️',
+                        'extra': '➕',
+                        'inactive': '💤',
+                        'reprisal': '✅'
+                    }[app.type] || '📝';
+                    
+                    html += `
+                        <div class="user-item" onclick="openApplication(${app.id})">
+                            <div class="user-header">
+                                <span class="user-name">${typeEmoji} ${app.user}</span>
+                                <span class="user-rank" style="color:#ffd700;">НОВАЯ</span>
+                            </div>
+                            <div class="user-stats">
+                                <span>${app.desc}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        // Вкладка СТАТИСТИКА
+        function renderStats(content) {
+            const totalOnline = appState.users.filter(u => u.isOnline).length;
+            const totalPoints = appState.users.reduce((sum, u) => sum + u.points, 0);
+            const totalWarns = appState.users.reduce((sum, u) => sum + u.reprisals, 0);
+            const avgOnline = Math.round(appState.users.reduce((sum, u) => sum + u.online, 0) / appState.users.length);
+            
+            html = `
+                <div class="card">
+                    <div class="card-title">📊 ОБЩАЯ СТАТИСТИКА</div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value">${appState.users.length}</div>
+                            <div class="stat-label">ВСЕГО СОТРУДНИКОВ</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${totalOnline}</div>
+                            <div class="stat-label">СЕЙЧАС ONLINE</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${totalPoints}</div>
+                            <div class="stat-label">ВСЕГО БАЛЛОВ</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${totalWarns}</div>
+                            <div class="stat-label">ВЫГОВОРОВ</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${avgOnline}</div>
+                            <div class="stat-label">СРЕДНИЙ ОНЛАЙН</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${appState.applications.filter(a => a.status === 'pending').length}</div>
+                            <div class="stat-label">ЗАЯВОК В ОЖИДАНИИ</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top:20px;">
+                        <div class="card-title">👥 ПО ДОЛЖНОСТЯМ</div>
+                        ${appState.ranks.map(rank => {
+                            const count = appState.users.filter(u => u.rank === rank).length;
+                            const color = rankColors[rank] || '#fff';
+                            return `
+                                <div style="display:flex; justify-content:space-between; margin:5px 0;">
+                                    <span style="color:${color}">${rank}</span>
+                                    <span style="color:#ffd700;">${count}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+        }
+        
+        // Вкладка ПРОФИЛЬ
+        function renderProfile(content) {
+            const user = appState.currentUser;
+            const rankColor = rankColors[user.rank] || '#fff';
+            
+            html = `
+                <div class="card">
+                    <div class="card-title">👤 МОЙ ПРОФИЛЬ</div>
+                    
+                    <div style="text-align:center; margin:20px;">
+                        <div style="font-size:40px;">👑</div>
+                        <div style="font-size:20px; font-weight:bold; color:#ffd700;">${user.nickname}</div>
+                        <div style="color:${rankColor};">${user.rank}</div>
+                        <div style="color:#aaa; margin:5px;">@${user.username}</div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value">${user.points}</div>
+                            <div class="stat-label">БАЛЛЫ</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${user.reprisals}</div>
+                            <div class="stat-label">ВЫГОВОРЫ</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${user.online}</div>
+                            <div class="stat-label">ОНЛАЙН</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${user.answers}</div>
+                            <div class="stat-label">ОТВЕТЫ</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top:20px;">
+                        <button class="btn btn-gold" onclick="editProfile()">✏️ РЕДАКТИРОВАТЬ</button>
+                        <button class="btn btn-danger" onclick="logout()">🚪 ВЫЙТИ</button>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+        }
+        
+        // Открыть профиль пользователя
+        function openUserProfile(userId) {
+            const user = appState.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const modal = document.getElementById('profileModal');
+            const modalContent = document.getElementById('profileModalContent');
+            const rankColor = rankColors[user.rank] || '#fff';
+            
+            let actions = '';
+            if (appState.currentUser.isAdmin) {
+                actions = `
+                    <div style="display:flex; gap:5px; margin:15px 0;">
+                        <button class="btn btn-small btn-success" onclick="givePoints(${user.id})" style="flex:1;">➕ БАЛЛЫ</button>
+                        <button class="btn btn-small btn-danger" onclick="giveWarn(${user.id})" style="flex:1;">⚠️ ВЫГОВОР</button>
+                    </div>
+                    <div style="display:flex; gap:5px;">
+                        <button class="btn btn-small" onclick="promoteUser(${user.id})" style="flex:1;">⬆️ ПОВЫСИТЬ</button>
+                        <button class="btn btn-small btn-danger" onclick="demoteUser(${user.id})" style="flex:1;">⬇️ ПОНИЗИТЬ</button>
+                    </div>
+                `;
+            }
+            
+            modalContent.innerHTML = `
+                <div class="modal-title">${user.nickname}</div>
+                
+                <div style="text-align:center;">
+                    <div style="font-size:30px;">👤</div>
+                    <div style="font-size:18px; font-weight:bold; color:#ffd700;">${user.nickname}</div>
+                    <div style="color:${rankColor};">${user.rank}</div>
+                    <div style="color:#aaa;">@${user.username}</div>
+                </div>
+                
+                <div class="stats-grid" style="margin:15px 0;">
+                    <div class="stat-box">
+                        <div class="stat-value">${user.points}</div>
+                        <div class="stat-label">БАЛЛЫ</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${user.reprisals}</div>
+                        <div class="stat-label">ВЫГОВОРЫ</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${user.online}</div>
+                        <div class="stat-label">ОНЛАЙН</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${user.answers}</div>
+                        <div class="stat-label">ОТВЕТЫ</div>
+                    </div>
+                </div>
+                
+                ${actions}
+                
+                <div class="close-btn" onclick="closeProfileModal()">ЗАКРЫТЬ</div>
+            `;
+            
+            modal.classList.add('active');
+        }
+        
+        // Открыть заявку
+        function openApplication(appId) {
+            const app = appState.applications.find(a => a.id === appId);
+            if (!app) return;
+            
+            const modal = document.getElementById('appModal');
+            const modalContent = document.getElementById('appModalContent');
+            
+            const typeEmoji = {
+                'norm': '📸',
+                'promotion': '⬆️',
+                'extra': '➕',
+                'inactive': '💤',
+                'reprisal': '✅'
+            }[app.type] || '📝';
+            
+            const typeText = {
+                'norm': 'Сдача нормы',
+                'promotion': 'Повышение',
+                'extra': 'Доп баллы',
+                'inactive': 'Неактив',
+                'reprisal': 'Снятие выговора'
+            }[app.type] || 'Заявка';
+            
+            modalContent.innerHTML = `
+                <div class="modal-title">${typeEmoji} ${typeText}</div>
+                
+                <div style="text-align:center; margin:15px;">
+                    <div style="font-size:24px;">👤</div>
+                    <div style="font-size:16px; color:#ffd700;">${app.user}</div>
+                </div>
+                
+                <div class="card" style="background:rgba(255,255,255,0.05);">
+                    <div style="margin:10px;">${app.desc}</div>
+                </div>
+                
+                <div style="display:flex; gap:5px; margin:15px 0;">
+                    <button class="btn btn-success" onclick="approveApp(${app.id})" style="flex:1;">✅ ПРИНЯТЬ</button>
+                    <button class="btn btn-danger" onclick="rejectApp(${app.id})" style="flex:1;">❌ ОТКАЗАТЬ</button>
+                </div>
+                
+                <div class="close-btn" onclick="closeAppModal()">ЗАКРЫТЬ</div>
+            `;
+            
+            modal.classList.add('active');
+        }
+        
+        // Фильтр состава
+        function filterStaff(filter) {
+            // Здесь будет фильтрация
+            renderStaff(document.getElementById('content'));
+        }
+        
+        // Показать добавление пользователя
+        function showAddUser() {
+            const modal = document.getElementById('profileModal');
+            const modalContent = document.getElementById('profileModalContent');
+            
+            modalContent.innerHTML = `
+                <div class="modal-title">➕ ДОБАВИТЬ СОТРУДНИКА</div>
+                
+                <input type="text" class="input-field" placeholder="Никнейм" id="newNick">
+                <input type="text" class="input-field" placeholder="Telegram Username" id="newUser">
+                <select class="input-field" id="newRank">
+                    ${appState.ranks.map(r => `<option value="${r}">${r}</option>`).join('')}
+                </select>
+                
+                <div style="display:flex; gap:5px; margin:15px 0;">
+                    <button class="btn btn-success" onclick="addUser()" style="flex:1;">✅ ДОБАВИТЬ</button>
+                    <button class="btn btn-danger" onclick="closeProfileModal()" style="flex:1;">❌ ОТМЕНА</button>
+                </div>
+            `;
+            
+            document.getElementById('profileModal').classList.add('active');
+        }
+        
+        // Добавить пользователя
+        function addUser() {
+            const nick = document.getElementById('newNick')?.value;
+            const username = document.getElementById('newUser')?.value;
+            const rank = document.getElementById('newRank')?.value;
+            
+            if (!nick || !username || !rank) return;
+            
+            const newId = Math.max(...appState.users.map(u => u.id)) + 1;
+            
+            appState.users.push({
+                id: newId,
+                username: username,
+                nickname: nick,
+                rank: rank,
+                points: 0,
+                reprisals: 0,
+                online: 0,
+                answers: 0,
+                isOnline: false
+            });
+            
+            saveState();
+            closeProfileModal();
+            renderStaff(document.getElementById('content'));
+        }
+        
+        // Выдать баллы
+        function givePoints(userId) {
+            const points = prompt("Введите количество баллов:");
+            if (!points) return;
+            
+            const user = appState.users.find(u => u.id === userId);
+            if (user) {
+                user.points += parseInt(points);
+                saveState();
+                closeProfileModal();
+                openUserProfile(userId);
+            }
+        }
+        
+        // Выдать выговор
+        function giveWarn(userId) {
+            const user = appState.users.find(u => u.id === userId);
+            if (user) {
+                user.reprisals++;
+                saveState();
+                closeProfileModal();
+                openUserProfile(userId);
+            }
+        }
+        
+        // Повысить
+        function promoteUser(userId) {
+            const user = appState.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const currentIndex = appState.ranks.indexOf(user.rank);
+            if (currentIndex < appState.ranks.length - 1) {
+                user.rank = appState.ranks[currentIndex + 1];
+                saveState();
+                closeProfileModal();
+                openUserProfile(userId);
+            }
+        }
+        
+        // Понизить
+        function demoteUser(userId) {
+            const user = appState.users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const currentIndex = appState.ranks.indexOf(user.rank);
+            if (currentIndex > 0) {
+                user.rank = appState.ranks[currentIndex - 1];
+                saveState();
+                closeProfileModal();
+                openUserProfile(userId);
+            }
+        }
+        
+        // Принять заявку
+        function approveApp(appId) {
+            const app = appState.applications.find(a => a.id === appId);
+            if (app) {
+                app.status = 'approved';
+                saveState();
+                closeAppModal();
+                renderApplications(document.getElementById('content'));
+            }
+        }
+        
+        // Отклонить заявку
+        function rejectApp(appId) {
+            const app = appState.applications.find(a => a.id === appId);
+            if (app) {
+                app.status = 'rejected';
+                saveState();
+                closeAppModal();
+                renderApplications(document.getElementById('content'));
+            }
+        }
+        
+        // Массовые действия
+        function showMassAction() {
+            alert("Функция массовых действий в разработке");
+        }
+        
+        // Редактировать профиль
+        function editProfile() {
+            alert("Редактирование профиля");
+        }
+        
+        // Выход
+        function logout() {
+            if (confirm("Выйти из системы?")) {
+                localStorage.removeItem('brManagerState');
+                location.reload();
+            }
+        }
+        
+        // Закрытие модальных окон
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+        
+        function closeAppModal() {
+            document.getElementById('appModal').classList.remove('active');
+        }
+        
+        // Навигация
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+                renderTab(this.dataset.tab);
+            });
+        });
+        
+        // Запуск
+        window.onload = function() {
+            loadState();
+            renderTab('staff');
+        };
+    </script>
+</body>
+</html>
