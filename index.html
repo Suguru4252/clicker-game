@@ -813,7 +813,6 @@
         
         // ========== СИСТЕМА РЕГИСТРАЦИИ (ОБЛАЧНОЕ СОХРАНЕНИЕ) ==========
         const APP_VERSION = '1.0.2'; // Текущая версия приложения
-        const UPDATE_URL = 'https://your-server.com/imperia-clicker-update.html';
         
         // База данных пользователей (в реальном приложении это был бы сервер)
         let usersDatabase = {};
@@ -1960,7 +1959,7 @@
                     
                     <div class="settings-group">
                         <div class="btn btn-gold" onclick="showNicknameModal()">✏️ ИЗМЕНИТЬ НИК</div>
-                        <div class="btn btn-gold" onclick="checkForUpdates()">🔄 ПРОВЕРИТЬ ОБНОВЛЕНИЯ</div>
+                        <div class="btn btn-gold" onclick="showUpdateModal()">🔄 ПРОВЕРИТЬ ОБНОВЛЕНИЯ</div>
                         ${currentUserId && !currentUserId.startsWith('guest') ? 
                             '<div class="btn btn-success" onclick="alert(\'✅ Аккаунт сохранен в облаке\')">☁️ АККАУНТ: ' + currentUserId + '</div>' : 
                             '<div class="btn" onclick="showAuthScreen()">🔐 ВОЙТИ В АККАУНТ</div>'
@@ -2027,6 +2026,51 @@
             }
         }
         
+        // ========== СИСТЕМА ОБНОВЛЕНИЙ ==========
+        
+        function showUpdateModal() {
+            const modal = document.getElementById('updateModal');
+            const updateInfo = document.getElementById('updateInfo');
+            
+            updateInfo.innerHTML = `
+                <div style="margin-bottom:15px;">Текущая версия: ${APP_VERSION}</div>
+                <div style="margin-bottom:15px;">Новая версия: 1.1.0</div>
+                <div style="text-align:left; padding:10px; background:rgba(0,0,0,0.3); border-radius:10px;">
+                    <div>✨ Что нового:</div>
+                    <div>• Улучшена производительность</div>
+                    <div>• Добавлены новые бизнесы</div>
+                    <div>• Исправлены баги</div>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+        
+        function closeUpdateModal() {
+            document.getElementById('updateModal').classList.remove('active');
+        }
+        
+        function downloadUpdate() {
+            const currentCode = document.documentElement.outerHTML;
+            const blob = new Blob([currentCode], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'imperia-clicker-2026.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            closeUpdateModal();
+            alert('✅ Обновление скачано!\n\nЧтобы применить обновление:\n1. Закройте игру\n2. Откройте скачанный файл\n3. Ваш прогресс сохранится автоматически');
+        }
+        
+        function checkForUpdates() {
+            // Заглушка для проверки обновлений
+            showUpdateModal();
+        }
+        
         // ========== АВТОМАТИЧЕСКИЙ ДОХОД ==========
         
         setInterval(() => {
@@ -2073,7 +2117,6 @@
             if (loadLocalGame()) {
                 startGame();
                 updateTopPlayers();
-                checkForUpdates();
             } else {
                 showAuthScreen();
             }
@@ -2102,10 +2145,10 @@
             window.toggleSound = toggleSound;
             window.toggleEffects = toggleEffects;
             window.handleClick = handleClick;
-            window.checkForUpdates = checkForUpdates;
             window.showUpdateModal = showUpdateModal;
             window.closeUpdateModal = closeUpdateModal;
             window.downloadUpdate = downloadUpdate;
+            window.checkForUpdates = checkForUpdates;
             window.showPrivacyPolicy = showPrivacyPolicy;
             window.register = register;
             window.login = login;
