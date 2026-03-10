@@ -44,6 +44,7 @@
             padding: 15px;
             text-align: center;
             border-bottom: 3px solid #ffd700;
+            flex-shrink: 0;
         }
         
         .username {
@@ -54,6 +55,7 @@
             padding: 5px 15px;
             border-radius: 30px;
             background: rgba(0,0,0,0.3);
+            cursor: pointer;
         }
         
         .warning-badge {
@@ -367,6 +369,7 @@
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         
         .bottom-nav::-webkit-scrollbar {
@@ -925,7 +928,7 @@
 <body>
     <div class="app-container">
         <div class="header" id="header" style="display: none;">
-            <div class="username" id="username">
+            <div class="username" id="username" onclick="showNicknameModal()">
                 👑 ИГРОК
                 <span class="warning-badge" id="warningBadge">⚠️ ЛОКАЛЬНО</span>
             </div>
@@ -969,10 +972,6 @@
         <div class="modal-content" id="businessModalContent"></div>
     </div>
     
-    <div class="modal" id="propertyModal">
-        <div class="modal-content" id="propertyModalContent"></div>
-    </div>
-    
     <div class="modal" id="collectionModal">
         <div class="modal-content" id="collectionModalContent"></div>
     </div>
@@ -992,8 +991,9 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '2.0.0';
+        const APP_VERSION = '2.0.1';
         let currentUser = "ИГРОК";
+        let currentUserId = null;
         let gameState = null;
         
         let settings = {
@@ -1003,6 +1003,18 @@
         
         // ========== ТОП-100 ==========
         let topPlayers = [];
+        
+        // Генерируем уникальный ID для этого устройства
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('deviceId');
+            if (!deviceId) {
+                deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('deviceId', deviceId);
+            }
+            return deviceId;
+        }
+        
+        currentUserId = getDeviceId();
         
         // ========== КОЛЛЕКЦИИ (20+ предметов, без дохода) ==========
         const collectionItems = {
@@ -1233,6 +1245,9 @@
             } else {
                 topPlayers = [];
             }
+            
+            // Убеждаемся, что у каждого игрока есть deviceId
+            topPlayers = topPlayers.filter(p => p.deviceId);
         }
         
         function saveTopPlayers() {
@@ -1246,9 +1261,10 @@
         function updateTopPlayers() {
             if (!gameState) return;
             
-            const existingIndex = topPlayers.findIndex(p => p.nickname === currentUser);
+            const existingIndex = topPlayers.findIndex(p => p.deviceId === currentUserId);
             
             const playerData = {
+                deviceId: currentUserId,
                 nickname: currentUser,
                 totalEarned: gameState.totalEarned || 0,
                 lastUpdate: Date.now(),
@@ -1256,48 +1272,68 @@
             };
             
             if (existingIndex >= 0) {
+                // Обновляем существующего игрока
                 topPlayers[existingIndex] = playerData;
             } else {
+                // Добавляем нового игрока
                 topPlayers.push(playerData);
             }
+            
+            // Удаляем возможные дубликаты (на всякий случай)
+            const uniquePlayers = [];
+            const seen = new Set();
+            for (const player of topPlayers) {
+                if (!seen.has(player.deviceId)) {
+                    seen.add(player.deviceId);
+                    uniquePlayers.push(player);
+                }
+            }
+            topPlayers = uniquePlayers;
             
             saveTopPlayers();
         }
         
         function getPlayerRank() {
-            const index = topPlayers.findIndex(p => p.nickname === currentUser);
-            return index >= 0 ? index + 1 : 100;
+            const index = topPlayers.findIndex(p => p.deviceId === currentUserId);
+            return index >= 0 ? index + 1 : topPlayers.length + 1;
         }
         
         // ========== ЕЖЕНЕДЕЛЬНЫЕ НАГРАДЫ ==========
         function checkWeeklyRewards() {
             if (!gameState || topPlayers.length === 0) return;
             
-            const now = Date.now();
-            const oneWeek = 7 * 24 * 60 * 60 * 1000;
+            const now = new Date();
+            const day = now.getDay(); // 0 = воскресенье
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
             
-            if (now - (gameState.lastWeeklyReward || 0) > oneWeek) {
-                const myIndex = topPlayers.findIndex(p => p.nickname === currentUser);
+            // Проверяем каждое воскресенье в 00:00
+            if (day === 0 && hours === 0 && minutes === 0) {
+                const oneWeek = 7 * 24 * 60 * 60 * 1000;
                 
-                let reward = 0;
-                if (myIndex === 0) reward = 1000;
-                else if (myIndex === 1) reward = 500;
-                else if (myIndex === 2) reward = 100;
-                
-                if (reward > 0) {
-                    gameState.diamonds = (gameState.diamonds || 0) + reward;
-                    gameState.lastWeeklyReward = now;
-                    saveGame();
-                    updateUI();
+                if (now - (gameState.lastWeeklyReward || 0) > oneWeek) {
+                    const myIndex = topPlayers.findIndex(p => p.deviceId === currentUserId);
                     
-                    alert(`🏆 ЕЖЕНЕДЕЛЬНАЯ НАГРАДА!\n\nМесто: ${myIndex + 1}\nПолучено: ${reward}💎`);
+                    let reward = 0;
+                    if (myIndex === 0) reward = 1000;
+                    else if (myIndex === 1) reward = 500;
+                    else if (myIndex === 2) reward = 100;
+                    
+                    if (reward > 0) {
+                        gameState.diamonds = (gameState.diamonds || 0) + reward;
+                        gameState.lastWeeklyReward = now.getTime();
+                        saveGame();
+                        updateUI();
+                        
+                        alert(`🏆 ЕЖЕНЕДЕЛЬНАЯ НАГРАДА!\n\nМесто: ${myIndex + 1}\nПолучено: ${reward}💎`);
+                    }
                 }
             }
         }
         
         // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
         function loadGame() {
-            const saved = localStorage.getItem('imperiaClickerSave');
+            const saved = localStorage.getItem('imperiaClickerSave_' + currentUserId);
             if (saved) {
                 try {
                     const data = JSON.parse(saved);
@@ -1351,7 +1387,7 @@
                     settings: settings,
                     nickname: currentUser
                 };
-                localStorage.setItem('imperiaClickerSave', JSON.stringify(saveData));
+                localStorage.setItem('imperiaClickerSave_' + currentUserId, JSON.stringify(saveData));
                 updateTopPlayers();
             }
         }
@@ -1669,10 +1705,12 @@
                     else if (rank === 2) rewardText = '🥈 500💎';
                     else if (rank === 3) rewardText = '🥉 100💎';
                     
+                    const isCurrentPlayer = player.deviceId === currentUserId;
+                    
                     html += `
-                        <div class="top-item" style="${player.nickname === currentUser ? 'background: rgba(255,215,0,0.2); border:2px solid gold;' : ''}">
+                        <div class="top-item" style="${isCurrentPlayer ? 'background: rgba(255,215,0,0.2); border:2px solid gold;' : ''}">
                             <div class="top-rank ${rankClass}">${rank}</div>
-                            <div class="top-name">${player.nickname} ${player.nickname === currentUser ? '👑' : ''}</div>
+                            <div class="top-name">${player.nickname} ${isCurrentPlayer ? '👑' : ''}</div>
                             <div class="top-money">${formatNumber(player.totalEarned)}💰</div>
                             ${rewardText ? `<div class="top-reward">${rewardText}</div>` : ''}
                         </div>
@@ -2461,7 +2499,7 @@
         
         function resetGame() {
             if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС?\n\nЭто действие необратимо!')) {
-                localStorage.removeItem('imperiaClickerSave');
+                localStorage.removeItem('imperiaClickerSave_' + currentUserId);
                 localStorage.removeItem('imperiaTopPlayers');
                 location.reload();
             }
