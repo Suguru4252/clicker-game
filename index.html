@@ -22,6 +22,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            touch-action: pan-y pinch-zoom;
         }
         
         body {
@@ -1043,7 +1044,7 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '2.0.4';
+        const APP_VERSION = '2.0.5';
         let currentUser = "ИГРОК";
         let currentUserId = null;
         let gameState = null;
@@ -1184,56 +1185,56 @@
         
         // ========== КРИПТОВАЛЮТЫ (50+) ==========
         const cryptoCurrencies = [
-            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, owned: 0, maxBuy: 5000000000, volatility: 0.2 },
-            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, owned: 0, maxBuy: 5000000000, volatility: 0.25 },
-            { id: 2, name: "BINANCE COIN", emoji: "BNB", basePrice: 250000, owned: 0, maxBuy: 5000000000, volatility: 0.3 },
-            { id: 3, name: "SOLANA", emoji: "SOL", basePrice: 100000, owned: 0, maxBuy: 5000000000, volatility: 0.35 },
-            { id: 4, name: "CARDANO", emoji: "ADA", basePrice: 50000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 5, name: "DOT", emoji: "DOT", basePrice: 25000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 6, name: "AVALANCHE", emoji: "AVAX", basePrice: 20000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 7, name: "CHAINLINK", emoji: "LINK", basePrice: 15000, owned: 0, maxBuy: 5000000000, volatility: 0.45 },
-            { id: 8, name: "POLYGON", emoji: "MATIC", basePrice: 10000, owned: 0, maxBuy: 5000000000, volatility: 0.45 },
-            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, owned: 0, maxBuy: 5000000000, volatility: 0.45 },
-            { id: 10, name: "RIPPLE", emoji: "XRP", basePrice: 5000, owned: 0, maxBuy: 5000000000, volatility: 0.5 },
-            { id: 11, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, owned: 0, maxBuy: 5000000000, volatility: 0.6 },
-            { id: 12, name: "SHIBA INU", emoji: "🐕", basePrice: 500, owned: 0, maxBuy: 5000000000, volatility: 0.7 },
-            { id: 13, name: "PEPE", emoji: "🐸", basePrice: 100, owned: 0, maxBuy: 5000000000, volatility: 0.8 },
-            { id: 14, name: "WOJAK", emoji: "😩", basePrice: 50, owned: 0, maxBuy: 5000000000, volatility: 0.9 },
-            { id: 15, name: "BONK", emoji: "🦴", basePrice: 25, owned: 0, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, owned: 0, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, owned: 0, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, owned: 0, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, owned: 0, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 20, name: "BITCOIN CASH", emoji: "BCH", basePrice: 20000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 21, name: "LINK", emoji: "🔗", basePrice: 15000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 22, name: "UNISWAP", emoji: "UNI", basePrice: 12000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 23, name: "AAVE", emoji: "AAVE", basePrice: 10000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 24, name: "MAKER", emoji: "MKR", basePrice: 8000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 25, name: "COMPOUND", emoji: "COMP", basePrice: 6000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 26, name: "YFI", emoji: "YFI", basePrice: 5000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 27, name: "SUSHI", emoji: "🍣", basePrice: 4000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 28, name: "CAKE", emoji: "🥞", basePrice: 3000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 29, name: "BAKE", emoji: "🥖", basePrice: 2000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 30, name: "XLM", emoji: "XLM", basePrice: 1500, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 31, name: "ALGO", emoji: "ALGO", basePrice: 1200, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 32, name: "VET", emoji: "VET", basePrice: 1000, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 33, name: "THETA", emoji: "THETA", basePrice: 800, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 34, name: "FILECOIN", emoji: "FIL", basePrice: 600, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 35, name: "ICP", emoji: "ICP", basePrice: 500, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 36, name: "NEAR", emoji: "NEAR", basePrice: 400, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 37, name: "APTOS", emoji: "APT", basePrice: 300, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 38, name: "SUI", emoji: "SUI", basePrice: 200, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 39, name: "SEI", emoji: "SEI", basePrice: 150, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 40, name: "TIA", emoji: "TIA", basePrice: 100, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 41, name: "INJ", emoji: "INJ", basePrice: 80, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 42, name: "ARB", emoji: "ARB", basePrice: 60, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 43, name: "OP", emoji: "OP", basePrice: 50, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 44, name: "STRK", emoji: "STRK", basePrice: 40, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 45, name: "ZKSYNC", emoji: "ZK", basePrice: 30, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 46, name: "SCROLL", emoji: "SCROLL", basePrice: 25, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 47, name: "LINEA", emoji: "LINEA", basePrice: 20, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 48, name: "BASE", emoji: "BASE", basePrice: 15, owned: 0, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 49, name: "POLYGON ZKEVM", emoji: "POL", basePrice: 10, owned: 0, maxBuy: 5000000000, volatility: 0.4 }
+            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2 },
+            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25 },
+            { id: 2, name: "BINANCE COIN", emoji: "BNB", basePrice: 250000, maxBuy: 5000000000, volatility: 0.3 },
+            { id: 3, name: "SOLANA", emoji: "SOL", basePrice: 100000, maxBuy: 5000000000, volatility: 0.35 },
+            { id: 4, name: "CARDANO", emoji: "ADA", basePrice: 50000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 5, name: "DOT", emoji: "DOT", basePrice: 25000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 6, name: "AVALANCHE", emoji: "AVAX", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 7, name: "CHAINLINK", emoji: "LINK", basePrice: 15000, maxBuy: 5000000000, volatility: 0.45 },
+            { id: 8, name: "POLYGON", emoji: "MATIC", basePrice: 10000, maxBuy: 5000000000, volatility: 0.45 },
+            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45 },
+            { id: 10, name: "RIPPLE", emoji: "XRP", basePrice: 5000, maxBuy: 5000000000, volatility: 0.5 },
+            { id: 11, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, maxBuy: 5000000000, volatility: 0.6 },
+            { id: 12, name: "SHIBA INU", emoji: "🐕", basePrice: 500, maxBuy: 5000000000, volatility: 0.7 },
+            { id: 13, name: "PEPE", emoji: "🐸", basePrice: 100, maxBuy: 5000000000, volatility: 0.8 },
+            { id: 14, name: "WOJAK", emoji: "😩", basePrice: 50, maxBuy: 5000000000, volatility: 0.9 },
+            { id: 15, name: "BONK", emoji: "🦴", basePrice: 25, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 20, name: "BITCOIN CASH", emoji: "BCH", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 21, name: "LINK", emoji: "🔗", basePrice: 15000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 22, name: "UNISWAP", emoji: "UNI", basePrice: 12000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 23, name: "AAVE", emoji: "AAVE", basePrice: 10000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 24, name: "MAKER", emoji: "MKR", basePrice: 8000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 25, name: "COMPOUND", emoji: "COMP", basePrice: 6000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 26, name: "YFI", emoji: "YFI", basePrice: 5000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 27, name: "SUSHI", emoji: "🍣", basePrice: 4000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 28, name: "CAKE", emoji: "🥞", basePrice: 3000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 29, name: "BAKE", emoji: "🥖", basePrice: 2000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 30, name: "XLM", emoji: "XLM", basePrice: 1500, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 31, name: "ALGO", emoji: "ALGO", basePrice: 1200, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 32, name: "VET", emoji: "VET", basePrice: 1000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 33, name: "THETA", emoji: "THETA", basePrice: 800, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 34, name: "FILECOIN", emoji: "FIL", basePrice: 600, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 35, name: "ICP", emoji: "ICP", basePrice: 500, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 36, name: "NEAR", emoji: "NEAR", basePrice: 400, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 37, name: "APTOS", emoji: "APT", basePrice: 300, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 38, name: "SUI", emoji: "SUI", basePrice: 200, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 39, name: "SEI", emoji: "SEI", basePrice: 150, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 40, name: "TIA", emoji: "TIA", basePrice: 100, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 41, name: "INJ", emoji: "INJ", basePrice: 80, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 42, name: "ARB", emoji: "ARB", basePrice: 60, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 43, name: "OP", emoji: "OP", basePrice: 50, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 44, name: "STRK", emoji: "STRK", basePrice: 40, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 45, name: "ZKSYNC", emoji: "ZK", basePrice: 30, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 46, name: "SCROLL", emoji: "SCROLL", basePrice: 25, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 47, name: "LINEA", emoji: "LINEA", basePrice: 20, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 48, name: "BASE", emoji: "BASE", basePrice: 15, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 49, name: "POLYGON ZKEVM", emoji: "POL", basePrice: 10, maxBuy: 5000000000, volatility: 0.4 }
         ];
         
         // Текущие цены крипты
@@ -1546,7 +1547,7 @@
                     if (cryptoData) {
                         const price = cryptoPrices[c.id] || cryptoData.basePrice;
                         const value = price * c.owned;
-                        const incomePerSec = Math.floor(price / 1000) * c.owned;
+                        const incomePerSec = Math.floor((price / 1000) * c.owned);
                         totalIncome += incomePerSec;
                         
                         html += `
@@ -2200,18 +2201,28 @@
                 const currentPrice = cryptoPrices[index] || crypto.basePrice;
                 const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
                 const changeColor = priceChange >= 0 ? '#4CAF50' : '#f44336';
-                const incomePerSec = Math.floor(currentPrice / 1000);
+                
+                // Доход: текущая цена / 1000 за штуку
+                const incomePerCoin = currentPrice / 1000;
+                const totalIncome = Math.floor(incomePerCoin * userCrypto.owned);
+                
+                // Проверка, распродана ли крипта
+                const isSoldOut = userCrypto.owned >= crypto.maxBuy;
                 
                 html += `
                     <div class="crypto-item">
                         <div style="flex:1;">
                             <div class="crypto-name">${crypto.emoji} ${crypto.name}</div>
                             <div class="crypto-price">💰 ${formatFullNumber(currentPrice)} <span style="color:${changeColor};">(${priceChange}%)</span></div>
-                            <div class="crypto-owned">Владею: ${formatFullNumber(userCrypto.owned)}</div>
-                            <div class="crypto-profit">⏱️ Доход: +${formatFullNumber(incomePerSec * userCrypto.owned)}/сек</div>
+                            <div class="crypto-owned">Владею: ${formatFullNumber(userCrypto.owned)} / ${formatFullNumber(crypto.maxBuy)}</div>
+                            <div class="crypto-profit">⏱️ Доход: +${formatFullNumber(totalIncome)}/сек</div>
+                            ${isSoldOut ? '<div style="color:#f44336; font-weight:bold; margin-top:5px;">⚠️ РАСПРОДАНО</div>' : ''}
                         </div>
                         <div class="crypto-actions">
-                            <button class="crypto-btn" onclick="buyCrypto(${index})">Купить</button>
+                            ${isSoldOut ? 
+                                '<button class="crypto-btn" style="opacity:0.5; cursor:not-allowed;" disabled>Купить</button>' : 
+                                '<button class="crypto-btn" onclick="buyCrypto(' + index + ')">Купить</button>'
+                            }
                             <button class="crypto-btn" onclick="sellCrypto(${index})">Продать</button>
                         </div>
                     </div>
@@ -2226,7 +2237,24 @@
             const crypto = cryptoCurrencies[index];
             const currentPrice = cryptoPrices[index];
             
-            const amount = prompt(`Сколько ${crypto.name} купить?\nЦена: ${formatFullNumber(currentPrice)}💰\nМаксимум: ${formatFullNumber(crypto.maxBuy)}`, "1");
+            const userCrypto = gameState.crypto.find(c => c.id === crypto.id);
+            if (!userCrypto) return;
+            
+            // Проверка, не распродана ли уже
+            if (userCrypto.owned >= crypto.maxBuy) {
+                alert(`❌ ${crypto.name} полностью распродана! Больше купить нельзя.`);
+                return;
+            }
+            
+            // Сколько можно еще купить
+            const maxCanBuy = crypto.maxBuy - userCrypto.owned;
+            
+            const amount = prompt(
+                `Сколько ${crypto.name} купить?\n` +
+                `Цена: ${formatFullNumber(currentPrice)}💰\n` +
+                `Доступно: ${formatFullNumber(maxCanBuy)} из ${formatFullNumber(crypto.maxBuy)}`, 
+                "1"
+            );
             
             if (!amount) return;
             
@@ -2236,11 +2264,8 @@
                 return;
             }
             
-            const userCrypto = gameState.crypto.find(c => c.id === crypto.id);
-            if (!userCrypto) return;
-            
-            if (userCrypto.owned + numAmount > crypto.maxBuy) {
-                alert(`❌ Нельзя купить больше ${formatFullNumber(crypto.maxBuy)}!`);
+            if (numAmount > maxCanBuy) {
+                alert(`❌ Можно купить только ${formatFullNumber(maxCanBuy)}!`);
                 return;
             }
             
@@ -2270,7 +2295,12 @@
                 return;
             }
             
-            const amount = prompt(`Сколько ${crypto.name} продать?\nЦена: ${formatFullNumber(currentPrice)}💰\nУ вас: ${formatFullNumber(userCrypto.owned)}`, "1");
+            const amount = prompt(
+                `Сколько ${crypto.name} продать?\n` +
+                `Цена: ${formatFullNumber(currentPrice)}💰\n` +
+                `У вас: ${formatFullNumber(userCrypto.owned)}`, 
+                "1"
+            );
             
             if (!amount) return;
             
