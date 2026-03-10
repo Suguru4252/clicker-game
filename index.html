@@ -278,13 +278,13 @@
             background: linear-gradient(135deg, #00c853 0%, #009624 100%);
             border: 2px solid #ffd700;
             color: white;
-            padding: 15px 20px;
-            border-radius: 30px;
+            padding: 10px 15px;
+            border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
-            width: 100%;
-            margin: 5px 0;
-            font-size: 16px;
+            font-size: 14px;
+            margin: 5px;
+            flex: 1;
         }
         
         .btn-crypto-portfolio {
@@ -972,6 +972,26 @@
             text-align: center;
             margin-top: 5px;
         }
+        
+        .quick-amount-btn {
+            background: rgba(255,215,0,0.2);
+            border: 1px solid #ffd700;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            flex: 1;
+            margin: 5px;
+        }
+        
+        .quick-amount-container {
+            display: flex;
+            gap: 5px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
     </style>
 </head>
 <body>
@@ -1033,6 +1053,10 @@
         <div class="modal-content" id="portfolioModalContent"></div>
     </div>
     
+    <div class="modal" id="cryptoTradeModal">
+        <div class="modal-content" id="cryptoTradeModalContent"></div>
+    </div>
+    
     <div class="modal" id="nicknameModal">
         <div class="modal-content">
             <div class="modal-title">✏️ ИЗМЕНИТЬ НИК</div>
@@ -1044,7 +1068,7 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '2.0.5';
+        const APP_VERSION = '2.1.0';
         let currentUser = "ИГРОК";
         let currentUserId = null;
         let gameState = null;
@@ -1518,7 +1542,7 @@
             return total;
         }
         
-        // Функция для отображения портфеля в модальном окне
+        // Функция для отображения портфеля с кнопками
         function showCryptoPortfolio() {
             if (!gameState) return;
             
@@ -1538,7 +1562,7 @@
                 </div>
             `;
             
-            // Список крипты в портфеле
+            // Список крипты в портфеле с кнопками
             let hasCrypto = false;
             gameState.crypto.forEach(c => {
                 if (c.owned > 0) {
@@ -1552,7 +1576,7 @@
                         
                         html += `
                             <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 10px; border-left: 4px solid #00c853;">
-                                <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <span style="font-weight: bold; color: #00c853;">${cryptoData.emoji} ${cryptoData.name}</span>
                                     <span style="color: #ffd700;">${formatFullNumber(c.owned)} шт</span>
                                 </div>
@@ -1567,6 +1591,10 @@
                                 <div style="display: flex; justify-content: space-between; font-size: 12px;">
                                     <span style="color: #b39ddb;">Доход/сек:</span>
                                     <span style="color: #ff9800;">+${formatFullNumber(incomePerSec)}</span>
+                                </div>
+                                <div style="display: flex; gap: 5px; margin-top: 10px;">
+                                    <button class="btn-crypto" onclick="openTradeModal(${cryptoData.id}, 'buy')">➕ Купить</button>
+                                    <button class="btn-crypto" onclick="openTradeModal(${cryptoData.id}, 'sell')">➖ Продать</button>
                                 </div>
                             </div>
                         `;
@@ -1593,6 +1621,212 @@
         
         function closePortfolioModal() {
             document.getElementById('portfolioModal').classList.remove('active');
+        }
+        
+        // Модальное окно для торговли
+        function openTradeModal(cryptoId, type) {
+            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
+            const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
+            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
+            
+            const modal = document.getElementById('cryptoTradeModal');
+            const modalContent = document.getElementById('cryptoTradeModalContent');
+            
+            const maxBuy = crypto.maxBuy - userCrypto.owned;
+            const maxSell = userCrypto.owned;
+            const maxBuyWithMoney = Math.floor(gameState.balance / currentPrice);
+            
+            let html = `
+                <div class="modal-title">${type === 'buy' ? '📈 КУПИТЬ' : '📉 ПРОДАТЬ'} ${crypto.emoji} ${crypto.name}</div>
+                
+                <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>💰 Цена:</span>
+                        <span style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>📊 У вас:</span>
+                        <span style="color:#4CAF50;">${formatFullNumber(userCrypto.owned)} шт</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>💵 Баланс:</span>
+                        <span style="color:#ffd700;">${formatFullNumber(gameState.balance)}</span>
+                    </div>
+                </div>
+            `;
+            
+            if (type === 'buy') {
+                html += `
+                    <div style="margin: 15px 0;">
+                        <div style="color:#ffd700; margin-bottom: 10px;">⚡ Быстрый выбор:</div>
+                        <div class="quick-amount-container">
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1)">1</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(10)">10</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(100)">100</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1000)">1K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(10000)">10K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(maxBuy)">МАКС</div>
+                        </div>
+                    </div>
+                    
+                    <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${maxBuy}" value="1">
+                    
+                    <div style="display: flex; gap: 10px; margin: 15px 0;">
+                        <button class="btn-crypto" onclick="quickBuyMaxMoney(${cryptoId})">💰 На все деньги (${formatFullNumber(Math.min(maxBuy, maxBuyWithMoney))} шт)</button>
+                    </div>
+                    
+                    <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>💰 Стоимость:</span>
+                            <span id="totalPrice" style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span>📊 Доступно:</span>
+                            <span style="color:#4CAF50;">${formatFullNumber(maxBuy)} шт</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'buy')">✅ ПОДТВЕРДИТЬ ПОКУПКУ</button>
+                `;
+            } else {
+                html += `
+                    <div style="margin: 15px 0;">
+                        <div style="color:#ffd700; margin-bottom: 10px;">⚡ Быстрый выбор:</div>
+                        <div class="quick-amount-container">
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1)">1</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(10)">10</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(100)">100</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1000)">1K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(10000)">10K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(maxSell)">ВСЁ</div>
+                        </div>
+                    </div>
+                    
+                    <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${maxSell}" value="1">
+                    
+                    <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>💰 Получите:</span>
+                            <span id="totalPrice" style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span>📊 У вас:</span>
+                            <span style="color:#4CAF50;">${formatFullNumber(maxSell)} шт</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'sell')">✅ ПОДТВЕРДИТЬ ПРОДАЖУ</button>
+                `;
+            }
+            
+            html += '<div class="close-btn" onclick="closeTradeModal()">ОТМЕНА</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+            
+            // Добавляем обработчик для обновления цены
+            setTimeout(() => {
+                const input = document.getElementById('tradeAmount');
+                if (input) {
+                    input.addEventListener('input', function() {
+                        updateTotalPrice(cryptoId, type);
+                    });
+                    updateTotalPrice(cryptoId, type);
+                }
+            }, 100);
+        }
+        
+        function setTradeAmount(amount) {
+            const input = document.getElementById('tradeAmount');
+            if (input) {
+                input.value = amount;
+                input.dispatchEvent(new Event('input'));
+            }
+        }
+        
+        function quickBuyMaxMoney(cryptoId) {
+            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
+            const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
+            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
+            
+            const maxBuy = crypto.maxBuy - userCrypto.owned;
+            const maxWithMoney = Math.floor(gameState.balance / currentPrice);
+            const maxPossible = Math.min(maxBuy, maxWithMoney);
+            
+            const input = document.getElementById('tradeAmount');
+            if (input) {
+                input.value = maxPossible;
+                updateTotalPrice(cryptoId, 'buy');
+            }
+        }
+        
+        function updateTotalPrice(cryptoId, type) {
+            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
+            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
+            const amount = parseInt(document.getElementById('tradeAmount')?.value) || 0;
+            
+            const totalPriceEl = document.getElementById('totalPrice');
+            if (totalPriceEl) {
+                totalPriceEl.textContent = formatFullNumber(currentPrice * amount);
+            }
+        }
+        
+        function executeTrade(cryptoId, type) {
+            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
+            const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
+            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
+            const amount = parseInt(document.getElementById('tradeAmount')?.value);
+            
+            if (!amount || amount <= 0) {
+                alert('❌ Введите корректное количество!');
+                return;
+            }
+            
+            if (type === 'buy') {
+                const maxBuy = crypto.maxBuy - userCrypto.owned;
+                
+                if (amount > maxBuy) {
+                    alert(`❌ Можно купить только ${formatFullNumber(maxBuy)}!`);
+                    return;
+                }
+                
+                const totalPrice = currentPrice * amount;
+                
+                if (gameState.balance < totalPrice) {
+                    alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                    return;
+                }
+                
+                gameState.balance -= totalPrice;
+                userCrypto.owned += amount;
+                
+                saveGame();
+                updateUI();
+                closeTradeModal();
+                showCryptoPortfolio();
+                alert(`✅ Куплено ${amount} ${crypto.name} за ${formatFullNumber(totalPrice)}💰`);
+                
+            } else {
+                if (amount > userCrypto.owned) {
+                    alert(`❌ У вас только ${formatFullNumber(userCrypto.owned)}!`);
+                    return;
+                }
+                
+                const totalPrice = currentPrice * amount;
+                
+                gameState.balance += totalPrice;
+                userCrypto.owned -= amount;
+                
+                saveGame();
+                updateUI();
+                closeTradeModal();
+                showCryptoPortfolio();
+                alert(`✅ Продано ${amount} ${crypto.name} за ${formatFullNumber(totalPrice)}💰`);
+            }
+        }
+        
+        function closeTradeModal() {
+            document.getElementById('cryptoTradeModal').classList.remove('active');
         }
         
         // ========== ЭКРАН ПРИВЕТСТВИЯ ==========
@@ -2219,11 +2453,14 @@
                             ${isSoldOut ? '<div style="color:#f44336; font-weight:bold; margin-top:5px;">⚠️ РАСПРОДАНО</div>' : ''}
                         </div>
                         <div class="crypto-actions">
-                            ${isSoldOut ? 
-                                '<button class="crypto-btn" style="opacity:0.5; cursor:not-allowed;" disabled>Купить</button>' : 
-                                '<button class="crypto-btn" onclick="buyCrypto(' + index + ')">Купить</button>'
+                            ${!isSoldOut ? 
+                                '<button class="crypto-btn" onclick="openTradeModal(' + crypto.id + ', \'buy\')">Купить</button>' : 
+                                '<button class="crypto-btn" style="opacity:0.5; cursor:not-allowed;" disabled>Купить</button>'
                             }
-                            <button class="crypto-btn" onclick="sellCrypto(${index})">Продать</button>
+                            ${userCrypto.owned > 0 ? 
+                                '<button class="crypto-btn" onclick="openTradeModal(' + crypto.id + ', \'sell\')">Продать</button>' : 
+                                '<button class="crypto-btn" style="opacity:0.5; cursor:not-allowed;" disabled>Продать</button>'
+                            }
                         </div>
                     </div>
                 `;
@@ -2231,94 +2468,6 @@
             
             html += '</div>';
             content.innerHTML = html;
-        }
-        
-        function buyCrypto(index) {
-            const crypto = cryptoCurrencies[index];
-            const currentPrice = cryptoPrices[index];
-            
-            const userCrypto = gameState.crypto.find(c => c.id === crypto.id);
-            if (!userCrypto) return;
-            
-            // Проверка, не распродана ли уже
-            if (userCrypto.owned >= crypto.maxBuy) {
-                alert(`❌ ${crypto.name} полностью распродана! Больше купить нельзя.`);
-                return;
-            }
-            
-            // Сколько можно еще купить
-            const maxCanBuy = crypto.maxBuy - userCrypto.owned;
-            
-            const amount = prompt(
-                `Сколько ${crypto.name} купить?\n` +
-                `Цена: ${formatFullNumber(currentPrice)}💰\n` +
-                `Доступно: ${formatFullNumber(maxCanBuy)} из ${formatFullNumber(crypto.maxBuy)}`, 
-                "1"
-            );
-            
-            if (!amount) return;
-            
-            const numAmount = parseInt(amount);
-            if (isNaN(numAmount) || numAmount <= 0) {
-                alert('❌ Введите корректное число!');
-                return;
-            }
-            
-            if (numAmount > maxCanBuy) {
-                alert(`❌ Можно купить только ${formatFullNumber(maxCanBuy)}!`);
-                return;
-            }
-            
-            const totalPrice = currentPrice * numAmount;
-            
-            if ((gameState.balance || 0) < totalPrice) {
-                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-                return;
-            }
-            
-            gameState.balance -= totalPrice;
-            userCrypto.owned += numAmount;
-            
-            saveGame();
-            updateUI();
-            renderCurrentTab();
-            alert(`✅ Куплено ${numAmount} ${crypto.name} за ${formatFullNumber(totalPrice)}💰`);
-        }
-        
-        function sellCrypto(index) {
-            const crypto = cryptoCurrencies[index];
-            const currentPrice = cryptoPrices[index];
-            
-            const userCrypto = gameState.crypto.find(c => c.id === crypto.id);
-            if (!userCrypto || userCrypto.owned <= 0) {
-                alert('❌ У вас нет этой крипты!');
-                return;
-            }
-            
-            const amount = prompt(
-                `Сколько ${crypto.name} продать?\n` +
-                `Цена: ${formatFullNumber(currentPrice)}💰\n` +
-                `У вас: ${formatFullNumber(userCrypto.owned)}`, 
-                "1"
-            );
-            
-            if (!amount) return;
-            
-            const numAmount = parseInt(amount);
-            if (isNaN(numAmount) || numAmount <= 0 || numAmount > userCrypto.owned) {
-                alert('❌ Введите корректное число!');
-                return;
-            }
-            
-            const totalPrice = currentPrice * numAmount;
-            
-            gameState.balance += totalPrice;
-            userCrypto.owned -= numAmount;
-            
-            saveGame();
-            updateUI();
-            renderCurrentTab();
-            alert(`✅ Продано ${numAmount} ${crypto.name} за ${formatFullNumber(totalPrice)}💰`);
         }
         
         function buySpecialItem() {
@@ -2812,14 +2961,17 @@
             window.sellBusiness = sellBusiness;
             window.closeBusinessModal = closeBusinessModal;
             window.renderCrypto = renderCrypto;
-            window.buyCrypto = buyCrypto;
-            window.sellCrypto = sellCrypto;
             window.buySpecialItem = buySpecialItem;
             window.showCollection = showCollection;
             window.buyCollectionItem = buyCollectionItem;
             window.closeCollectionModal = closeCollectionModal;
             window.showCryptoPortfolio = showCryptoPortfolio;
             window.closePortfolioModal = closePortfolioModal;
+            window.openTradeModal = openTradeModal;
+            window.closeTradeModal = closeTradeModal;
+            window.setTradeAmount = setTradeAmount;
+            window.quickBuyMaxMoney = quickBuyMaxMoney;
+            window.executeTrade = executeTrade;
             window.buyUpgrade = buyUpgrade;
             window.exchangeDiamonds = exchangeDiamonds;
             window.resetGame = resetGame;
