@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -1401,7 +1402,7 @@
             }
         }
         
-        // ========== КРИПТОВАЛЮТЫ С MAXBUY = 5000000000 ==========
+        // ========== КРИПТОВАЛЮТЫ (50+ с maxBuy 5000000000) ==========
         const cryptoCurrencies = [
             { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2 },
             { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25 },
@@ -1422,49 +1423,42 @@
             { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0 },
             { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0 },
             { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 19, name: "SUGURU COIN", emoji: "💎", basePrice: 777777777, maxBuy: 5000000000, volatility: 0.1 }
+            { id: 19, name: "SUGURU", emoji: "💎", basePrice: 777777777, maxBuy: 5000000000, volatility: 0.1 },
+            { id: 20, name: "BITCOIN CASH", emoji: "BCH", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 21, name: "LINK", emoji: "🔗", basePrice: 15000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 22, name: "UNISWAP", emoji: "UNI", basePrice: 12000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 23, name: "AAVE", emoji: "AAVE", basePrice: 10000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 24, name: "MAKER", emoji: "MKR", basePrice: 8000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 25, name: "COMPOUND", emoji: "COMP", basePrice: 6000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 26, name: "YFI", emoji: "YFI", basePrice: 5000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 27, name: "SUSHI", emoji: "🍣", basePrice: 4000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 28, name: "CAKE", emoji: "🥞", basePrice: 3000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 29, name: "BAKE", emoji: "🥖", basePrice: 2000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 30, name: "XLM", emoji: "XLM", basePrice: 1500, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 31, name: "ALGO", emoji: "ALGO", basePrice: 1200, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 32, name: "VET", emoji: "VET", basePrice: 1000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 33, name: "THETA", emoji: "THETA", basePrice: 800, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 34, name: "FILECOIN", emoji: "FIL", basePrice: 600, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 35, name: "ICP", emoji: "ICP", basePrice: 500, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 36, name: "NEAR", emoji: "NEAR", basePrice: 400, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 37, name: "APTOS", emoji: "APT", basePrice: 300, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 38, name: "SUI", emoji: "SUI", basePrice: 200, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 39, name: "SEI", emoji: "SEI", basePrice: 150, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 40, name: "TIA", emoji: "TIA", basePrice: 100, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 41, name: "INJ", emoji: "INJ", basePrice: 80, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 42, name: "ARB", emoji: "ARB", basePrice: 60, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 43, name: "OP", emoji: "OP", basePrice: 50, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 44, name: "STRK", emoji: "STRK", basePrice: 40, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 45, name: "ZKSYNC", emoji: "ZK", basePrice: 30, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 46, name: "SCROLL", emoji: "SCROLL", basePrice: 25, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 47, name: "LINEA", emoji: "LINEA", basePrice: 20, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 48, name: "BASE", emoji: "BASE", basePrice: 15, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 49, name: "POLYGON ZKEVM", emoji: "POL", basePrice: 10, maxBuy: 5000000000, volatility: 0.4 }
         ];
         
         let cryptoPrices = [];
         
-        const collectionItems = {
-            houses: [
-                { id: 0, name: "КВАРТИРА-СТУДИЯ", emoji: "🏢", price: 50000, owned: false },
-                { id: 1, name: "ДВУХКОМНАТНАЯ", emoji: "🏠", price: 150000, owned: false },
-                { id: 2, name: "ТРЕХКОМНАТНАЯ", emoji: "🏡", price: 300000, owned: false },
-                { id: 3, name: "ПЕНТХАУС", emoji: "🏬", price: 1000000, owned: false },
-                { id: 4, name: "ЗАГОРОДНЫЙ ДОМ", emoji: "🏘️", price: 2000000, owned: false }
-            ],
-            cars: [
-                { id: 0, name: "ЛАДА ГРАНТА", emoji: "🚗", price: 20000, owned: false },
-                { id: 1, name: "LADA VESTA", emoji: "🚙", price: 50000, owned: false },
-                { id: 2, name: "RENAULT LOGAN", emoji: "🚌", price: 80000, owned: false },
-                { id: 3, name: "KIA RIO", emoji: "🚎", price: 150000, owned: false },
-                { id: 4, name: "HYUNDAI SOLARIS", emoji: "🏎️", price: 200000, owned: false }
-            ],
-            planes: [
-                { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 50000, owned: false },
-                { id: 1, name: "CESSNA 172", emoji: "🛩️", price: 150000, owned: false },
-                { id: 2, name: "BOEING 737", emoji: "🛫", price: 500000, owned: false },
-                { id: 3, name: "AIRBUS A320", emoji: "🛬", price: 800000, owned: false },
-                { id: 4, name: "BOEING 747", emoji: "🛰️", price: 2000000, owned: false }
-            ],
-            ships: [
-                { id: 0, name: "ЛОДКА", emoji: "🛶", price: 10000, owned: false },
-                { id: 1, name: "КАТЕР", emoji: "⛵", price: 50000, owned: false },
-                { id: 2, name: "ЯХТА", emoji: "🛥️", price: 200000, owned: false },
-                { id: 3, name: "ПАРУСНИК", emoji: "⛵", price: 500000, owned: false },
-                { id: 4, name: "ТЕПЛОХОД", emoji: "🚢", price: 1000000, owned: false }
-            ],
-            art: [
-                { id: 0, name: "МОНА ЛИЗА", emoji: "🖼️", price: 1000000, owned: false },
-                { id: 1, name: "ЗВЕЗДНАЯ НОЧЬ", emoji: "🌃", price: 2000000, owned: false },
-                { id: 2, name: "КРИК", emoji: "😱", price: 3000000, owned: false },
-                { id: 3, name: "ДЕВУШКА С ЖЕМЧУГОМ", emoji: "👧", price: 4000000, owned: false },
-                { id: 4, name: "ПОСТОЯНСТВО ПАМЯТИ", emoji: "⏰", price: 5000000, owned: false }
-            ]
-        };
-        
+        // СУПЕР-ВЕЩЬ: SuguruCoin (только 1 штука, не в крипте)
         let specialItem = {
             id: 999,
             name: "???????",
@@ -1478,12 +1472,112 @@
             revealed: false
         };
         
+        // ========== КОЛЛЕКЦИИ (полные как в оригинале) ==========
+        const collectionItems = {
+            houses: [
+                { id: 0, name: "КВАРТИРА-СТУДИЯ", emoji: "🏢", price: 50000, owned: false },
+                { id: 1, name: "ДВУХКОМНАТНАЯ", emoji: "🏠", price: 150000, owned: false },
+                { id: 2, name: "ТРЕХКОМНАТНАЯ", emoji: "🏡", price: 300000, owned: false },
+                { id: 3, name: "ПЕНТХАУС", emoji: "🏬", price: 1000000, owned: false },
+                { id: 4, name: "ЗАГОРОДНЫЙ ДОМ", emoji: "🏘️", price: 2000000, owned: false },
+                { id: 5, name: "ОСОБНЯК", emoji: "🏰", price: 5000000, owned: false },
+                { id: 6, name: "ВИЛЛА", emoji: "🏛️", price: 10000000, owned: false },
+                { id: 7, name: "ЗАМОК", emoji: "🏯", price: 50000000, owned: false },
+                { id: 8, name: "ДВОРЕЦ", emoji: "🕌", price: 100000000, owned: false },
+                { id: 9, name: "НЕБОСКРЕБ", emoji: "🏙️", price: 500000000, owned: false },
+                { id: 10, name: "ОСТРОВ", emoji: "🏝️", price: 1000000000, owned: false },
+                { id: 11, name: "КОСМИЧЕСКАЯ СТАНЦИЯ", emoji: "🚀", price: 5000000000, owned: false },
+                { id: 12, name: "ЛУННАЯ БАЗА", emoji: "🌕", price: 10000000000, owned: false },
+                { id: 13, name: "МАРСИАНСКАЯ КОЛОНИЯ", emoji: "🔴", price: 50000000000, owned: false },
+                { id: 14, name: "СФЕРА ДАЙСОНА", emoji: "⚪", price: 100000000000, owned: false },
+                { id: 15, name: "МУЛЬТИВСЕЛЕННАЯ", emoji: "🌌", price: 500000000000, owned: false }
+            ],
+            cars: [
+                { id: 0, name: "ЛАДА ГРАНТА", emoji: "🚗", price: 20000, owned: false },
+                { id: 1, name: "LADA VESTA", emoji: "🚙", price: 50000, owned: false },
+                { id: 2, name: "RENAULT LOGAN", emoji: "🚌", price: 80000, owned: false },
+                { id: 3, name: "KIA RIO", emoji: "🚎", price: 150000, owned: false },
+                { id: 4, name: "HYUNDAI SOLARIS", emoji: "🏎️", price: 200000, owned: false },
+                { id: 5, name: "TOYOTA CAMRY", emoji: "🚓", price: 300000, owned: false },
+                { id: 6, name: "MERCEDES E-CLASS", emoji: "🚘", price: 500000, owned: false },
+                { id: 7, name: "BMW X5", emoji: "🚙", price: 800000, owned: false },
+                { id: 8, name: "AUDI R8", emoji: "🚗", price: 1500000, owned: false },
+                { id: 9, name: "PORSCHE 911", emoji: "🏎️", price: 3000000, owned: false },
+                { id: 10, name: "LAMBORGHINI AVENTADOR", emoji: "🚀", price: 10000000, owned: false },
+                { id: 11, name: "FERRARI LA FERRARI", emoji: "🔥", price: 30000000, owned: false },
+                { id: 12, name: "BUGATTI VEYRON", emoji: "💨", price: 100000000, owned: false },
+                { id: 13, name: "KOENIGSEGG AGERA", emoji: "⚡", price: 300000000, owned: false },
+                { id: 14, name: "PAGANI ZONDA", emoji: "🌀", price: 500000000, owned: false },
+                { id: 15, name: "LYKAN HYPERSPORT", emoji: "👽", price: 1000000000, owned: false }
+            ],
+            planes: [
+                { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 50000, owned: false },
+                { id: 1, name: "CESSNA 172", emoji: "🛩️", price: 150000, owned: false },
+                { id: 2, name: "BOEING 737", emoji: "🛫", price: 500000, owned: false },
+                { id: 3, name: "AIRBUS A320", emoji: "🛬", price: 800000, owned: false },
+                { id: 4, name: "BOEING 747", emoji: "🛰️", price: 2000000, owned: false },
+                { id: 5, name: "AIRBUS A380", emoji: "🌍", price: 5000000, owned: false },
+                { id: 6, name: "CONCORDE", emoji: "⚡", price: 10000000, owned: false },
+                { id: 7, name: "F-22 RAPTOR", emoji: "🎯", price: 30000000, owned: false },
+                { id: 8, name: "SR-71 BLACKBIRD", emoji: "🕶️", price: 50000000, owned: false },
+                { id: 9, name: "B-2 SPIRIT", emoji: "👻", price: 100000000, owned: false },
+                { id: 10, name: "АН-225 МРИЯ", emoji: "🏆", price: 300000000, owned: false },
+                { id: 11, name: "КОСМИЧЕСКИЙ ШАТТЛ", emoji: "🚀", price: 1000000000, owned: false },
+                { id: 12, name: "STARSHIP", emoji: "⭐", price: 3000000000, owned: false },
+                { id: 13, name: "ЛУННЫЙ МОДУЛЬ", emoji: "🌕", price: 10000000000, owned: false },
+                { id: 14, name: "МАРСОХОД", emoji: "🔴", price: 30000000000, owned: false },
+                { id: 15, name: "ЗВЕЗДА СМЕРТИ", emoji: "💀", price: 100000000000, owned: false }
+            ],
+            ships: [
+                { id: 0, name: "ЛОДКА", emoji: "🛶", price: 10000, owned: false },
+                { id: 1, name: "КАТЕР", emoji: "⛵", price: 50000, owned: false },
+                { id: 2, name: "ЯХТА", emoji: "🛥️", price: 200000, owned: false },
+                { id: 3, name: "ПАРУСНИК", emoji: "⛵", price: 500000, owned: false },
+                { id: 4, name: "ТЕПЛОХОД", emoji: "🚢", price: 1000000, owned: false },
+                { id: 5, name: "ЛАЙНЕР", emoji: "🛳️", price: 5000000, owned: false },
+                { id: 6, name: "ТАНКЕР", emoji: "⛽", price: 10000000, owned: false },
+                { id: 7, name: "КОНТЕЙНЕРОВОЗ", emoji: "📦", price: 20000000, owned: false },
+                { id: 8, name: "ЛЕДОКОЛ", emoji: "❄️", price: 50000000, owned: false },
+                { id: 9, name: "АВИАНОСЕЦ", emoji: "🛩️", price: 100000000, owned: false },
+                { id: 10, name: "ПОДВОДНАЯ ЛОДКА", emoji: "🐟", price: 200000000, owned: false },
+                { id: 11, name: "ТИТАНИК", emoji: "🧊", price: 500000000, owned: false },
+                { id: 12, name: "БИСМАРК", emoji: "⚔️", price: 1000000000, owned: false },
+                { id: 13, name: "ЯМАТО", emoji: "🗾", price: 2000000000, owned: false },
+                { id: 14, name: "МИССУРИ", emoji: "🇺🇸", price: 5000000000, owned: false },
+                { id: 15, name: "АДМИРАЛ КУЗНЕЦОВ", emoji: "🇷🇺", price: 10000000000, owned: false }
+            ],
+            art: [
+                { id: 0, name: "МОНА ЛИЗА", emoji: "🖼️", price: 1000000, owned: false },
+                { id: 1, name: "ЗВЕЗДНАЯ НОЧЬ", emoji: "🌃", price: 2000000, owned: false },
+                { id: 2, name: "КРИК", emoji: "😱", price: 3000000, owned: false },
+                { id: 3, name: "ДЕВУШКА С ЖЕМЧУГОМ", emoji: "👧", price: 4000000, owned: false },
+                { id: 4, name: "ПОСТОЯНСТВО ПАМЯТИ", emoji: "⏰", price: 5000000, owned: false },
+                { id: 5, name: "РОЖДЕНИЕ ВЕНЕРЫ", emoji: "🐚", price: 6000000, owned: false },
+                { id: 6, name: "СОТВОРЕНИЕ АДАМА", emoji: "👆", price: 7000000, owned: false },
+                { id: 7, name: "ТАЙНАЯ ВЕЧЕРЯ", emoji: "🍞", price: 8000000, owned: false },
+                { id: 8, name: "СИКСТИНСКАЯ МАДОННА", emoji: "👼", price: 9000000, owned: false },
+                { id: 9, name: "САД ЗЕМНЫХ НАСЛАЖДЕНИЙ", emoji: "🌳", price: 10000000, owned: false },
+                { id: 10, name: "ВАВИЛОНСКАЯ БАШНЯ", emoji: "🗼", price: 15000000, owned: false },
+                { id: 11, name: "ПЛЮЩ", emoji: "🌿", price: 20000000, owned: false },
+                { id: 12, name: "МАКИ", emoji: "🌹", price: 25000000, owned: false },
+                { id: 13, name: "ПОДСОЛНУХИ", emoji: "🌻", price: 30000000, owned: false },
+                { id: 14, name: "ИРИСЫ", emoji: "🌸", price: 35000000, owned: false },
+                { id: 15, name: "КУВШИНКИ", emoji: "💮", price: 40000000, owned: false }
+            ]
+        };
+        
+        // ========== БИЗНЕСЫ (полные как в оригинале) ==========
         const businessTemplates = [
             { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 1000, upgradeTime: 30, maxLevel: 20 },
             { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 5000, upgradeTime: 60, maxLevel: 20 },
             { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5, baseUpgradeCost: 25000, upgradeTime: 120, maxLevel: 20 },
             { id: 3, name: "🏭 ЗАВОД", baseIncome: 10, baseUpgradeCost: 100000, upgradeTime: 180, maxLevel: 20 },
-            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20, baseUpgradeCost: 500000, upgradeTime: 300, maxLevel: 20 }
+            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20, baseUpgradeCost: 500000, upgradeTime: 300, maxLevel: 20 },
+            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50, baseUpgradeCost: 2500000, upgradeTime: 600, maxLevel: 20 },
+            { id: 6, name: "🏦 БАНК", baseIncome: 100, baseUpgradeCost: 10000000, upgradeTime: 1200, maxLevel: 20 },
+            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200, baseUpgradeCost: 50000000, upgradeTime: 2400, maxLevel: 20 },
+            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500, baseUpgradeCost: 250000000, upgradeTime: 4800, maxLevel: 20 },
+            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000, baseUpgradeCost: 1000000000, upgradeTime: 9600, maxLevel: 20 }
         ];
         
         const upgradePrices = {
@@ -1504,6 +1598,160 @@
             return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
         
+        // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
+        function loadGame() {
+            if (!loadAllPlayers()) return false;
+            
+            const saved = localStorage.getItem('imperiaClickerSave_' + currentUserId);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    gameState = data.gameState;
+                    settings = data.settings || { soundEnabled: true, effectsEnabled: true };
+                    currentUser = data.nickname || generateRandomNickname();
+                    
+                    if (!gameState.collections) {
+                        gameState.collections = JSON.parse(JSON.stringify(collectionItems));
+                    }
+                    
+                    if (!gameState.crypto) {
+                        gameState.crypto = cryptoCurrencies.map(c => ({ id: c.id, owned: 0 }));
+                    }
+                    
+                    if (!gameState.cryptoPrices) {
+                        cryptoPrices = cryptoCurrencies.map(c => c.basePrice);
+                        gameState.cryptoPrices = cryptoPrices;
+                    } else {
+                        cryptoPrices = gameState.cryptoPrices;
+                    }
+                    
+                    if (gameState.specialItem === undefined) {
+                        gameState.specialItem = { owned: false, revealed: false };
+                    }
+                    
+                    const now = Date.now();
+                    const lastOnline = gameState.lastOnlineTime || now;
+                    const secondsPassed = Math.floor((now - lastOnline) / 1000);
+                    
+                    if (secondsPassed > 10) {
+                        calculateOfflineEarnings(secondsPassed);
+                    }
+                    
+                    gameState.lastOnlineTime = now;
+                    
+                    // Проверка на админа
+                    if (currentUser === ADMIN_SECRET) {
+                        enableAdminMode();
+                    }
+                    
+                    return true;
+                } catch(e) {
+                    return false;
+                }
+            }
+            return false;
+        }
+        
+        function generateRandomNickname() {
+            const num = Math.floor(Math.random() * 900) + 100;
+            return "ИГРОК" + num;
+        }
+        
+        function enableAdminMode() {
+            isAdmin = true;
+            document.body.classList.add('admin-theme');
+            document.getElementById('appContainer').classList.add('admin-theme');
+            document.getElementById('header').classList.add('admin-theme');
+            document.getElementById('username').classList.add('admin-theme');
+            document.querySelectorAll('.balance-box').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.balance-value').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.card').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.card-title').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.btn-gold').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.modal-content').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.modal-title').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.per-second').forEach(el => el.classList.add('admin-theme'));
+            document.querySelectorAll('.level-progress').forEach(el => el.classList.add('admin-theme'));
+            
+            // Эффект появления
+            const effect = document.createElement('div');
+            effect.className = 'admin-effect';
+            effect.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); color: white; padding: 30px; border-radius: 50px; font-size: 32px; font-weight: bold; z-index: 10000; border: 3px solid gold; text-align: center;';
+            effect.innerHTML = '👑 АДМИН ПРАВА АКТИВИРОВАНЫ 👑';
+            document.body.appendChild(effect);
+            setTimeout(() => effect.remove(), 3000);
+        }
+        
+        function saveGame() {
+            if (gameState) {
+                gameState.lastOnlineTime = Date.now();
+                gameState.cryptoPrices = cryptoPrices;
+                const saveData = {
+                    gameState: gameState,
+                    settings: settings,
+                    nickname: currentUser
+                };
+                localStorage.setItem('imperiaClickerSave_' + currentUserId, JSON.stringify(saveData));
+                
+                if (currentUser !== ADMIN_SECRET) {
+                    updateTopPlayers();
+                }
+            }
+        }
+        
+        function calculateOfflineEarnings(seconds) {
+            let income = 0;
+            
+            if (gameState.autoClickerLevel > 0) {
+                income += gameState.autoClickerLevel * seconds;
+            }
+            
+            if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
+                gameState.myBusinesses.forEach(b => {
+                    const t = businessTemplates[b.templateId];
+                    if (b.level > 0 && t) {
+                        income += t.baseIncome * b.level * seconds;
+                    }
+                });
+            }
+            
+            if (gameState.crypto && cryptoPrices) {
+                gameState.crypto.forEach(c => {
+                    const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
+                    if (c.owned > 0 && cryptoData) {
+                        const price = cryptoPrices[c.id] || cryptoData.basePrice;
+                        income += (price / 2000) * c.owned * seconds;
+                    }
+                });
+            }
+            
+            if (gameState.specialItem && gameState.specialItem.owned) {
+                income += 777 * seconds;
+            }
+            
+            if (income > 0) {
+                const earned = Math.floor(income);
+                gameState.balance = (gameState.balance || 0) + earned;
+                gameState.totalEarned = (gameState.totalEarned || 0) + earned;
+                
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                
+                alert(`⏱️ ОФФЛАЙН ДОХОД\nОтсутствовал: ${minutes} мин ${secs} сек\n💰 ЗАРАБОТАНО: ${formatFullNumber(earned)} монет`);
+                
+                const badge = document.getElementById('offlineBadge');
+                if (badge) {
+                    badge.style.display = 'inline-block';
+                    badge.textContent = `⏱️ +${formatFullNumber(earned)} ЗА ОФФЛАЙН`;
+                    setTimeout(() => {
+                        badge.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        }
+        
+        // ========== КРИПТА ==========
         function updateCryptoPrices() {
             cryptoPrices = cryptoPrices.map((price, i) => {
                 const crypto = cryptoCurrencies[i];
@@ -1632,6 +1880,7 @@
             document.getElementById('portfolioModal').classList.remove('active');
         }
         
+        // ========== МОДАЛКА ТОРГОВЛИ С КНОПКАМИ ==========
         function openTradeModal(cryptoId, type) {
             const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
             const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
@@ -1641,6 +1890,8 @@
             const modalContent = document.getElementById('cryptoTradeModalContent');
             
             const maxBuy = crypto.maxBuy - userCrypto.owned;
+            const maxSell = userCrypto.owned;
+            const maxBuyWithMoney = Math.floor(gameState.balance / currentPrice);
             
             let html = `
                 <div class="modal-title">${type === 'buy' ? '📈 КУПИТЬ' : '📉 ПРОДАТЬ'} ${crypto.emoji} ${crypto.name}</div>
@@ -1663,29 +1914,69 @@
             
             if (type === 'buy') {
                 html += `
+                    <div style="margin: 15px 0;">
+                        <div style="color:#ffd700; margin-bottom: 10px;">⚡ Быстрый выбор:</div>
+                        <div class="quick-amount-container">
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1)">1</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(10)">10</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(100)">100</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1000)">1K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(10000)">10K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(100000)">100K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1000000)">1M</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(${maxBuy})">МАКС</div>
+                        </div>
+                    </div>
+                    
                     <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${maxBuy}" value="1">
+                    
+                    <div style="display: flex; gap: 10px; margin: 15px 0;">
+                        <button class="btn-crypto" onclick="quickBuyMaxMoney(${cryptoId})">💰 На все деньги (${formatFullNumber(Math.min(maxBuy, maxBuyWithMoney))} шт)</button>
+                    </div>
                     
                     <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 15px 0;">
                         <div style="display: flex; justify-content: space-between;">
                             <span>💰 Стоимость:</span>
                             <span id="totalPrice" style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
                         </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span>📊 Доступно:</span>
+                            <span style="color:#4CAF50;">${formatFullNumber(maxBuy)} шт</span>
+                        </div>
                     </div>
                     
-                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'buy')">✅ КУПИТЬ</button>
+                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'buy')">✅ ПОДТВЕРДИТЬ ПОКУПКУ</button>
                 `;
             } else {
                 html += `
-                    <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${userCrypto.owned}" value="1">
+                    <div style="margin: 15px 0;">
+                        <div style="color:#ffd700; margin-bottom: 10px;">⚡ Быстрый выбор:</div>
+                        <div class="quick-amount-container">
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1)">1</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(10)">10</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(100)">100</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1000)">1K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(10000)">10K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(100000)">100K</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(1000000)">1M</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(${maxSell})">ВСЁ</div>
+                        </div>
+                    </div>
+                    
+                    <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${maxSell}" value="1">
                     
                     <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 15px 0;">
                         <div style="display: flex; justify-content: space-between;">
                             <span>💰 Получите:</span>
                             <span id="totalPrice" style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
                         </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span>📊 У вас:</span>
+                            <span style="color:#4CAF50;">${formatFullNumber(maxSell)} шт</span>
+                        </div>
                     </div>
                     
-                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'sell')">✅ ПРОДАТЬ</button>
+                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'sell')">✅ ПОДТВЕРДИТЬ ПРОДАЖУ</button>
                 `;
             }
             
@@ -1703,6 +1994,30 @@
                     updateTotalPrice(cryptoId, type);
                 }
             }, 100);
+        }
+        
+        function setTradeAmount(amount) {
+            const input = document.getElementById('tradeAmount');
+            if (input) {
+                input.value = amount;
+                input.dispatchEvent(new Event('input'));
+            }
+        }
+        
+        function quickBuyMaxMoney(cryptoId) {
+            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
+            const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
+            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
+            
+            const maxBuy = crypto.maxBuy - userCrypto.owned;
+            const maxWithMoney = Math.floor(gameState.balance / currentPrice);
+            const maxPossible = Math.min(maxBuy, maxWithMoney);
+            
+            const input = document.getElementById('tradeAmount');
+            if (input) {
+                input.value = maxPossible;
+                updateTotalPrice(cryptoId, 'buy');
+            }
         }
         
         function updateTotalPrice(cryptoId, type) {
@@ -1934,7 +2249,7 @@
                 return;
             }
             
-            const businessId = prompt('🏢 ID бизнеса (0-4):');
+            const businessId = prompt('🏢 ID бизнеса (0-9):');
             if (!businessId) return;
             
             const target = allPlayers.find(p => p.nickname === nick);
@@ -2015,7 +2330,6 @@
                 bannedPlayers.push(target.deviceId);
                 saveBannedPlayers();
                 
-                // Удаляем из топа
                 topPlayers = topPlayers.filter(p => p.deviceId !== target.deviceId);
                 saveTopPlayers();
                 
@@ -2056,159 +2370,6 @@
             topPlayers = topPlayers.filter(p => p.deviceId !== target.deviceId);
             saveTopPlayers();
             alert(`✅ Прогресс игрока ${nick} сброшен`);
-        }
-        
-        // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
-        function loadGame() {
-            if (!loadAllPlayers()) return false;
-            
-            const saved = localStorage.getItem('imperiaClickerSave_' + currentUserId);
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    gameState = data.gameState;
-                    settings = data.settings || { soundEnabled: true, effectsEnabled: true };
-                    currentUser = data.nickname || generateRandomNickname();
-                    
-                    if (!gameState.collections) {
-                        gameState.collections = JSON.parse(JSON.stringify(collectionItems));
-                    }
-                    
-                    if (!gameState.crypto) {
-                        gameState.crypto = cryptoCurrencies.map(c => ({ id: c.id, owned: 0 }));
-                    }
-                    
-                    if (!gameState.cryptoPrices) {
-                        cryptoPrices = cryptoCurrencies.map(c => c.basePrice);
-                        gameState.cryptoPrices = cryptoPrices;
-                    } else {
-                        cryptoPrices = gameState.cryptoPrices;
-                    }
-                    
-                    if (gameState.specialItem === undefined) {
-                        gameState.specialItem = { owned: false, revealed: false };
-                    }
-                    
-                    const now = Date.now();
-                    const lastOnline = gameState.lastOnlineTime || now;
-                    const secondsPassed = Math.floor((now - lastOnline) / 1000);
-                    
-                    if (secondsPassed > 10) {
-                        calculateOfflineEarnings(secondsPassed);
-                    }
-                    
-                    gameState.lastOnlineTime = now;
-                    
-                    // Проверка на админа
-                    if (currentUser === ADMIN_SECRET) {
-                        enableAdminMode();
-                    }
-                    
-                    return true;
-                } catch(e) {
-                    return false;
-                }
-            }
-            return false;
-        }
-        
-        function generateRandomNickname() {
-            const num = Math.floor(Math.random() * 900) + 100;
-            return "ИГРОК" + num;
-        }
-        
-        function enableAdminMode() {
-            isAdmin = true;
-            document.body.classList.add('admin-theme');
-            document.getElementById('appContainer').classList.add('admin-theme');
-            document.getElementById('header').classList.add('admin-theme');
-            document.getElementById('username').classList.add('admin-theme');
-            document.querySelectorAll('.balance-box').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.balance-value').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.card').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.card-title').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.btn-gold').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.modal-content').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.modal-title').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.per-second').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.level-progress').forEach(el => el.classList.add('admin-theme'));
-            
-            // Эффект появления
-            const effect = document.createElement('div');
-            effect.className = 'admin-effect';
-            effect.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); color: white; padding: 30px; border-radius: 50px; font-size: 32px; font-weight: bold; z-index: 10000; border: 3px solid gold; text-align: center;';
-            effect.innerHTML = '👑 АДМИН ПРАВА АКТИВИРОВАНЫ 👑';
-            document.body.appendChild(effect);
-            setTimeout(() => effect.remove(), 3000);
-        }
-        
-        function saveGame() {
-            if (gameState) {
-                gameState.lastOnlineTime = Date.now();
-                gameState.cryptoPrices = cryptoPrices;
-                const saveData = {
-                    gameState: gameState,
-                    settings: settings,
-                    nickname: currentUser
-                };
-                localStorage.setItem('imperiaClickerSave_' + currentUserId, JSON.stringify(saveData));
-                
-                if (currentUser !== ADMIN_SECRET) {
-                    updateTopPlayers();
-                }
-            }
-        }
-        
-        function calculateOfflineEarnings(seconds) {
-            let income = 0;
-            
-            if (gameState.autoClickerLevel > 0) {
-                income += gameState.autoClickerLevel * seconds;
-            }
-            
-            if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
-                gameState.myBusinesses.forEach(b => {
-                    const t = businessTemplates[b.templateId];
-                    if (b.level > 0 && t) {
-                        income += t.baseIncome * b.level * seconds;
-                    }
-                });
-            }
-            
-            if (gameState.crypto && cryptoPrices) {
-                gameState.crypto.forEach(c => {
-                    const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                    if (c.owned > 0 && cryptoData) {
-                        const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                        income += (price / 2000) * c.owned * seconds;
-                    }
-                });
-            }
-            
-            if (gameState.specialItem && gameState.specialItem.owned) {
-                income += 777 * seconds;
-            }
-            
-            if (income > 0) {
-                const earned = Math.floor(income);
-                gameState.balance = (gameState.balance || 0) + earned;
-                gameState.totalEarned = (gameState.totalEarned || 0) + earned;
-                
-                const minutes = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                
-                alert(`⏱️ ОФФЛАЙН ДОХОД\nОтсутствовал: ${minutes} мин ${secs} сек\n💰 ЗАРАБОТАНО: ${formatFullNumber(earned)} монет`);
-                
-                const badge = document.getElementById('offlineBadge');
-                if (badge) {
-                    badge.style.display = 'inline-block';
-                    badge.textContent = `⏱️ +${formatFullNumber(earned)} ЗА ОФФЛАЙН`;
-                    setTimeout(() => {
-                        badge.style.display = 'none';
-                    }, 5000);
-                }
-            }
         }
         
         // ========== ЭКРАН ПРИВЕТСТВИЯ ==========
@@ -2816,7 +2977,7 @@
             });
         }
         
-        // ========== КРИПТА (рендер с maxBuy 5B) ==========
+        // ========== КРИПТА (рендер) ==========
         function renderCrypto(content) {
             let html = '<div class="card"><div class="card-title">📈 КРИПТОРЫНОК</div>';
             
@@ -2829,6 +2990,7 @@
             
             html += '<div style="text-align:center; margin-bottom:15px; color:#00c853; font-size:14px;">⏱️ Цены обновляются каждые 5 минут</div>';
             
+            // SuguruCoin специальный предмет (не в списке крипты)
             if (gameState.specialItem && !gameState.specialItem.owned) {
                 html += `
                     <div class="special-item" onclick="buySpecialItem()">
@@ -2933,7 +3095,7 @@
                     <div class="collection-item" onclick="showCollection('${c.key}')">
                         <span>${c.emoji}</span>
                         <div class="collection-name">${c.name}</div>
-                        <div class="collection-owned">${c.count}/5+</div>
+                        <div class="collection-owned">${c.count}/${gameState.collections[c.key].length}</div>
                     </div>
                 `;
             });
@@ -3155,7 +3317,7 @@
                     </div>
                     <div class="property-item" style="justify-content:space-between;">
                         <span>🎨 КОЛЛЕКЦИЯ</span>
-                        <span style="color:#ffd700;">${totalCollections}/25+</span>
+                        <span style="color:#ffd700;">${totalCollections}/100+</span>
                     </div>
                     <div class="property-item" style="justify-content:space-between;">
                         <span>📈 КРИПТА (шт)</span>
@@ -3253,7 +3415,6 @@
             const newNick = document.getElementById('nicknameInput').value.trim();
             if (!newNick) return;
             
-            // Проверка на админский ник
             if (newNick === ADMIN_SECRET && currentUser !== ADMIN_SECRET) {
                 if (confirm('⚠️ Войти как АДМИНИСТРАТОР?\n\nВы получите полный контроль над игрой!')) {
                     currentUser = newNick;
@@ -3430,3 +3591,4 @@
     </script>
 </body>
 </html>
+```
