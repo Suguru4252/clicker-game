@@ -66,7 +66,7 @@
             background: repeating-linear-gradient(
                 45deg,
                 rgba(255, 0, 0, 0.1) 0px,
-                rgba(255,  , 0, 0.1) 20px,
+                rgba(255, 0, 0, 0.1) 20px,
                 transparent 20px,
                 transparent 40px
             );
@@ -546,6 +546,14 @@
             font-size: 16px;
         }
         
+        .property-owned {
+            background: #2e7d32;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
         .special-item {
             background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,0,255,0.2));
             border: 3px solid #ff00ff;
@@ -882,6 +890,45 @@
             text-align: center;
             margin-top: 5px;
         }
+        
+        .shop-item {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            color: #ffd700;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .item-price {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(135deg, #4a2a6a 0%, #3a1a5a 100%);
+            border: 2px solid #ffd700;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -976,8 +1023,6 @@
         
         // ========== ГЛОБАЛЬНЫЙ ТОП ==========
         let globalPlayers = [];
-        
-        // Забаненные игроки
         let bannedPlayers = JSON.parse(localStorage.getItem('bannedPlayers')) || [];
         
         // ========== БИЗНЕСЫ ==========
@@ -1005,47 +1050,7 @@
             { id: 6, name: "AVALANCHE", emoji: "AVAX", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
             { id: 7, name: "CHAINLINK", emoji: "LINK", basePrice: 15000, maxBuy: 5000000000, volatility: 0.45 },
             { id: 8, name: "POLYGON", emoji: "MATIC", basePrice: 10000, maxBuy: 5000000000, volatility: 0.45 },
-            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45 },
-            { id: 10, name: "RIPPLE", emoji: "XRP", basePrice: 5000, maxBuy: 5000000000, volatility: 0.5 },
-            { id: 11, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, maxBuy: 5000000000, volatility: 0.6 },
-            { id: 12, name: "SHIBA INU", emoji: "🐕", basePrice: 500, maxBuy: 5000000000, volatility: 0.7 },
-            { id: 13, name: "PEPE", emoji: "🐸", basePrice: 100, maxBuy: 5000000000, volatility: 0.8 },
-            { id: 14, name: "WOJAK", emoji: "😩", basePrice: 50, maxBuy: 5000000000, volatility: 0.9 },
-            { id: 15, name: "BONK", emoji: "🦴", basePrice: 25, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 20, name: "BITCOIN CASH", emoji: "BCH", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 21, name: "LINK", emoji: "🔗", basePrice: 15000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 22, name: "UNISWAP", emoji: "UNI", basePrice: 12000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 23, name: "AAVE", emoji: "AAVE", basePrice: 10000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 24, name: "MAKER", emoji: "MKR", basePrice: 8000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 25, name: "COMPOUND", emoji: "COMP", basePrice: 6000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 26, name: "YFI", emoji: "YFI", basePrice: 5000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 27, name: "SUSHI", emoji: "🍣", basePrice: 4000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 28, name: "CAKE", emoji: "🥞", basePrice: 3000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 29, name: "BAKE", emoji: "🥖", basePrice: 2000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 30, name: "XLM", emoji: "XLM", basePrice: 1500, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 31, name: "ALGO", emoji: "ALGO", basePrice: 1200, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 32, name: "VET", emoji: "VET", basePrice: 1000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 33, name: "THETA", emoji: "THETA", basePrice: 800, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 34, name: "FILECOIN", emoji: "FIL", basePrice: 600, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 35, name: "ICP", emoji: "ICP", basePrice: 500, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 36, name: "NEAR", emoji: "NEAR", basePrice: 400, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 37, name: "APTOS", emoji: "APT", basePrice: 300, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 38, name: "SUI", emoji: "SUI", basePrice: 200, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 39, name: "SEI", emoji: "SEI", basePrice: 150, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 40, name: "TIA", emoji: "TIA", basePrice: 100, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 41, name: "INJ", emoji: "INJ", basePrice: 80, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 42, name: "ARB", emoji: "ARB", basePrice: 60, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 43, name: "OP", emoji: "OP", basePrice: 50, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 44, name: "STRK", emoji: "STRK", basePrice: 40, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 45, name: "ZKSYNC", emoji: "ZK", basePrice: 30, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 46, name: "SCROLL", emoji: "SCROLL", basePrice: 25, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 47, name: "LINEA", emoji: "LINEA", basePrice: 20, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 48, name: "BASE", emoji: "BASE", basePrice: 15, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 49, name: "POLYGON ZKEVM", emoji: "POL", basePrice: 10, maxBuy: 5000000000, volatility: 0.4 }
+            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45 }
         ];
         
         // ========== КОЛЛЕКЦИИ ==========
@@ -3061,4 +3066,4 @@
         };
     </script>
 </body>
-                                                                                      </html>
+    </html>
