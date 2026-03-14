@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -35,10 +34,6 @@
             padding: 5px;
         }
         
-        body.admin-theme {
-            background: linear-gradient(135deg, #1a0000 0%, #2a0000 100%);
-        }
-        
         .app-container {
             width: 100%;
             max-width: 400px;
@@ -54,11 +49,6 @@
             overscroll-behavior: contain;
         }
         
-        .app-container.admin-theme {
-            border: 3px solid #ff3333;
-            box-shadow: 0 0 30px #ff3333;
-        }
-        
         .header {
             background: linear-gradient(135deg, #2a1b3d 0%, #1a0f2a 100%);
             color: white;
@@ -66,11 +56,6 @@
             text-align: center;
             border-bottom: 3px solid #ffd700;
             flex-shrink: 0;
-        }
-        
-        .header.admin-theme {
-            border-bottom: 3px solid #ff3333;
-            background: linear-gradient(135deg, #3d1b1b 0%, #2a0f0f 100%);
         }
         
         .username {
@@ -82,11 +67,6 @@
             border-radius: 30px;
             background: rgba(0,0,0,0.3);
             cursor: pointer;
-        }
-        
-        .username.admin-theme {
-            color: #ff6666;
-            border: 1px solid #ff3333;
         }
         
         .warning-badge {
@@ -101,55 +81,6 @@
             animation: pulse 2s infinite;
         }
         
-        .admin-badge {
-            background: rgba(255, 0, 0, 0.4);
-            border: 2px solid #ff0000;
-            border-radius: 30px;
-            padding: 5px 10px;
-            font-size: 12px;
-            display: inline-block;
-            color: #ff9999;
-            margin-left: 10px;
-            animation: adminPulse 1.5s infinite;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-        
-        .suguru-badge {
-            background: rgba(255, 215, 0, 0.25);
-            border: 2px solid #ffd700;
-            border-radius: 30px;
-            padding: 3px 8px;
-            font-size: 11px;
-            display: inline-block;
-            color: #ffd700;
-            margin-left: 5px;
-            animation: pulse 2s infinite;
-        }
-        
-        .suguru-badge-small {
-            background: rgba(255, 215, 0, 0.25);
-            border: 1px solid #ffd700;
-            border-radius: 15px;
-            padding: 2px 5px;
-            font-size: 9px;
-            display: inline-block;
-            color: #ffd700;
-            margin-left: 5px;
-        }
-        
-        @keyframes adminPulse {
-            0% { opacity: 0.7; box-shadow: 0 0 5px #ff0000; }
-            50% { opacity: 1; box-shadow: 0 0 20px #ff0000; }
-            100% { opacity: 0.7; box-shadow: 0 0 5px #ff0000; }
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
-        
         .offline-badge {
             background: rgba(255, 215, 0, 0.25);
             border: 2px solid #ffd700;
@@ -160,6 +91,12 @@
             color: #ffd700;
             margin: 5px 0;
             animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
         }
         
         .balance-container {
@@ -177,10 +114,6 @@
             border: 2px solid rgba(255, 215, 0, 0.5);
         }
         
-        .balance-box.admin-theme {
-            border: 2px solid rgba(255, 51, 51, 0.5);
-        }
-        
         .balance-label {
             font-size: 11px;
             opacity: 0.9;
@@ -190,10 +123,6 @@
             font-size: 16px;
             font-weight: bold;
             color: #ffd700;
-        }
-        
-        .balance-value.admin-theme {
-            color: #ff6666;
         }
         
         .level-bar {
@@ -209,10 +138,6 @@
             background: linear-gradient(90deg, #ffd700, #ffaa00);
             width: 0%;
             border-radius: 4px;
-        }
-        
-        .level-progress.admin-theme {
-            background: linear-gradient(90deg, #ff3333, #ff6666);
         }
         
         .content {
@@ -279,10 +204,6 @@
             cursor: pointer;
         }
         
-        .per-second.admin-theme {
-            color: #ff6666;
-        }
-        
         .offline-earnings {
             background: rgba(255, 215, 0, 0.15);
             border: 2px solid #ffd700;
@@ -303,10 +224,6 @@
             border: 2px solid rgba(255, 215, 0, 0.3);
         }
         
-        .card.admin-theme {
-            border: 2px solid rgba(255, 51, 51, 0.5);
-        }
-        
         .card-title {
             font-size: 22px;
             font-weight: bold;
@@ -315,11 +232,6 @@
             text-align: center;
             border-bottom: 2px solid #ffd700;
             padding-bottom: 10px;
-        }
-        
-        .card-title.admin-theme {
-            color: #ff6666;
-            border-bottom: 2px solid #ff6666;
         }
         
         .btn {
@@ -350,12 +262,6 @@
             background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
             color: black;
             font-weight: bold;
-        }
-        
-        .btn-gold.admin-theme {
-            background: linear-gradient(135deg, #ff3333 0%, #990000 100%);
-            color: white;
-            border: 2px solid #ff9999;
         }
         
         .btn-danger {
@@ -519,11 +425,6 @@
             color: #ffd700;
             background: rgba(255, 215, 0, 0.2);
             border: 1px solid #ffd700;
-        }
-        
-        .nav-item.active.admin-theme {
-            color: #ff6666;
-            border: 1px solid #ff6666;
         }
         
         .shop-item {
@@ -913,20 +814,12 @@
             overflow-y: auto;
         }
         
-        .modal-content.admin-theme {
-            border: 3px solid #ff3333;
-        }
-        
         .modal-title {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
             color: #ffd700;
             text-align: center;
-        }
-        
-        .modal-title.admin-theme {
-            color: #ff6666;
         }
         
         .close-btn {
@@ -1113,54 +1006,27 @@
         .profit-down {
             color: #f44336;
         }
-        
-        .admin-section {
-            background: rgba(255, 0, 0, 0.1);
-            border: 2px solid #ff3333;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        
-        .admin-title {
-            color: #ff6666;
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            animation: adminPulse 2s infinite;
-        }
-        
-        .admin-effect {
-            animation: adminAppear 0.5s ease-out;
-        }
-        
-        @keyframes adminAppear {
-            0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
-            50% { opacity: 0.5; transform: scale(1.1); }
-            100% { opacity: 1; transform: scale(1); filter: blur(0); }
-        }
     </style>
 </head>
 <body>
-    <div class="app-container" id="appContainer">
+    <div class="app-container">
         <div class="header" id="header" style="display: none;">
             <div class="username" id="username" onclick="showNicknameModal()">
-                👑 ЗАГРУЗКА...
+                👑 ИГРОК
+                <span class="warning-badge" id="warningBadge">⚠️ ЛОКАЛЬНО</span>
             </div>
             <div class="offline-badge" id="offlineBadge" style="display:none;">⏱️ ОФФЛАЙН ДОХОД</div>
             
             <div class="balance-container">
-                <div class="balance-box" id="balanceBox">
+                <div class="balance-box">
                     <div class="balance-label">💰 МОНЕТЫ</div>
                     <div class="balance-value" id="balance">0</div>
                 </div>
-                <div class="balance-box" id="diamondsBox">
+                <div class="balance-box">
                     <div class="balance-label">💎 АЛМАЗЫ</div>
                     <div class="balance-value" id="diamonds">10</div>
                 </div>
-                <div class="balance-box" id="levelBox">
+                <div class="balance-box">
                     <div class="balance-label">📊 УРОВЕНЬ</div>
                     <div class="balance-value" id="level">1</div>
                 </div>
@@ -1214,20 +1080,12 @@
         </div>
     </div>
     
-    <div class="modal" id="adminModal">
-        <div class="modal-content" id="adminModalContent"></div>
-    </div>
-    
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '2.5.0';
-        let currentUser = "";
+        const APP_VERSION = '2.3.1';
+        let currentUser = "ИГРОК";
         let currentUserId = null;
         let gameState = null;
-        let isAdmin = false;
-        const ADMIN_SECRET = "2a3d4g5j";
-        let bannedPlayers = [];
-        let allPlayers = [];
         
         let settings = {
             soundEnabled: true,
@@ -1249,160 +1107,121 @@
         
         currentUserId = getDeviceId();
         
-        // ========== ЗАГРУЗКА ВСЕХ ИГРОКОВ ==========
-        function loadAllPlayers() {
-            const saved = localStorage.getItem('imperiaAllPlayers');
-            if (saved) {
-                try {
-                    allPlayers = JSON.parse(saved);
-                } catch(e) {
-                    allPlayers = [];
-                }
-            } else {
-                allPlayers = [];
-            }
-            
-            const banned = localStorage.getItem('imperiaBannedPlayers');
-            if (banned) {
-                try {
-                    bannedPlayers = JSON.parse(banned);
-                } catch(e) {
-                    bannedPlayers = [];
-                }
-            } else {
-                bannedPlayers = [];
-            }
-            
-            // Проверяем, не забанен ли текущий игрок
-            if (bannedPlayers.includes(currentUserId) && currentUser !== ADMIN_SECRET) {
-                alert('⛔ ВЫ ЗАБЛОКИРОВАНЫ АДМИНИСТРАТОРОМ!');
-                return false;
-            }
-            return true;
-        }
+        // ========== КОЛЛЕКЦИИ (20+ предметов, без дохода) ==========
+        const collectionItems = {
+            houses: [
+                { id: 0, name: "КВАРТИРА-СТУДИЯ", emoji: "🏢", price: 50000, owned: false },
+                { id: 1, name: "ДВУХКОМНАТНАЯ", emoji: "🏠", price: 150000, owned: false },
+                { id: 2, name: "ТРЕХКОМНАТНАЯ", emoji: "🏡", price: 300000, owned: false },
+                { id: 3, name: "ПЕНТХАУС", emoji: "🏬", price: 1000000, owned: false },
+                { id: 4, name: "ЗАГОРОДНЫЙ ДОМ", emoji: "🏘️", price: 2000000, owned: false },
+                { id: 5, name: "ОСОБНЯК", emoji: "🏰", price: 5000000, owned: false },
+                { id: 6, name: "ВИЛЛА", emoji: "🏛️", price: 10000000, owned: false },
+                { id: 7, name: "ЗАМОК", emoji: "🏯", price: 50000000, owned: false },
+                { id: 8, name: "ДВОРЕЦ", emoji: "🕌", price: 100000000, owned: false },
+                { id: 9, name: "НЕБОСКРЕБ", emoji: "🏙️", price: 500000000, owned: false },
+                { id: 10, name: "ОСТРОВ", emoji: "🏝️", price: 1000000000, owned: false },
+                { id: 11, name: "КОСМИЧЕСКАЯ СТАНЦИЯ", emoji: "🚀", price: 5000000000, owned: false },
+                { id: 12, name: "ЛУННАЯ БАЗА", emoji: "🌕", price: 10000000000, owned: false },
+                { id: 13, name: "МАРСИАНСКАЯ КОЛОНИЯ", emoji: "🔴", price: 50000000000, owned: false },
+                { id: 14, name: "СФЕРА ДАЙСОНА", emoji: "⚪", price: 100000000000, owned: false },
+                { id: 15, name: "МУЛЬТИВСЕЛЕННАЯ", emoji: "🌌", price: 500000000000, owned: false },
+                { id: 16, name: "РАЙСКИЙ САД", emoji: "🌺", price: 1000000000000, owned: false },
+                { id: 17, name: "ХРУСТАЛЬНЫЙ ДВОРЕЦ", emoji: "💎", price: 5000000000000, owned: false },
+                { id: 18, name: "ЗОЛОТОЙ ХРАМ", emoji: "🏯", price: 10000000000000, owned: false },
+                { id: 19, name: "ИМПЕРИЯ", emoji: "👑", price: 50000000000000, owned: false }
+            ],
+            cars: [
+                { id: 0, name: "ЛАДА ГРАНТА", emoji: "🚗", price: 20000, owned: false },
+                { id: 1, name: "LADA VESTA", emoji: "🚙", price: 50000, owned: false },
+                { id: 2, name: "RENAULT LOGAN", emoji: "🚌", price: 80000, owned: false },
+                { id: 3, name: "KIA RIO", emoji: "🚎", price: 150000, owned: false },
+                { id: 4, name: "HYUNDAI SOLARIS", emoji: "🏎️", price: 200000, owned: false },
+                { id: 5, name: "TOYOTA CAMRY", emoji: "🚓", price: 300000, owned: false },
+                { id: 6, name: "MERCEDES E-CLASS", emoji: "🚘", price: 500000, owned: false },
+                { id: 7, name: "BMW X5", emoji: "🚙", price: 800000, owned: false },
+                { id: 8, name: "AUDI R8", emoji: "🚗", price: 1500000, owned: false },
+                { id: 9, name: "PORSCHE 911", emoji: "🏎️", price: 3000000, owned: false },
+                { id: 10, name: "LAMBORGHINI AVENTADOR", emoji: "🚀", price: 10000000, owned: false },
+                { id: 11, name: "FERRARI LA FERRARI", emoji: "🔥", price: 30000000, owned: false },
+                { id: 12, name: "BUGATTI VEYRON", emoji: "💨", price: 100000000, owned: false },
+                { id: 13, name: "KOENIGSEGG AGERA", emoji: "⚡", price: 300000000, owned: false },
+                { id: 14, name: "PAGANI ZONDA", emoji: "🌀", price: 500000000, owned: false },
+                { id: 15, name: "LYKAN HYPERSPORT", emoji: "👽", price: 1000000000, owned: false },
+                { id: 16, name: "DEVEL SIXTEEN", emoji: "💥", price: 3000000000, owned: false },
+                { id: 17, name: "THRUST SSC", emoji: "📏", price: 10000000000, owned: false },
+                { id: 18, name: "BLOODHOUND SSC", emoji: "🎯", price: 30000000000, owned: false },
+                { id: 19, name: "СВЕТОВОЙ МОТОЦИКЛ", emoji: "✨", price: 100000000000, owned: false }
+            ],
+            planes: [
+                { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 50000, owned: false },
+                { id: 1, name: "CESSNA 172", emoji: "🛩️", price: 150000, owned: false },
+                { id: 2, name: "BOEING 737", emoji: "🛫", price: 500000, owned: false },
+                { id: 3, name: "AIRBUS A320", emoji: "🛬", price: 800000, owned: false },
+                { id: 4, name: "BOEING 747", emoji: "🛰️", price: 2000000, owned: false },
+                { id: 5, name: "AIRBUS A380", emoji: "🌍", price: 5000000, owned: false },
+                { id: 6, name: "CONCORDE", emoji: "⚡", price: 10000000, owned: false },
+                { id: 7, name: "F-22 RAPTOR", emoji: "🎯", price: 30000000, owned: false },
+                { id: 8, name: "SR-71 BLACKBIRD", emoji: "🕶️", price: 50000000, owned: false },
+                { id: 9, name: "B-2 SPIRIT", emoji: "👻", price: 100000000, owned: false },
+                { id: 10, name: "АН-225 МРИЯ", emoji: "🏆", price: 300000000, owned: false },
+                { id: 11, name: "КОСМИЧЕСКИЙ ШАТТЛ", emoji: "🚀", price: 1000000000, owned: false },
+                { id: 12, name: "STARSHIP", emoji: "⭐", price: 3000000000, owned: false },
+                { id: 13, name: "ЛУННЫЙ МОДУЛЬ", emoji: "🌕", price: 10000000000, owned: false },
+                { id: 14, name: "МАРСОХОД", emoji: "🔴", price: 30000000000, owned: false },
+                { id: 15, name: "ЗВЕЗДА СМЕРТИ", emoji: "💀", price: 100000000000, owned: false },
+                { id: 16, name: "ТЫСЯЧЕЛЕТНИЙ СОКОЛ", emoji: "🛸", price: 300000000000, owned: false },
+                { id: 17, name: "ЭНТЕРПРАЙЗ", emoji: "🖖", price: 1000000000000, owned: false },
+                { id: 18, name: "ТАРДИС", emoji: "📞", price: 3000000000000, owned: false },
+                { id: 19, name: "СВЕТОВОЙ КОРАБЛЬ", emoji: "✨", price: 10000000000000, owned: false }
+            ],
+            ships: [
+                { id: 0, name: "ЛОДКА", emoji: "🛶", price: 10000, owned: false },
+                { id: 1, name: "КАТЕР", emoji: "⛵", price: 50000, owned: false },
+                { id: 2, name: "ЯХТА", emoji: "🛥️", price: 200000, owned: false },
+                { id: 3, name: "ПАРУСНИК", emoji: "⛵", price: 500000, owned: false },
+                { id: 4, name: "ТЕПЛОХОД", emoji: "🚢", price: 1000000, owned: false },
+                { id: 5, name: "ЛАЙНЕР", emoji: "🛳️", price: 5000000, owned: false },
+                { id: 6, name: "ТАНКЕР", emoji: "⛽", price: 10000000, owned: false },
+                { id: 7, name: "КОНТЕЙНЕРОВОЗ", emoji: "📦", price: 20000000, owned: false },
+                { id: 8, name: "ЛЕДОКОЛ", emoji: "❄️", price: 50000000, owned: false },
+                { id: 9, name: "АВИАНОСЕЦ", emoji: "🛩️", price: 100000000, owned: false },
+                { id: 10, name: "ПОДВОДНАЯ ЛОДКА", emoji: "🐟", price: 200000000, owned: false },
+                { id: 11, name: "ТИТАНИК", emoji: "🧊", price: 500000000, owned: false },
+                { id: 12, name: "БИСМАРК", emoji: "⚔️", price: 1000000000, owned: false },
+                { id: 13, name: "ЯМАТО", emoji: "🗾", price: 2000000000, owned: false },
+                { id: 14, name: "МИССУРИ", emoji: "🇺🇸", price: 5000000000, owned: false },
+                { id: 15, name: "АДМИРАЛ КУЗНЕЦОВ", emoji: "🇷🇺", price: 10000000000, owned: false },
+                { id: 16, name: "ПИРАТСКИЙ КОРАБЛЬ", emoji: "🏴‍☠️", price: 20000000000, owned: false },
+                { id: 17, name: "ЛЕТУЧИЙ ГОЛЛАНДЕЦ", emoji: "👻", price: 50000000000, owned: false },
+                { id: 18, name: "КОВЧЕГ", emoji: "🌈", price: 100000000000, owned: false },
+                { id: 19, name: "ПОСЕЙДОН", emoji: "🌊", price: 200000000000, owned: false }
+            ],
+            art: [
+                { id: 0, name: "МОНА ЛИЗА", emoji: "🖼️", price: 1000000, owned: false },
+                { id: 1, name: "ЗВЕЗДНАЯ НОЧЬ", emoji: "🌃", price: 2000000, owned: false },
+                { id: 2, name: "КРИК", emoji: "😱", price: 3000000, owned: false },
+                { id: 3, name: "ДЕВУШКА С ЖЕМЧУГОМ", emoji: "👧", price: 4000000, owned: false },
+                { id: 4, name: "ПОСТОЯНСТВО ПАМЯТИ", emoji: "⏰", price: 5000000, owned: false },
+                { id: 5, name: "РОЖДЕНИЕ ВЕНЕРЫ", emoji: "🐚", price: 6000000, owned: false },
+                { id: 6, name: "СОТВОРЕНИЕ АДАМА", emoji: "👆", price: 7000000, owned: false },
+                { id: 7, name: "ТАЙНАЯ ВЕЧЕРЯ", emoji: "🍞", price: 8000000, owned: false },
+                { id: 8, name: "СИКСТИНСКАЯ МАДОННА", emoji: "👼", price: 9000000, owned: false },
+                { id: 9, name: "САД ЗЕМНЫХ НАСЛАЖДЕНИЙ", emoji: "🌳", price: 10000000, owned: false },
+                { id: 10, name: "ВАВИЛОНСКАЯ БАШНЯ", emoji: "🗼", price: 15000000, owned: false },
+                { id: 11, name: "ПЛЮЩ", emoji: "🌿", price: 20000000, owned: false },
+                { id: 12, name: "МАКИ", emoji: "🌹", price: 25000000, owned: false },
+                { id: 13, name: "ПОДСОЛНУХИ", emoji: "🌻", price: 30000000, owned: false },
+                { id: 14, name: "ИРИСЫ", emoji: "🌸", price: 35000000, owned: false },
+                { id: 15, name: "КУВШИНКИ", emoji: "💮", price: 40000000, owned: false },
+                { id: 16, name: "БАЛ В МУЛЕН РУЖ", emoji: "💃", price: 45000000, owned: false },
+                { id: 17, name: "АБСЕНТ", emoji: "🍸", price: 50000000, owned: false },
+                { id: 18, name: "ТАНЦЕВАЛЬНЫЙ КЛАСС", emoji: "🩰", price: 55000000, owned: false },
+                { id: 19, name: "БАЛЕТНАЯ ПАЧКА", emoji: "🎭", price: 60000000, owned: false }
+            ]
+        };
         
-        function saveAllPlayers() {
-            localStorage.setItem('imperiaAllPlayers', JSON.stringify(allPlayers));
-        }
-        
-        function saveBannedPlayers() {
-            localStorage.setItem('imperiaBannedPlayers', JSON.stringify(bannedPlayers));
-        }
-        
-        // ========== ТОП-100 ==========
-        function loadTopPlayers() {
-            const saved = localStorage.getItem('imperiaTopPlayers');
-            if (saved) {
-                try {
-                    topPlayers = JSON.parse(saved);
-                } catch(e) {
-                    topPlayers = [];
-                }
-            } else {
-                topPlayers = [];
-            }
-            
-            // Фильтруем забаненных и админа из топа
-            topPlayers = topPlayers.filter(p => 
-                !bannedPlayers.includes(p.deviceId) && 
-                p.nickname !== ADMIN_SECRET
-            );
-        }
-        
-        function saveTopPlayers() {
-            // Фильтруем админа перед сохранением
-            let filteredPlayers = topPlayers.filter(p => p.nickname !== ADMIN_SECRET);
-            filteredPlayers.sort((a, b) => b.totalEarned - a.totalEarned);
-            if (filteredPlayers.length > 100) {
-                filteredPlayers = filteredPlayers.slice(0, 100);
-            }
-            localStorage.setItem('imperiaTopPlayers', JSON.stringify(filteredPlayers));
-        }
-        
-        function updateTopPlayers() {
-            if (!gameState) return;
-            
-            // Не добавляем админа в топ
-            if (currentUser === ADMIN_SECRET) return;
-            
-            const existingIndex = topPlayers.findIndex(p => p.deviceId === currentUserId);
-            
-            const playerData = {
-                deviceId: currentUserId,
-                nickname: currentUser,
-                totalEarned: gameState.totalEarned || 0,
-                lastUpdate: Date.now(),
-                lastRewardWeek: gameState.lastWeeklyReward || 0,
-                hasSuguru: gameState.specialItem && gameState.specialItem.owned || false
-            };
-            
-            if (existingIndex >= 0) {
-                topPlayers[existingIndex] = playerData;
-            } else {
-                topPlayers.push(playerData);
-            }
-            
-            // Удаляем дубликаты
-            const uniquePlayers = [];
-            const seen = new Set();
-            for (const player of topPlayers) {
-                if (!seen.has(player.deviceId)) {
-                    seen.add(player.deviceId);
-                    uniquePlayers.push(player);
-                }
-            }
-            topPlayers = uniquePlayers;
-            
-            // Обновляем общий список всех игроков
-            const allIndex = allPlayers.findIndex(p => p.deviceId === currentUserId);
-            if (allIndex >= 0) {
-                allPlayers[allIndex] = { ...playerData, isAdmin: false };
-            } else {
-                allPlayers.push({ ...playerData, isAdmin: false });
-            }
-            saveAllPlayers();
-            
-            saveTopPlayers();
-        }
-        
-        function getPlayerRank() {
-            const index = topPlayers.findIndex(p => p.deviceId === currentUserId);
-            return index >= 0 ? index + 1 : topPlayers.length + 1;
-        }
-        
-        // ========== ЕЖЕНЕДЕЛЬНЫЕ НАГРАДЫ ==========
-        function checkWeeklyRewards() {
-            if (!gameState || topPlayers.length === 0) return;
-            
-            const now = new Date();
-            const day = now.getDay();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            
-            if (day === 0 && hours === 0 && minutes === 0) {
-                const oneWeek = 7 * 24 * 60 * 60 * 1000;
-                
-                if (now - (gameState.lastWeeklyReward || 0) > oneWeek) {
-                    const myIndex = topPlayers.findIndex(p => p.deviceId === currentUserId);
-                    
-                    let reward = 0;
-                    if (myIndex === 0) reward = 1000;
-                    else if (myIndex === 1) reward = 500;
-                    else if (myIndex === 2) reward = 100;
-                    
-                    if (reward > 0) {
-                        gameState.diamonds = (gameState.diamonds || 0) + reward;
-                        gameState.lastWeeklyReward = now.getTime();
-                        saveGame();
-                        updateUI();
-                        
-                        alert(`🏆 ЕЖЕНЕДЕЛЬНАЯ НАГРАДА!\n\nМесто: ${myIndex + 1}\nПолучено: ${reward}💎`);
-                    }
-                }
-            }
-        }
-        
-        // ========== КРИПТОВАЛЮТЫ (50+ с maxBuy 5000000000) ==========
+        // ========== КРИПТОВАЛЮТЫ (50+) ==========
         const cryptoCurrencies = [
             { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2 },
             { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25 },
@@ -1423,7 +1242,7 @@
             { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0 },
             { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0 },
             { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 19, name: "SUGURU", emoji: "💎", basePrice: 777777777, maxBuy: 5000000000, volatility: 0.1 },
+            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0 },
             { id: 20, name: "BITCOIN CASH", emoji: "BCH", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
             { id: 21, name: "LINK", emoji: "🔗", basePrice: 15000, maxBuy: 5000000000, volatility: 0.4 },
             { id: 22, name: "UNISWAP", emoji: "UNI", basePrice: 12000, maxBuy: 5000000000, volatility: 0.4 },
@@ -1456,9 +1275,10 @@
             { id: 49, name: "POLYGON ZKEVM", emoji: "POL", basePrice: 10, maxBuy: 5000000000, volatility: 0.4 }
         ];
         
+        // Текущие цены крипты
         let cryptoPrices = [];
         
-        // СУПЕР-ВЕЩЬ: SuguruCoin (только 1 штука, не в крипте)
+        // СУПЕР-ВЕЩЬ: SuguruCoin (только 1 штука)
         let specialItem = {
             id: 999,
             name: "???????",
@@ -1472,101 +1292,7 @@
             revealed: false
         };
         
-        // ========== КОЛЛЕКЦИИ (полные как в оригинале) ==========
-        const collectionItems = {
-            houses: [
-                { id: 0, name: "КВАРТИРА-СТУДИЯ", emoji: "🏢", price: 50000, owned: false },
-                { id: 1, name: "ДВУХКОМНАТНАЯ", emoji: "🏠", price: 150000, owned: false },
-                { id: 2, name: "ТРЕХКОМНАТНАЯ", emoji: "🏡", price: 300000, owned: false },
-                { id: 3, name: "ПЕНТХАУС", emoji: "🏬", price: 1000000, owned: false },
-                { id: 4, name: "ЗАГОРОДНЫЙ ДОМ", emoji: "🏘️", price: 2000000, owned: false },
-                { id: 5, name: "ОСОБНЯК", emoji: "🏰", price: 5000000, owned: false },
-                { id: 6, name: "ВИЛЛА", emoji: "🏛️", price: 10000000, owned: false },
-                { id: 7, name: "ЗАМОК", emoji: "🏯", price: 50000000, owned: false },
-                { id: 8, name: "ДВОРЕЦ", emoji: "🕌", price: 100000000, owned: false },
-                { id: 9, name: "НЕБОСКРЕБ", emoji: "🏙️", price: 500000000, owned: false },
-                { id: 10, name: "ОСТРОВ", emoji: "🏝️", price: 1000000000, owned: false },
-                { id: 11, name: "КОСМИЧЕСКАЯ СТАНЦИЯ", emoji: "🚀", price: 5000000000, owned: false },
-                { id: 12, name: "ЛУННАЯ БАЗА", emoji: "🌕", price: 10000000000, owned: false },
-                { id: 13, name: "МАРСИАНСКАЯ КОЛОНИЯ", emoji: "🔴", price: 50000000000, owned: false },
-                { id: 14, name: "СФЕРА ДАЙСОНА", emoji: "⚪", price: 100000000000, owned: false },
-                { id: 15, name: "МУЛЬТИВСЕЛЕННАЯ", emoji: "🌌", price: 500000000000, owned: false }
-            ],
-            cars: [
-                { id: 0, name: "ЛАДА ГРАНТА", emoji: "🚗", price: 20000, owned: false },
-                { id: 1, name: "LADA VESTA", emoji: "🚙", price: 50000, owned: false },
-                { id: 2, name: "RENAULT LOGAN", emoji: "🚌", price: 80000, owned: false },
-                { id: 3, name: "KIA RIO", emoji: "🚎", price: 150000, owned: false },
-                { id: 4, name: "HYUNDAI SOLARIS", emoji: "🏎️", price: 200000, owned: false },
-                { id: 5, name: "TOYOTA CAMRY", emoji: "🚓", price: 300000, owned: false },
-                { id: 6, name: "MERCEDES E-CLASS", emoji: "🚘", price: 500000, owned: false },
-                { id: 7, name: "BMW X5", emoji: "🚙", price: 800000, owned: false },
-                { id: 8, name: "AUDI R8", emoji: "🚗", price: 1500000, owned: false },
-                { id: 9, name: "PORSCHE 911", emoji: "🏎️", price: 3000000, owned: false },
-                { id: 10, name: "LAMBORGHINI AVENTADOR", emoji: "🚀", price: 10000000, owned: false },
-                { id: 11, name: "FERRARI LA FERRARI", emoji: "🔥", price: 30000000, owned: false },
-                { id: 12, name: "BUGATTI VEYRON", emoji: "💨", price: 100000000, owned: false },
-                { id: 13, name: "KOENIGSEGG AGERA", emoji: "⚡", price: 300000000, owned: false },
-                { id: 14, name: "PAGANI ZONDA", emoji: "🌀", price: 500000000, owned: false },
-                { id: 15, name: "LYKAN HYPERSPORT", emoji: "👽", price: 1000000000, owned: false }
-            ],
-            planes: [
-                { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 50000, owned: false },
-                { id: 1, name: "CESSNA 172", emoji: "🛩️", price: 150000, owned: false },
-                { id: 2, name: "BOEING 737", emoji: "🛫", price: 500000, owned: false },
-                { id: 3, name: "AIRBUS A320", emoji: "🛬", price: 800000, owned: false },
-                { id: 4, name: "BOEING 747", emoji: "🛰️", price: 2000000, owned: false },
-                { id: 5, name: "AIRBUS A380", emoji: "🌍", price: 5000000, owned: false },
-                { id: 6, name: "CONCORDE", emoji: "⚡", price: 10000000, owned: false },
-                { id: 7, name: "F-22 RAPTOR", emoji: "🎯", price: 30000000, owned: false },
-                { id: 8, name: "SR-71 BLACKBIRD", emoji: "🕶️", price: 50000000, owned: false },
-                { id: 9, name: "B-2 SPIRIT", emoji: "👻", price: 100000000, owned: false },
-                { id: 10, name: "АН-225 МРИЯ", emoji: "🏆", price: 300000000, owned: false },
-                { id: 11, name: "КОСМИЧЕСКИЙ ШАТТЛ", emoji: "🚀", price: 1000000000, owned: false },
-                { id: 12, name: "STARSHIP", emoji: "⭐", price: 3000000000, owned: false },
-                { id: 13, name: "ЛУННЫЙ МОДУЛЬ", emoji: "🌕", price: 10000000000, owned: false },
-                { id: 14, name: "МАРСОХОД", emoji: "🔴", price: 30000000000, owned: false },
-                { id: 15, name: "ЗВЕЗДА СМЕРТИ", emoji: "💀", price: 100000000000, owned: false }
-            ],
-            ships: [
-                { id: 0, name: "ЛОДКА", emoji: "🛶", price: 10000, owned: false },
-                { id: 1, name: "КАТЕР", emoji: "⛵", price: 50000, owned: false },
-                { id: 2, name: "ЯХТА", emoji: "🛥️", price: 200000, owned: false },
-                { id: 3, name: "ПАРУСНИК", emoji: "⛵", price: 500000, owned: false },
-                { id: 4, name: "ТЕПЛОХОД", emoji: "🚢", price: 1000000, owned: false },
-                { id: 5, name: "ЛАЙНЕР", emoji: "🛳️", price: 5000000, owned: false },
-                { id: 6, name: "ТАНКЕР", emoji: "⛽", price: 10000000, owned: false },
-                { id: 7, name: "КОНТЕЙНЕРОВОЗ", emoji: "📦", price: 20000000, owned: false },
-                { id: 8, name: "ЛЕДОКОЛ", emoji: "❄️", price: 50000000, owned: false },
-                { id: 9, name: "АВИАНОСЕЦ", emoji: "🛩️", price: 100000000, owned: false },
-                { id: 10, name: "ПОДВОДНАЯ ЛОДКА", emoji: "🐟", price: 200000000, owned: false },
-                { id: 11, name: "ТИТАНИК", emoji: "🧊", price: 500000000, owned: false },
-                { id: 12, name: "БИСМАРК", emoji: "⚔️", price: 1000000000, owned: false },
-                { id: 13, name: "ЯМАТО", emoji: "🗾", price: 2000000000, owned: false },
-                { id: 14, name: "МИССУРИ", emoji: "🇺🇸", price: 5000000000, owned: false },
-                { id: 15, name: "АДМИРАЛ КУЗНЕЦОВ", emoji: "🇷🇺", price: 10000000000, owned: false }
-            ],
-            art: [
-                { id: 0, name: "МОНА ЛИЗА", emoji: "🖼️", price: 1000000, owned: false },
-                { id: 1, name: "ЗВЕЗДНАЯ НОЧЬ", emoji: "🌃", price: 2000000, owned: false },
-                { id: 2, name: "КРИК", emoji: "😱", price: 3000000, owned: false },
-                { id: 3, name: "ДЕВУШКА С ЖЕМЧУГОМ", emoji: "👧", price: 4000000, owned: false },
-                { id: 4, name: "ПОСТОЯНСТВО ПАМЯТИ", emoji: "⏰", price: 5000000, owned: false },
-                { id: 5, name: "РОЖДЕНИЕ ВЕНЕРЫ", emoji: "🐚", price: 6000000, owned: false },
-                { id: 6, name: "СОТВОРЕНИЕ АДАМА", emoji: "👆", price: 7000000, owned: false },
-                { id: 7, name: "ТАЙНАЯ ВЕЧЕРЯ", emoji: "🍞", price: 8000000, owned: false },
-                { id: 8, name: "СИКСТИНСКАЯ МАДОННА", emoji: "👼", price: 9000000, owned: false },
-                { id: 9, name: "САД ЗЕМНЫХ НАСЛАЖДЕНИЙ", emoji: "🌳", price: 10000000, owned: false },
-                { id: 10, name: "ВАВИЛОНСКАЯ БАШНЯ", emoji: "🗼", price: 15000000, owned: false },
-                { id: 11, name: "ПЛЮЩ", emoji: "🌿", price: 20000000, owned: false },
-                { id: 12, name: "МАКИ", emoji: "🌹", price: 25000000, owned: false },
-                { id: 13, name: "ПОДСОЛНУХИ", emoji: "🌻", price: 30000000, owned: false },
-                { id: 14, name: "ИРИСЫ", emoji: "🌸", price: 35000000, owned: false },
-                { id: 15, name: "КУВШИНКИ", emoji: "💮", price: 40000000, owned: false }
-            ]
-        };
-        
-        // ========== БИЗНЕСЫ (полные как в оригинале) ==========
+        // ========== БИЗНЕСЫ ==========
         const businessTemplates = [
             { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 1000, upgradeTime: 30, maxLevel: 20 },
             { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 5000, upgradeTime: 60, maxLevel: 20 },
@@ -1598,17 +1324,110 @@
             return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
         
+        // ========== ТОП-100 ==========
+        function loadTopPlayers() {
+            const saved = localStorage.getItem('imperiaTopPlayers');
+            if (saved) {
+                try {
+                    topPlayers = JSON.parse(saved);
+                } catch(e) {
+                    topPlayers = [];
+                }
+            } else {
+                topPlayers = [];
+            }
+        }
+        
+        function saveTopPlayers() {
+            topPlayers.sort((a, b) => b.totalEarned - a.totalEarned);
+            if (topPlayers.length > 100) {
+                topPlayers = topPlayers.slice(0, 100);
+            }
+            localStorage.setItem('imperiaTopPlayers', JSON.stringify(topPlayers));
+        }
+        
+        function updateTopPlayers() {
+            if (!gameState) return;
+            
+            const existingIndex = topPlayers.findIndex(p => p.deviceId === currentUserId);
+            
+            const playerData = {
+                deviceId: currentUserId,
+                nickname: currentUser,
+                totalEarned: gameState.totalEarned || 0,
+                lastUpdate: Date.now(),
+                lastRewardWeek: gameState.lastWeeklyReward || 0
+            };
+            
+            if (existingIndex >= 0) {
+                // Обновляем существующего игрока
+                topPlayers[existingIndex] = playerData;
+            } else {
+                // Добавляем нового игрока
+                topPlayers.push(playerData);
+            }
+            
+            // Удаляем возможные дубликаты
+            const uniquePlayers = [];
+            const seen = new Set();
+            for (const player of topPlayers) {
+                if (!seen.has(player.deviceId)) {
+                    seen.add(player.deviceId);
+                    uniquePlayers.push(player);
+                }
+            }
+            topPlayers = uniquePlayers;
+            
+            saveTopPlayers();
+        }
+        
+        function getPlayerRank() {
+            const index = topPlayers.findIndex(p => p.deviceId === currentUserId);
+            return index >= 0 ? index + 1 : topPlayers.length + 1;
+        }
+        
+        // ========== ЕЖЕНЕДЕЛЬНЫЕ НАГРАДЫ ==========
+        function checkWeeklyRewards() {
+            if (!gameState || topPlayers.length === 0) return;
+            
+            const now = new Date();
+            const day = now.getDay(); // 0 = воскресенье
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // Проверяем каждое воскресенье в 00:00
+            if (day === 0 && hours === 0 && minutes === 0) {
+                const oneWeek = 7 * 24 * 60 * 60 * 1000;
+                
+                if (now - (gameState.lastWeeklyReward || 0) > oneWeek) {
+                    const myIndex = topPlayers.findIndex(p => p.deviceId === currentUserId);
+                    
+                    let reward = 0;
+                    if (myIndex === 0) reward = 1000;
+                    else if (myIndex === 1) reward = 500;
+                    else if (myIndex === 2) reward = 100;
+                    
+                    if (reward > 0) {
+                        gameState.diamonds = (gameState.diamonds || 0) + reward;
+                        gameState.lastWeeklyReward = now.getTime();
+                        saveGame();
+                        updateUI();
+                        
+                        alert(`🏆 ЕЖЕНЕДЕЛЬНАЯ НАГРАДА!\n\nМесто: ${myIndex + 1}\nПолучено: ${reward}💎`);
+                    }
+                }
+            }
+        }
+        
         // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
         function loadGame() {
-            if (!loadAllPlayers()) return false;
-            
             const saved = localStorage.getItem('imperiaClickerSave_' + currentUserId);
             if (saved) {
                 try {
                     const data = JSON.parse(saved);
                     gameState = data.gameState;
                     settings = data.settings || { soundEnabled: true, effectsEnabled: true };
-                    currentUser = data.nickname || generateRandomNickname();
+                    currentUser = data.nickname || "ИГРОК";
                     
                     if (!gameState.collections) {
                         gameState.collections = JSON.parse(JSON.stringify(collectionItems));
@@ -1639,48 +1458,12 @@
                     
                     gameState.lastOnlineTime = now;
                     
-                    // Проверка на админа
-                    if (currentUser === ADMIN_SECRET) {
-                        enableAdminMode();
-                    }
-                    
                     return true;
                 } catch(e) {
                     return false;
                 }
             }
             return false;
-        }
-        
-        function generateRandomNickname() {
-            const num = Math.floor(Math.random() * 900) + 100;
-            return "ИГРОК" + num;
-        }
-        
-        function enableAdminMode() {
-            isAdmin = true;
-            document.body.classList.add('admin-theme');
-            document.getElementById('appContainer').classList.add('admin-theme');
-            document.getElementById('header').classList.add('admin-theme');
-            document.getElementById('username').classList.add('admin-theme');
-            document.querySelectorAll('.balance-box').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.balance-value').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.card').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.card-title').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.btn-gold').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.modal-content').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.modal-title').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.per-second').forEach(el => el.classList.add('admin-theme'));
-            document.querySelectorAll('.level-progress').forEach(el => el.classList.add('admin-theme'));
-            
-            // Эффект появления
-            const effect = document.createElement('div');
-            effect.className = 'admin-effect';
-            effect.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); color: white; padding: 30px; border-radius: 50px; font-size: 32px; font-weight: bold; z-index: 10000; border: 3px solid gold; text-align: center;';
-            effect.innerHTML = '👑 АДМИН ПРАВА АКТИВИРОВАНЫ 👑';
-            document.body.appendChild(effect);
-            setTimeout(() => effect.remove(), 3000);
         }
         
         function saveGame() {
@@ -1693,10 +1476,7 @@
                     nickname: currentUser
                 };
                 localStorage.setItem('imperiaClickerSave_' + currentUserId, JSON.stringify(saveData));
-                
-                if (currentUser !== ADMIN_SECRET) {
-                    updateTopPlayers();
-                }
+                updateTopPlayers();
             }
         }
         
@@ -1721,6 +1501,7 @@
                     const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                     if (c.owned > 0 && cryptoData) {
                         const price = cryptoPrices[c.id] || cryptoData.basePrice;
+                        // Доход УМЕНЬШЕН на 50% (было price/1000, стало price/2000)
                         income += (price / 2000) * c.owned * seconds;
                     }
                 });
@@ -1738,8 +1519,10 @@
                 const minutes = Math.floor(seconds / 60);
                 const secs = seconds % 60;
                 
+                // Показываем уведомление с суммой
                 alert(`⏱️ ОФФЛАЙН ДОХОД\nОтсутствовал: ${minutes} мин ${secs} сек\n💰 ЗАРАБОТАНО: ${formatFullNumber(earned)} монет`);
                 
+                // Показываем бейдж
                 const badge = document.getElementById('offlineBadge');
                 if (badge) {
                     badge.style.display = 'inline-block';
@@ -1763,12 +1546,14 @@
             });
         }
         
+        // Функция для подсчета изменения цены в процентах
         function getPriceChange(cryptoId, currentPrice) {
             const crypto = cryptoCurrencies[cryptoId];
             if (!crypto) return 0;
             return ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
         }
         
+        // Функция для подсчета прибыли/убытка
         function calculateProfit(cryptoId, amount) {
             const crypto = cryptoCurrencies[cryptoId];
             const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
@@ -1777,6 +1562,7 @@
             return profitPerCoin * amount;
         }
         
+        // Функция для подсчета общего портфеля крипты
         function calculateTotalCryptoPortfolio() {
             if (!gameState || !cryptoPrices) return 0;
             
@@ -1793,6 +1579,7 @@
             return total;
         }
         
+        // Функция для отображения портфеля с кнопками
         function showCryptoPortfolio() {
             if (!gameState) return;
             
@@ -1804,6 +1591,7 @@
             
             let html = '<div class="modal-title">📊 МОЙ КРИПТОПОРТФЕЛЬ</div>';
             
+            // Общая стоимость
             html += `
                 <div style="background: rgba(123, 31, 162, 0.3); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center;">
                     <div style="font-size: 14px; color: #b39ddb;">💰 ОБЩАЯ СТОИМОСТЬ</div>
@@ -1811,6 +1599,7 @@
                 </div>
             `;
             
+            // Список крипты в портфеле с кнопками
             let hasCrypto = false;
             gameState.crypto.forEach(c => {
                 if (c.owned > 0) {
@@ -1819,9 +1608,11 @@
                     if (cryptoData) {
                         const price = cryptoPrices[c.id] || cryptoData.basePrice;
                         const value = price * c.owned;
+                        // Доход УМЕНЬШЕН на 50% (price/2000)
                         const incomePerSec = Math.floor((price / 2000) * c.owned);
                         totalIncome += incomePerSec;
                         
+                        // Расчет прибыли/убытка
                         const profit = calculateProfit(c.id, c.owned);
                         const profitPercent = ((price - cryptoData.basePrice) / cryptoData.basePrice * 100).toFixed(1);
                         const profitClass = profit >= 0 ? 'profit-up' : 'profit-down';
@@ -1853,6 +1644,10 @@
                                     <span style="color: #b39ddb;">Доход/сек:</span>
                                     <span style="color: #ff9800;">+${formatFullNumber(incomePerSec)}</span>
                                 </div>
+                                <div style="display: flex; gap: 5px; margin-top: 10px;">
+                                    <button class="btn-crypto" onclick="openTradeModal(${cryptoData.id}, 'buy')">➕ Купить</button>
+                                    <button class="btn-crypto" onclick="openTradeModal(${cryptoData.id}, 'sell')">➖ Продать</button>
+                                </div>
                             </div>
                         `;
                     }
@@ -1880,7 +1675,7 @@
             document.getElementById('portfolioModal').classList.remove('active');
         }
         
-        // ========== МОДАЛКА ТОРГОВЛИ С КНОПКАМИ ==========
+        // Модальное окно для торговли
         function openTradeModal(cryptoId, type) {
             const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
             const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
@@ -1922,8 +1717,6 @@
                             <div class="quick-amount-btn" onclick="setTradeAmount(100)">100</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(1000)">1K</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(10000)">10K</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(100000)">100K</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(1000000)">1M</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(${maxBuy})">МАКС</div>
                         </div>
                     </div>
@@ -1957,9 +1750,7 @@
                             <div class="quick-amount-btn" onclick="setTradeAmount(100)">100</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(1000)">1K</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(10000)">10K</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(100000)">100K</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(1000000)">1M</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(${maxSell})">ВСЁ</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(${maxSell})">ВСЁ (${formatFullNumber(maxSell)} шт)</div>
                         </div>
                     </div>
                     
@@ -1985,6 +1776,7 @@
             modalContent.innerHTML = html;
             modal.classList.add('active');
             
+            // Добавляем обработчик для обновления цены
             setTimeout(() => {
                 const input = document.getElementById('tradeAmount');
                 if (input) {
@@ -2089,289 +1881,6 @@
             document.getElementById('cryptoTradeModal').classList.remove('active');
         }
         
-        // ========== АДМИН ПАНЕЛЬ ==========
-        function showAdminPanel() {
-            if (!isAdmin) return;
-            
-            const modal = document.getElementById('adminModal');
-            const modalContent = document.getElementById('adminModalContent');
-            
-            let html = `
-                <div class="modal-title">👑 АДМИН ПАНЕЛЬ</div>
-                <div class="admin-section">
-                    <div class="admin-title">⚡ УПРАВЛЕНИЕ</div>
-                    
-                    <input type="text" class="input-field" id="adminTargetNick" placeholder="НИК ИГРОКА">
-                    
-                    <div class="btn btn-danger" onclick="adminGiveMoney()">💰 ВЫДАТЬ МОНЕТЫ</div>
-                    <div class="btn btn-danger" onclick="adminGiveDiamonds()">💎 ВЫДАТЬ АЛМАЗЫ</div>
-                    <div class="btn btn-danger" onclick="adminGiveCrypto()">📈 ВЫДАТЬ КРИПТУ</div>
-                    <div class="btn btn-danger" onclick="adminGiveBusiness()">🏢 ВЫДАТЬ БИЗНЕС</div>
-                    <div class="btn btn-danger" onclick="adminLevelUp()">📊 ПОВЫСИТЬ УРОВЕНЬ</div>
-                    <div class="btn btn-danger" onclick="adminBanPlayer()">🚫 ЗАБЛОКИРОВАТЬ</div>
-                    <div class="btn btn-danger" onclick="adminRemoveFromTop()">🗑️ УДАЛИТЬ ИЗ ТОПА</div>
-                    <div class="btn btn-danger" onclick="adminResetPlayer()">🔄 СБРОСИТЬ ИГРОКА</div>
-                    
-                    <div style="margin-top:20px;">
-                        <div class="btn btn-gold" onclick="adminGiveSelfMoney()">💰 ВЫДАТЬ СЕБЕ МОНЕТЫ</div>
-                        <div class="btn btn-gold" onclick="adminGiveSelfDiamonds()">💎 ВЫДАТЬ СЕБЕ АЛМАЗЫ</div>
-                    </div>
-                </div>
-                <div class="close-btn" onclick="closeAdminModal()">ЗАКРЫТЬ</div>
-            `;
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function closeAdminModal() {
-            document.getElementById('adminModal').classList.remove('active');
-        }
-        
-        function adminGiveMoney() {
-            const nick = document.getElementById('adminTargetNick')?.value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const amount = prompt('💰 Сумма монет для выдачи:');
-            if (!amount) return;
-            
-            const target = allPlayers.find(p => p.nickname === nick);
-            if (!target) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            const targetState = localStorage.getItem('imperiaClickerSave_' + target.deviceId);
-            if (targetState) {
-                try {
-                    const data = JSON.parse(targetState);
-                    data.gameState.balance = (data.gameState.balance || 0) + parseInt(amount);
-                    localStorage.setItem('imperiaClickerSave_' + target.deviceId, JSON.stringify(data));
-                    alert(`✅ Выдано ${amount}💰 игроку ${nick}`);
-                } catch(e) {
-                    alert('❌ Ошибка выдачи');
-                }
-            }
-        }
-        
-        function adminGiveSelfMoney() {
-            const amount = prompt('💰 Сумма монет для себя:');
-            if (!amount) return;
-            
-            gameState.balance = (gameState.balance || 0) + parseInt(amount);
-            saveGame();
-            updateUI();
-            alert(`✅ Выдано себе ${amount}💰`);
-        }
-        
-        function adminGiveSelfDiamonds() {
-            const amount = prompt('💎 Количество алмазов для себя:');
-            if (!amount) return;
-            
-            gameState.diamonds = (gameState.diamonds || 0) + parseInt(amount);
-            saveGame();
-            updateUI();
-            alert(`✅ Выдано себе ${amount}💎`);
-        }
-        
-        function adminGiveDiamonds() {
-            const nick = document.getElementById('adminTargetNick')?.value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const amount = prompt('💎 Количество алмазов для выдачи:');
-            if (!amount) return;
-            
-            const target = allPlayers.find(p => p.nickname === nick);
-            if (!target) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            const targetState = localStorage.getItem('imperiaClickerSave_' + target.deviceId);
-            if (targetState) {
-                try {
-                    const data = JSON.parse(targetState);
-                    data.gameState.diamonds = (data.gameState.diamonds || 0) + parseInt(amount);
-                    localStorage.setItem('imperiaClickerSave_' + target.deviceId, JSON.stringify(data));
-                    alert(`✅ Выдано ${amount}💎 игроку ${nick}`);
-                } catch(e) {
-                    alert('❌ Ошибка выдачи');
-                }
-            }
-        }
-        
-        function adminGiveCrypto() {
-            const nick = document.getElementById('adminTargetNick')?.value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const cryptoList = cryptoCurrencies.map(c => `${c.id}: ${c.name}`).join('\n');
-            const cryptoId = prompt(`📈 ID крипты (0-${cryptoCurrencies.length-1}):\n${cryptoList}`);
-            if (!cryptoId) return;
-            
-            const amount = prompt('📊 Количество:');
-            if (!amount) return;
-            
-            const target = allPlayers.find(p => p.nickname === nick);
-            if (!target) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            const targetState = localStorage.getItem('imperiaClickerSave_' + target.deviceId);
-            if (targetState) {
-                try {
-                    const data = JSON.parse(targetState);
-                    const crypto = data.gameState.crypto.find(c => c.id === parseInt(cryptoId));
-                    if (crypto) {
-                        crypto.owned += parseInt(amount);
-                        localStorage.setItem('imperiaClickerSave_' + target.deviceId, JSON.stringify(data));
-                        alert(`✅ Выдано ${amount} ${cryptoCurrencies[parseInt(cryptoId)].name} игроку ${nick}`);
-                    }
-                } catch(e) {
-                    alert('❌ Ошибка выдачи');
-                }
-            }
-        }
-        
-        function adminGiveBusiness() {
-            const nick = document.getElementById('adminTargetNick')?.value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const businessId = prompt('🏢 ID бизнеса (0-9):');
-            if (!businessId) return;
-            
-            const target = allPlayers.find(p => p.nickname === nick);
-            if (!target) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            const targetState = localStorage.getItem('imperiaClickerSave_' + target.deviceId);
-            if (targetState) {
-                try {
-                    const data = JSON.parse(targetState);
-                    if (!data.gameState.myBusinesses) data.gameState.myBusinesses = [];
-                    
-                    const t = businessTemplates[parseInt(businessId)];
-                    data.gameState.myBusinesses.push({
-                        id: Date.now() + Math.random(),
-                        templateId: parseInt(businessId),
-                        level: 1,
-                        upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
-                        upgradeTime: t.upgradeTime,
-                        upgradeEnd: 0,
-                        lastUpgrade: 0,
-                        totalEarned: 0
-                    });
-                    
-                    localStorage.setItem('imperiaClickerSave_' + target.deviceId, JSON.stringify(data));
-                    alert(`✅ Выдан бизнес ${t.name} игроку ${nick}`);
-                } catch(e) {
-                    alert('❌ Ошибка выдачи');
-                }
-            }
-        }
-        
-        function adminLevelUp() {
-            const nick = document.getElementById('adminTargetNick')?.value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const levels = prompt('📊 Количество уровней:');
-            if (!levels) return;
-            
-            const target = allPlayers.find(p => p.nickname === nick);
-            if (!target) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            const targetState = localStorage.getItem('imperiaClickerSave_' + target.deviceId);
-            if (targetState) {
-                try {
-                    const data = JSON.parse(targetState);
-                    data.gameState.level = (data.gameState.level || 1) + parseInt(levels);
-                    localStorage.setItem('imperiaClickerSave_' + target.deviceId, JSON.stringify(data));
-                    alert(`✅ Повышен уровень игрока ${nick}`);
-                } catch(e) {
-                    alert('❌ Ошибка');
-                }
-            }
-        }
-        
-        function adminBanPlayer() {
-            const nick = document.getElementById('adminTargetNick')?.value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const target = allPlayers.find(p => p.nickname === nick);
-            if (!target) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            if (!bannedPlayers.includes(target.deviceId)) {
-                bannedPlayers.push(target.deviceId);
-                saveBannedPlayers();
-                
-                topPlayers = topPlayers.filter(p => p.deviceId !== target.deviceId);
-                saveTopPlayers();
-                
-                alert(`✅ Игрок ${nick} заблокирован`);
-            } else {
-                alert('❌ Уже забанен');
-            }
-        }
-        
-        function adminRemoveFromTop() {
-            const nick = document.getElementById('adminTargetNick')?.value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            topPlayers = topPlayers.filter(p => p.nickname !== nick);
-            saveTopPlayers();
-            alert(`✅ Игрок ${nick} удален из топа`);
-        }
-        
-        function adminResetPlayer() {
-            const nick = document.getElementById('adminTargetNick')?.value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            if (!confirm(`⚠️ Сбросить прогресс игрока ${nick}?`)) return;
-            
-            const target = allPlayers.find(p => p.nickname === nick);
-            if (!target) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            localStorage.removeItem('imperiaClickerSave_' + target.deviceId);
-            topPlayers = topPlayers.filter(p => p.deviceId !== target.deviceId);
-            saveTopPlayers();
-            alert(`✅ Прогресс игрока ${nick} сброшен`);
-        }
-        
         // ========== ЭКРАН ПРИВЕТСТВИЯ ==========
         function showWelcomeScreen() {
             document.getElementById('header').style.display = 'none';
@@ -2419,9 +1928,6 @@
         }
         
         function startNewGame() {
-            const randomNick = generateRandomNickname();
-            currentUser = randomNick;
-            
             gameState = {
                 balance: 0,
                 diamonds: 10,
@@ -2447,6 +1953,7 @@
             
             document.getElementById('header').style.display = 'block';
             document.getElementById('bottomNav').style.display = 'flex';
+            document.getElementById('username').innerHTML = `👑 ${currentUser} <span class="warning-badge">⚠️ ЛОКАЛЬНО</span>`;
             
             updateUI();
             renderTab('home');
@@ -2464,28 +1971,20 @@
             const expNeeded = (gameState.level || 1) * 1000;
             const expPercent = ((gameState.exp || 0) / expNeeded) * 100;
             document.getElementById('levelProgress').style.width = Math.min(expPercent, 100) + '%';
-            
-            let usernameEl = document.getElementById('username');
-            let nameText = `👑 ${currentUser}`;
-            if (gameState.specialItem && gameState.specialItem.owned) {
-                nameText += ` <span class="suguru-badge">💎 СУГУРУ 💎</span>`;
-            }
-            if (isAdmin) {
-                nameText += ` <span class="admin-badge">👑 АДМИН 👑</span>`;
-            }
-            nameText += ` <span class="warning-badge">⚠️ ЛОКАЛЬНО</span>`;
-            usernameEl.innerHTML = nameText;
         }
         
+        // Новый приятный звук клика
         function playClickSound() {
             if (!settings.soundEnabled) return;
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Создаем основной тон
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
                 
                 oscillator.type = 'sine';
-                oscillator.frequency.value = 523.25;
+                oscillator.frequency.value = 523.25; // Нота До (приятный звук)
                 
                 gainNode.gain.value = 0.15;
                 gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
@@ -2496,11 +1995,12 @@
                 oscillator.start();
                 oscillator.stop(audioCtx.currentTime + 0.08);
                 
+                // Добавляем второй тон для объема
                 const oscillator2 = audioCtx.createOscillator();
                 const gainNode2 = audioCtx.createGain();
                 
                 oscillator2.type = 'triangle';
-                oscillator2.frequency.value = 659.25;
+                oscillator2.frequency.value = 659.25; // Нота Ми
                 
                 gainNode2.gain.value = 0.1;
                 gainNode2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
@@ -2604,6 +2104,7 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
+                            // Доход УМЕНЬШЕН на 50% (price/2000)
                             total += (price / 2000) * c.owned;
                         }
                     }
@@ -2617,7 +2118,7 @@
             content.innerHTML = `
                 <div id="home-content">
                     <div class="clicker-area" onclick="handleClick(event)">
-                        <div class="per-second ${isAdmin ? 'admin-theme' : ''}">⏱️ ДОХОД/СЕК: ${formatFullNumber(Math.floor(total))}</div>
+                        <div class="per-second">⏱️ ДОХОД/СЕК: ${formatFullNumber(Math.floor(total))}</div>
                         <div class="click-btn">
                             👆
                             <span>+${formatFullNumber(Math.floor(power))}</span>
@@ -2631,7 +2132,7 @@
         }
         
         function renderTop(content) {
-            loadTopPlayers();
+            updateTopPlayers();
             
             let html = '<div class="card"><div class="card-title">🏆 ТОП-100 ИГРОКОВ</div>';
             
@@ -2651,6 +2152,7 @@
                 
                 html += '<div style="margin-bottom:10px; text-align:center; color:#ffd700;">ПО ОБЩЕМУ ЗАРАБОТКУ</div>';
                 
+                // Показываем топ-20 игроков
                 topPlayers.slice(0, 20).forEach((player, index) => {
                     const rank = index + 1;
                     let rankClass = '';
@@ -2665,15 +2167,10 @@
                     
                     const isCurrentPlayer = player.deviceId === currentUserId;
                     
-                    let nameDisplay = player.nickname;
-                    if (player.hasSuguru) {
-                        nameDisplay += ` <span class="suguru-badge-small">💎</span>`;
-                    }
-                    
                     html += `
                         <div class="top-item" style="${isCurrentPlayer ? 'background: rgba(255,215,0,0.2); border:2px solid gold;' : ''}">
                             <div class="top-rank ${rankClass}">${rank}</div>
-                            <div class="top-name">${nameDisplay} ${isCurrentPlayer ? '👑' : ''}</div>
+                            <div class="top-name">${player.nickname} ${isCurrentPlayer ? '👑' : ''}</div>
                             <div class="top-money">${formatNumber(player.totalEarned)}💰</div>
                             ${rewardText ? `<div class="top-reward">${rewardText}</div>` : ''}
                         </div>
@@ -2977,10 +2474,11 @@
             });
         }
         
-        // ========== КРИПТА (рендер) ==========
+        // ========== КРИПТА (рендер с кнопкой портфеля) ==========
         function renderCrypto(content) {
             let html = '<div class="card"><div class="card-title">📈 КРИПТОРЫНОК</div>';
             
+            // Кнопка портфеля вверху
             let totalPortfolio = calculateTotalCryptoPortfolio();
             html += `
                 <div class="btn-crypto-portfolio" onclick="showCryptoPortfolio()">
@@ -2990,7 +2488,6 @@
             
             html += '<div style="text-align:center; margin-bottom:15px; color:#00c853; font-size:14px;">⏱️ Цены обновляются каждые 5 минут</div>';
             
-            // SuguruCoin специальный предмет (не в списке крипты)
             if (gameState.specialItem && !gameState.specialItem.owned) {
                 html += `
                     <div class="special-item" onclick="buySpecialItem()">
@@ -3018,11 +2515,14 @@
                 const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
                 const changeColor = priceChange >= 0 ? '#4CAF50' : '#f44336';
                 
+                // Доход: текущая цена / 2000 за штуку (УМЕНЬШЕНО на 50%)
                 const incomePerCoin = currentPrice / 2000;
                 const totalIncome = Math.floor(incomePerCoin * userCrypto.owned);
                 
+                // Проверка, распродана ли крипта
                 const isSoldOut = userCrypto.owned >= crypto.maxBuy;
                 
+                // Прибыль/убыток
                 const profit = calculateProfit(crypto.id, userCrypto.owned);
                 const profitSign = profit >= 0 ? '+' : '';
                 
@@ -3095,7 +2595,7 @@
                     <div class="collection-item" onclick="showCollection('${c.key}')">
                         <span>${c.emoji}</span>
                         <div class="collection-name">${c.name}</div>
-                        <div class="collection-owned">${c.count}/${gameState.collections[c.key].length}</div>
+                        <div class="collection-owned">${c.count}/20+</div>
                     </div>
                 `;
             });
@@ -3273,6 +2773,7 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
+                            // Доход УМЕНЬШЕН на 50%
                             totalIncome += (price / 2000) * c.owned;
                         }
                     }
@@ -3343,8 +2844,6 @@
                     <div style="margin-top:20px;">
                         <button class="btn btn-danger" onclick="resetGame()">🔄 СБРОСИТЬ ПРОГРЕСС</button>
                     </div>
-                    
-                    ${isAdmin ? '<div class="btn btn-danger" onclick="showAdminPanel()" style="margin-top:10px;">👑 АДМИН ПАНЕЛЬ</div>' : ''}
                 </div>
             `;
         }
@@ -3384,8 +2883,6 @@
                         <div class="info-text">🔧 ВЕРСИЯ: ${APP_VERSION}</div>
                         <div class="info-text"><a href="#" class="footer-link" onclick="alert('Политика конфиденциальности: Мы не собираем ваши данные. Вся информация хранится локально на вашем устройстве.'); return false;">🔒 ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a></div>
                     </div>
-                    
-                    ${isAdmin ? '<div class="btn btn-danger" onclick="showAdminPanel()" style="margin-top:20px;">👑 АДМИН ПАНЕЛЬ</div>' : ''}
                 </div>
             `;
         }
@@ -3415,19 +2912,10 @@
             const newNick = document.getElementById('nicknameInput').value.trim();
             if (!newNick) return;
             
-            if (newNick === ADMIN_SECRET && currentUser !== ADMIN_SECRET) {
-                if (confirm('⚠️ Войти как АДМИНИСТРАТОР?\n\nВы получите полный контроль над игрой!')) {
-                    currentUser = newNick;
-                    enableAdminMode();
-                } else {
-                    return;
-                }
-            } else {
-                currentUser = newNick;
-            }
+            currentUser = newNick;
+            document.getElementById('username').innerHTML = `👑 ${newNick} <span class="warning-badge">⚠️ ЛОКАЛЬНО</span>`;
             
             saveGame();
-            updateUI();
             closeNicknameModal();
             renderCurrentTab();
             updateTopPlayers();
@@ -3437,8 +2925,6 @@
             if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС?\n\nЭто действие необратимо!')) {
                 localStorage.removeItem('imperiaClickerSave_' + currentUserId);
                 localStorage.removeItem('imperiaTopPlayers');
-                localStorage.removeItem('imperiaAllPlayers');
-                localStorage.removeItem('imperiaBannedPlayers');
                 location.reload();
             }
         }
@@ -3470,6 +2956,7 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
+                            // Доход УМЕНЬШЕН на 50% в реальном времени
                             income += (price / 2000) * c.owned;
                         }
                     }
@@ -3491,13 +2978,16 @@
             saveGame();
         }, 1000);
         
+        // Обновление цен крипты каждые 5 минут (300000 мс)
         setInterval(() => {
             if (gameState) {
                 updateCryptoPrices();
+                // Если открыт раздел крипты, обновляем отображение
                 const activeTab = document.querySelector('.nav-item.active');
                 if (activeTab && activeTab.dataset.tab === 'crypto') {
                     renderTab('crypto');
                 }
+                // Если открыт портфель, тоже обновляем
                 const portfolioModal = document.getElementById('portfolioModal');
                 if (portfolioModal.classList.contains('active')) {
                     showCryptoPortfolio();
@@ -3505,6 +2995,7 @@
             }
         }, 300000);
         
+        // Обновление топа каждые 30 секунд
         setInterval(() => {
             if (gameState) {
                 updateTopPlayers();
@@ -3515,14 +3006,17 @@
             }
         }, 30000);
         
+        // Проверка недельных наград каждый час
         setInterval(() => {
             if (gameState) {
                 checkWeeklyRewards();
             }
         }, 3600000);
         
+        // Проверка улучшений
         setInterval(checkBusinessUpgrades, 1000);
         
+        // ========== НАВИГАЦИЯ ==========
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 if (!gameState) return;
@@ -3533,12 +3027,14 @@
             });
         });
         
+        // ========== ЗАПУСК ==========
         window.onload = function() {
             loadTopPlayers();
             
             if (loadGame()) {
                 document.getElementById('header').style.display = 'block';
                 document.getElementById('bottomNav').style.display = 'flex';
+                document.getElementById('username').innerHTML = `👑 ${currentUser} <span class="warning-badge">⚠️ ЛОКАЛЬНО</span>`;
                 
                 updateUI();
                 renderTab('home');
@@ -3575,20 +3071,7 @@
             window.saveNickname = saveNickname;
             window.toggleSound = toggleSound;
             window.toggleEffects = toggleEffects;
-            window.showAdminPanel = showAdminPanel;
-            window.closeAdminModal = closeAdminModal;
-            window.adminGiveMoney = adminGiveMoney;
-            window.adminGiveSelfMoney = adminGiveSelfMoney;
-            window.adminGiveSelfDiamonds = adminGiveSelfDiamonds;
-            window.adminGiveDiamonds = adminGiveDiamonds;
-            window.adminGiveCrypto = adminGiveCrypto;
-            window.adminGiveBusiness = adminGiveBusiness;
-            window.adminLevelUp = adminLevelUp;
-            window.adminBanPlayer = adminBanPlayer;
-            window.adminRemoveFromTop = adminRemoveFromTop;
-            window.adminResetPlayer = adminResetPlayer;
         };
     </script>
 </body>
 </html>
-```
