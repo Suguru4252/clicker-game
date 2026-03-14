@@ -34,10 +34,6 @@
             padding: 5px;
         }
         
-        body.admin-mode {
-            background: linear-gradient(135deg, #2a0000 0%, #4a0000 100%);
-        }
-        
         .app-container {
             width: 100%;
             max-width: 400px;
@@ -46,146 +42,97 @@
             backdrop-filter: blur(10px);
             border-radius: 25px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
             display: flex;
             flex-direction: column;
             border: 2px solid #ffd700;
             overscroll-behavior: contain;
         }
         
-        .app-container.admin-app {
-            border: 3px solid #ff0000;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
-            animation: adminPulse 2s infinite;
-        }
-        
-        @keyframes adminPulse {
-            0% { border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
-            50% { border-color: #ff6666; box-shadow: 0 0 40px rgba(255, 0, 0, 0.8); }
-            100% { border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
-        }
-        
         .header {
             background: linear-gradient(135deg, #2a1b3d 0%, #1a0f2a 100%);
             color: white;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
-            border-bottom: 3px solid #ffd700;
+            border-bottom: 2px solid #ffd700;
             flex-shrink: 0;
         }
         
-        .header.admin-header {
-            background: linear-gradient(135deg, #3d1b1b 0%, #2a0f0f 100%);
-            border-bottom: 3px solid #ff0000;
-        }
-        
         .username {
-            font-size: 16px;
+            font-size: 15px;
             color: #ffd700;
             font-weight: bold;
             display: inline-block;
-            padding: 5px 15px;
+            padding: 4px 12px;
             border-radius: 30px;
             background: rgba(0,0,0,0.3);
             cursor: pointer;
-            position: relative;
-        }
-        
-        .username.admin-username {
-            color: #ff6666;
-            animation: adminGlow 1s infinite;
         }
         
         .suguru-badge {
             background: linear-gradient(135deg, #ffd700, #ff00ff);
             color: black;
             font-weight: bold;
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 20px;
-            font-size: 12px;
-            margin-left: 8px;
+            font-size: 11px;
+            margin-left: 5px;
             display: inline-block;
-            border: 1px solid white;
-            animation: badgeGlow 2s infinite;
-        }
-        
-        @keyframes badgeGlow {
-            0% { box-shadow: 0 0 5px #ffd700; }
-            50% { box-shadow: 0 0 15px #ff00ff; }
-            100% { box-shadow: 0 0 5px #ffd700; }
-        }
-        
-        @keyframes adminGlow {
-            0% { text-shadow: 0 0 5px #ff0000; }
-            50% { text-shadow: 0 0 20px #ff6666; }
-            100% { text-shadow: 0 0 5px #ff0000; }
         }
         
         .warning-badge {
-            background: rgba(255, 0, 0, 0.25);
-            border: 2px solid #ff3333;
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff3333;
             border-radius: 30px;
-            padding: 5px 10px;
-            font-size: 11px;
+            padding: 4px 8px;
+            font-size: 10px;
             display: inline-block;
             color: #ff3333;
-            margin-left: 10px;
-            animation: pulse 2s infinite;
+            margin-left: 8px;
         }
         
         .offline-badge {
-            background: rgba(255, 215, 0, 0.25);
-            border: 2px solid #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
             border-radius: 30px;
-            padding: 8px 15px;
-            font-size: 14px;
+            padding: 6px 12px;
+            font-size: 13px;
             display: inline-block;
             color: #ffd700;
-            margin: 5px 0;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
+            margin: 4px 0;
         }
         
         .balance-container {
             display: flex;
             justify-content: space-between;
-            gap: 8px;
-            margin: 15px 0;
+            gap: 5px;
+            margin: 12px 0;
         }
         
         .balance-box {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 12px 5px;
-            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 3px;
+            border-radius: 12px;
             flex: 1;
-            border: 2px solid rgba(255, 215, 0, 0.5);
-        }
-        
-        .balance-box.admin-balance {
-            border-color: #ff0000;
+            border: 1px solid rgba(255, 215, 0, 0.5);
         }
         
         .balance-label {
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.9;
         }
         
         .balance-value {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             color: #ffd700;
         }
         
         .level-bar {
-            background: rgba(255, 255, 255, 0.2);
-            height: 8px;
-            border-radius: 4px;
-            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.15);
+            height: 6px;
+            border-radius: 3px;
+            margin: 8px 0;
             overflow: hidden;
         }
         
@@ -193,13 +140,13 @@
             height: 100%;
             background: linear-gradient(90deg, #ffd700, #ffaa00);
             width: 0%;
-            border-radius: 4px;
+            border-radius: 3px;
         }
         
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 15px;
+            padding: 12px;
             color: white;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
@@ -213,7 +160,7 @@
         #home-content {
             min-height: 100%;
             cursor: pointer;
-            padding: 10px 0;
+            padding: 8px 0;
         }
         
         .clicker-area {
@@ -225,99 +172,90 @@
             background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
             border: none;
             border-radius: 50%;
-            width: 200px;
-            height: 200px;
-            font-size: 60px;
+            width: 180px;
+            height: 180px;
+            font-size: 50px;
             color: white;
-            margin: 20px auto;
+            margin: 15px auto;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 4px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.6);
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
             cursor: pointer;
-            position: relative;
-            z-index: 5;
-            pointer-events: auto;
-            transition: transform 0.1s;
+            transition: transform 0.05s;
         }
         
         .click-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.97);
         }
         
         .click-btn span {
-            font-size: 20px;
-            margin-top: 10px;
+            font-size: 18px;
+            margin-top: 8px;
         }
         
         .per-second {
             color: #4CAF50;
-            font-size: 18px;
-            margin: 10px 0;
+            font-size: 16px;
+            margin: 8px 0;
             font-weight: bold;
             cursor: pointer;
         }
         
         .offline-earnings {
-            background: rgba(255, 215, 0, 0.15);
-            border: 2px solid #ffd700;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 15px 0;
-            font-size: 16px;
-            animation: pulse 2s infinite;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
         }
         
         .card {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .card-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             color: #ffd700;
             text-align: center;
-            border-bottom: 2px solid #ffd700;
-            padding-bottom: 10px;
+            border-bottom: 1px solid #ffd700;
+            padding-bottom: 8px;
         }
         
         .btn {
             background: linear-gradient(135deg, #3a2a4d 0%, #2a1a3d 100%);
-            border: 2px solid #ffd700;
+            border: 1px solid #ffd700;
             color: white;
-            padding: 18px 25px;
-            border-radius: 40px;
+            padding: 14px 20px;
+            border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            margin: 10px 0;
-            font-size: 18px;
-            transition: transform 0.2s;
+            margin: 8px 0;
+            font-size: 16px;
+            transition: transform 0.05s;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
         
         .btn:active {
-            transform: scale(0.97);
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            transform: scale(0.98);
         }
         
         .btn-gold {
             background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
             color: black;
-            font-weight: bold;
         }
         
         .btn-danger {
@@ -325,48 +263,15 @@
             color: white;
         }
         
-        .btn-warning {
-            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
-            color: white;
-            font-weight: bold;
-        }
-        
-        .btn-crypto {
-            background: linear-gradient(135deg, #00c853 0%, #009624 100%);
-            border: 2px solid #ffd700;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-            margin: 5px;
-            flex: 1;
-        }
-        
-        .btn-crypto-portfolio {
-            background: linear-gradient(135deg, #7b1fa2 0%, #4a0072 100%);
-            border: 2px solid #ffd700;
-            color: white;
-            padding: 12px 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin: 5px 0 15px 0;
-            font-size: 16px;
-            text-align: center;
-        }
-        
         .input-field {
             background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             border-radius: 30px;
-            padding: 15px 20px;
+            padding: 12px 16px;
             width: 100%;
-            margin: 10px 0;
+            margin: 8px 0;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
         }
         
@@ -374,89 +279,81 @@
             border-color: #ffd700;
         }
         
-        .input-field::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
         .welcome-screen {
             display: flex;
             flex-direction: column;
             justify-content: center;
             min-height: 100%;
-            padding: 20px;
+            padding: 16px;
         }
         
         .welcome-title {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             color: #ffd700;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         
         .welcome-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            border: 2px solid #ffd700;
-            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #ffd700;
+            margin-bottom: 16px;
             text-align: center;
         }
         
         .warning-box {
-            background: rgba(255, 0, 0, 0.15);
-            border: 2px solid #ff3333;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff3333;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
             text-align: left;
         }
         
         .warning-box h3 {
             color: #ff3333;
-            margin-bottom: 10px;
-            font-size: 18px;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
         
         .warning-box ul {
             color: #ff9999;
-            margin-left: 20px;
-            font-size: 14px;
+            margin-left: 16px;
+            font-size: 13px;
         }
         
         .warning-box li {
-            margin: 10px 0;
+            margin: 5px 0;
         }
         
         .agree-checkbox {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 16px 0;
             color: white;
         }
         
         .agree-checkbox input {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
         }
         
         .bottom-nav {
             display: flex;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 10px 5px;
-            gap: 5px;
-            border-top: 3px solid #ffd700;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 8px 3px;
+            gap: 2px;
+            border-top: 2px solid #ffd700;
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             white-space: nowrap;
             flex-shrink: 0;
-        }
-        
-        .bottom-nav.admin-nav {
-            border-top-color: #ff0000;
         }
         
         .bottom-nav::-webkit-scrollbar {
@@ -466,191 +363,129 @@
         .nav-item {
             flex: 0 0 auto;
             text-align: center;
-            padding: 12px 15px;
+            padding: 8px 10px;
             color: rgba(255, 255, 255, 0.6);
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 11px;
-            transition: all 0.3s;
-            min-width: 70px;
+            font-size: 10px;
+            min-width: 60px;
         }
         
         .nav-item span {
-            font-size: 22px;
+            font-size: 18px;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         
         .nav-item.active {
             color: #ffd700;
-            background: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.15);
             border: 1px solid #ffd700;
         }
         
-        .nav-item.admin-active {
-            color: #ff0000;
-            background: rgba(255, 0, 0, 0.2);
-            border-color: #ff0000;
-        }
-        
         .shop-item {
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-        }
-        
-        .item-info {
-            flex: 1;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .item-name {
             font-weight: bold;
             color: #ffd700;
-            font-size: 18px;
-            margin-bottom: 5px;
+            font-size: 16px;
+            margin-bottom: 3px;
         }
         
         .item-price {
             color: #4CAF50;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .buy-btn {
             background: linear-gradient(135deg, #4a2a6a 0%, #3a1a5a 100%);
-            border: 2px solid #ffd700;
+            border: 1px solid #ffd700;
             color: white;
-            padding: 15px 25px;
+            padding: 10px 18px;
             border-radius: 30px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-        }
-        
-        .property-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .property-category {
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 20px;
-            padding: 25px 10px;
-            text-align: center;
-            cursor: pointer;
-            border: 2px solid rgba(255, 215, 0, 0.4);
-        }
-        
-        .property-category span {
-            font-size: 48px;
-            display: block;
-            margin-bottom: 15px;
-        }
-        
-        .category-name {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-        
-        .category-count {
-            font-size: 16px;
-            color: #ffd700;
-            font-weight: bold;
         }
         
         .property-item {
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            gap: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .property-emoji {
-            font-size: 42px;
-            width: 70px;
+            font-size: 32px;
+            width: 50px;
             text-align: center;
-        }
-        
-        .property-details {
-            flex: 1;
         }
         
         .property-title {
             font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 5px;
+            font-size: 16px;
+            margin-bottom: 3px;
         }
         
         .property-price {
             color: #ffd700;
-            font-size: 16px;
-        }
-        
-        .property-income {
-            color: #4CAF50;
             font-size: 14px;
-        }
-        
-        .property-owned {
-            background: #2e7d32;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: bold;
         }
         
         .business-item {
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
             cursor: pointer;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .business-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .business-name {
             font-weight: bold;
             color: #ffd700;
-            font-size: 20px;
+            font-size: 18px;
         }
         
         .business-level {
             color: #4CAF50;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
         }
         
         .business-stats {
             display: flex;
             justify-content: space-between;
-            font-size: 15px;
-            margin: 10px 0;
+            font-size: 13px;
+            margin: 6px 0;
         }
         
         .business-progress {
-            background: rgba(255, 255, 255, 0.15);
-            height: 8px;
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 3px;
             overflow: hidden;
-            margin: 10px 0;
+            margin: 8px 0;
         }
         
         .business-bar {
@@ -660,45 +495,40 @@
         }
         
         .upgrade-time {
-            font-size: 14px;
+            font-size: 12px;
             color: #ff9800;
         }
         
         .crypto-item {
-            background: rgba(0, 200, 83, 0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 12px;
+            background: rgba(0, 200, 83, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 2px solid #00c853;
+            border: 1px solid #00c853;
         }
         
         .crypto-name {
             font-weight: bold;
             color: #00c853;
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .crypto-price {
             color: #ffd700;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .crypto-owned {
             color: #4CAF50;
-            font-size: 14px;
+            font-size: 12px;
         }
         
         .crypto-profit {
             color: #ff9800;
-            font-size: 12px;
-        }
-        
-        .crypto-change {
-            font-size: 12px;
-            margin-left: 5px;
+            font-size: 11px;
         }
         
         .crypto-actions {
@@ -710,145 +540,103 @@
             background: rgba(255,255,255,0.1);
             border: 1px solid #00c853;
             color: white;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 12px;
             cursor: pointer;
-        }
-        
-        .crypto-portfolio-stats {
-            background: rgba(123, 31, 162, 0.2);
-            border: 2px solid #7b1fa2;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 10px 0 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-        
-        .crypto-portfolio-label {
-            font-size: 14px;
-            color: #b39ddb;
-        }
-        
-        .crypto-portfolio-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffd700;
         }
         
         .collection-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
         
         .collection-item {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 15px 5px;
+            border-radius: 12px;
+            padding: 12px 3px;
             text-align: center;
             cursor: pointer;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .collection-item span {
-            font-size: 32px;
+            font-size: 28px;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         
         .collection-name {
-            font-size: 12px;
+            font-size: 11px;
             color: #ffd700;
         }
         
         .collection-owned {
-            font-size: 11px;
+            font-size: 10px;
             color: #4CAF50;
         }
         
         .collection-detail {
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            gap: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .collection-emoji {
-            font-size: 42px;
-            width: 70px;
+            font-size: 32px;
+            width: 50px;
             text-align: center;
-        }
-        
-        .collection-details {
-            flex: 1;
         }
         
         .collection-title {
             font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 5px;
+            font-size: 16px;
+            margin-bottom: 3px;
         }
         
         .collection-price {
             color: #ffd700;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .special-item {
-            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,0,255,0.2));
-            border: 3px solid #ff00ff;
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px 0;
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,0,255,0.15));
+            border: 2px solid #ff00ff;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px 0;
             text-align: center;
-            animation: glow 2s infinite;
-        }
-        
-        @keyframes glow {
-            0% { box-shadow: 0 0 10px #ff00ff; }
-            50% { box-shadow: 0 0 30px #ff00ff; }
-            100% { box-shadow: 0 0 10px #ff00ff; }
         }
         
         .special-emoji {
-            font-size: 64px;
-            margin-bottom: 10px;
+            font-size: 48px;
+            margin-bottom: 8px;
         }
         
         .special-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: #ff00ff;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .special-price {
-            font-size: 18px;
+            font-size: 16px;
             color: #ffd700;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .special-income {
-            font-size: 16px;
+            font-size: 14px;
             color: #4CAF50;
-            margin-bottom: 15px;
-        }
-        
-        .special-owned {
-            background: #ff00ff;
-            color: black;
-            padding: 10px;
-            border-radius: 30px;
-            font-weight: bold;
+            margin-bottom: 12px;
         }
         
         .modal {
@@ -858,7 +646,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.98);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -870,24 +658,20 @@
         
         .modal-content {
             background: #1a1025;
-            border-radius: 30px;
-            padding: 30px;
-            max-width: 350px;
+            border-radius: 24px;
+            padding: 24px;
+            max-width: 340px;
             width: 90%;
             color: white;
-            border: 3px solid #ffd700;
+            border: 2px solid #ffd700;
             max-height: 80vh;
             overflow-y: auto;
         }
         
-        .modal-content.admin-modal {
-            border: 3px solid #ff0000;
-        }
-        
         .modal-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             color: #ffd700;
             text-align: center;
         }
@@ -895,42 +679,42 @@
         .close-btn {
             background: #f44336;
             color: white;
-            padding: 12px 20px;
+            padding: 10px 16px;
             border-radius: 30px;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 12px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             border: 1px solid #ffd700;
         }
         
         .sell-btn {
             background: #ff9800;
             color: white;
-            padding: 12px 20px;
+            padding: 10px 16px;
             border-radius: 30px;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             border: 1px solid #ffd700;
         }
         
         .top-item {
             display: flex;
             align-items: center;
-            padding: 12px;
-            margin-bottom: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 10px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
         
         .top-rank {
-            width: 40px;
-            font-size: 18px;
+            width: 30px;
+            font-size: 16px;
             font-weight: bold;
             text-align: center;
         }
@@ -941,7 +725,7 @@
         
         .top-name {
             flex: 1;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             white-space: nowrap;
             overflow: hidden;
@@ -949,23 +733,23 @@
         }
         
         .top-money {
-            font-size: 16px;
+            font-size: 14px;
             color: #ffd700;
             font-weight: bold;
-            margin-left: 10px;
+            margin-left: 8px;
         }
         
         .top-reward {
-            font-size: 12px;
+            font-size: 11px;
             color: #4CAF50;
-            margin-left: 10px;
+            margin-left: 8px;
         }
         
         .top-update-time {
-            font-size: 12px;
+            font-size: 11px;
             color: rgba(255,255,255,0.5);
             text-align: center;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         
         .hidden {
@@ -976,65 +760,72 @@
             position: fixed;
             color: #ffd700;
             font-weight: bold;
-            font-size: 24px;
+            font-size: 20px;
             pointer-events: none;
             z-index: 9999;
-            text-shadow: 0 0 10px #ffaa00;
-            animation: floatUp 1s ease-out forwards;
+            animation: floatUp 0.8s ease-out forwards;
         }
         
         @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-60px); }
         }
         
         .settings-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
+        
         .settings-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            margin-bottom: 10px;
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 8px;
         }
+        
         .settings-label {
-            font-size: 16px;
+            font-size: 14px;
         }
+        
         .settings-switch {
-            width: 50px;
-            height: 26px;
+            width: 44px;
+            height: 24px;
             background: rgba(255,255,255,0.2);
             border-radius: 30px;
             position: relative;
             cursor: pointer;
-            border: 2px solid #ffd700;
+            border: 1px solid #ffd700;
         }
+        
         .settings-switch.active {
             background: #ffd700;
         }
+        
         .settings-switch::after {
             content: '';
             position: absolute;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             background: white;
             border-radius: 50%;
-            top: 0;
-            left: 0;
-            transition: 0.2s;
+            top: 1px;
+            left: 1px;
+            transition: 0.1s;
         }
+        
         .settings-switch.active::after {
-            left: 24px;
+            left: 21px;
         }
+        
         .info-text {
             color: rgba(255,255,255,0.7);
-            font-size: 14px;
+            font-size: 12px;
             text-align: center;
-            margin: 10px 0;
+            margin: 8px 0;
         }
+        
         .footer-link {
             color: #ffd700;
             text-decoration: none;
@@ -1043,29 +834,29 @@
         }
         
         .version-text {
-            font-size: 12px;
+            font-size: 11px;
             color: rgba(255,255,255,0.5);
             text-align: center;
             margin-top: 5px;
         }
         
         .quick-amount-btn {
-            background: rgba(255,215,0,0.2);
+            background: rgba(255,215,0,0.15);
             border: 1px solid #ffd700;
             color: white;
-            padding: 8px 12px;
-            border-radius: 15px;
-            font-size: 14px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 12px;
             cursor: pointer;
             text-align: center;
             flex: 1;
-            margin: 5px;
+            margin: 3px;
         }
         
         .quick-amount-container {
             display: flex;
-            gap: 5px;
-            margin: 15px 0;
+            gap: 3px;
+            margin: 12px 0;
             flex-wrap: wrap;
         }
         
@@ -1076,36 +867,18 @@
         .profit-down {
             color: #f44336;
         }
-
+        
         .admin-panel-btn {
             background: linear-gradient(135deg, #ff4444 0%, #aa0000 100%);
-            border: 2px solid #ffd700;
+            border: 1px solid #ffd700;
             color: white;
-            padding: 15px;
+            padding: 12px;
             border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
             text-align: center;
-            margin: 10px 0;
-            font-size: 18px;
-            animation: adminBtnPulse 1.5s infinite;
-        }
-
-        @keyframes adminBtnPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        .admin-action {
-            background: linear-gradient(135deg, #ff6666 0%, #cc0000 100%);
-            border: 1px solid #ffd700;
-            color: white;
-            padding: 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            margin: 5px;
-            font-size: 14px;
+            margin: 8px 0;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -1160,10 +933,6 @@
         <div class="modal-content" id="collectionModalContent"></div>
     </div>
     
-    <div class="modal" id="cryptoModal">
-        <div class="modal-content" id="cryptoModalContent"></div>
-    </div>
-    
     <div class="modal" id="portfolioModal">
         <div class="modal-content" id="portfolioModalContent"></div>
     </div>
@@ -1187,7 +956,7 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '2.3.3';
+        const APP_VERSION = '2.4.0';
         const ADMIN_SECRET = '2a3d4g5j';
         let currentUser = "ИГРОК";
         let currentUserId = null;
@@ -1199,10 +968,84 @@
             effectsEnabled: true
         };
         
-        // ========== ТОП-100 ==========
-        let topPlayers = [];
+        // ========== ОБЛАЧНОЕ ХРАНИЛИЩЕ ==========
+        let allPlayers = []; // Все игроки, когда-либо заходившие в игру
         
-        // Генерируем уникальный ID для этого устройства
+        // Загружаем всех игроков
+        function loadAllPlayers() {
+            const saved = localStorage.getItem('imperiaAllPlayers');
+            if (saved) {
+                try {
+                    allPlayers = JSON.parse(saved);
+                } catch(e) {
+                    allPlayers = [];
+                }
+            } else {
+                allPlayers = [];
+            }
+        }
+        
+        // Сохраняем всех игроков
+        function saveAllPlayers() {
+            // Удаляем дубликаты по deviceId
+            const uniquePlayers = [];
+            const seen = new Set();
+            for (const player of allPlayers) {
+                if (!seen.has(player.deviceId)) {
+                    seen.add(player.deviceId);
+                    uniquePlayers.push(player);
+                }
+            }
+            allPlayers = uniquePlayers;
+            
+            // Сортируем по заработку
+            allPlayers.sort((a, b) => (b.totalEarned || 0) - (a.totalEarned || 0));
+            
+            // Ограничиваем до 1000 игроков для производительности
+            if (allPlayers.length > 1000) {
+                allPlayers = allPlayers.slice(0, 1000);
+            }
+            
+            localStorage.setItem('imperiaAllPlayers', JSON.stringify(allPlayers));
+        }
+        
+        // Обновляем игрока в общем списке
+        function updatePlayerInAllPlayers() {
+            if (!gameState) return;
+            
+            // Не сохраняем админа в общий список
+            if (currentUser === ADMIN_SECRET) return;
+            
+            const existingIndex = allPlayers.findIndex(p => p.deviceId === currentUserId);
+            
+            const playerData = {
+                deviceId: currentUserId,
+                nickname: currentUser,
+                totalEarned: gameState.totalEarned || 0,
+                lastUpdate: Date.now(),
+                hasSuguru: gameState.specialItem && gameState.specialItem.owned || false
+            };
+            
+            if (existingIndex >= 0) {
+                allPlayers[existingIndex] = playerData;
+            } else {
+                allPlayers.push(playerData);
+            }
+            
+            saveAllPlayers();
+        }
+        
+        // Получаем топ-100 игроков
+        function getTopPlayers() {
+            // Фильтруем админа
+            const filtered = allPlayers.filter(p => p.nickname !== ADMIN_SECRET);
+            // Сортируем по заработку
+            filtered.sort((a, b) => (b.totalEarned || 0) - (a.totalEarned || 0));
+            // Берем топ-100
+            return filtered.slice(0, 100);
+        }
+        
+        // ========== ГЕНЕРАЦИЯ ID ==========
         function getDeviceId() {
             let deviceId = localStorage.getItem('deviceId');
             if (!deviceId) {
@@ -1226,17 +1069,7 @@
                 { id: 6, name: "ВИЛЛА", emoji: "🏛️", price: 10000000, owned: false },
                 { id: 7, name: "ЗАМОК", emoji: "🏯", price: 50000000, owned: false },
                 { id: 8, name: "ДВОРЕЦ", emoji: "🕌", price: 100000000, owned: false },
-                { id: 9, name: "НЕБОСКРЕБ", emoji: "🏙️", price: 500000000, owned: false },
-                { id: 10, name: "ОСТРОВ", emoji: "🏝️", price: 1000000000, owned: false },
-                { id: 11, name: "КОСМИЧЕСКАЯ СТАНЦИЯ", emoji: "🚀", price: 5000000000, owned: false },
-                { id: 12, name: "ЛУННАЯ БАЗА", emoji: "🌕", price: 10000000000, owned: false },
-                { id: 13, name: "МАРСИАНСКАЯ КОЛОНИЯ", emoji: "🔴", price: 50000000000, owned: false },
-                { id: 14, name: "СФЕРА ДАЙСОНА", emoji: "⚪", price: 100000000000, owned: false },
-                { id: 15, name: "МУЛЬТИВСЕЛЕННАЯ", emoji: "🌌", price: 500000000000, owned: false },
-                { id: 16, name: "РАЙСКИЙ САД", emoji: "🌺", price: 1000000000000, owned: false },
-                { id: 17, name: "ХРУСТАЛЬНЫЙ ДВОРЕЦ", emoji: "💎", price: 5000000000000, owned: false },
-                { id: 18, name: "ЗОЛОТОЙ ХРАМ", emoji: "🏯", price: 10000000000000, owned: false },
-                { id: 19, name: "ИМПЕРИЯ", emoji: "👑", price: 50000000000000, owned: false }
+                { id: 9, name: "НЕБОСКРЕБ", emoji: "🏙️", price: 500000000, owned: false }
             ],
             cars: [
                 { id: 0, name: "ЛАДА ГРАНТА", emoji: "🚗", price: 20000, owned: false },
@@ -1248,17 +1081,7 @@
                 { id: 6, name: "MERCEDES E-CLASS", emoji: "🚘", price: 500000, owned: false },
                 { id: 7, name: "BMW X5", emoji: "🚙", price: 800000, owned: false },
                 { id: 8, name: "AUDI R8", emoji: "🚗", price: 1500000, owned: false },
-                { id: 9, name: "PORSCHE 911", emoji: "🏎️", price: 3000000, owned: false },
-                { id: 10, name: "LAMBORGHINI AVENTADOR", emoji: "🚀", price: 10000000, owned: false },
-                { id: 11, name: "FERRARI LA FERRARI", emoji: "🔥", price: 30000000, owned: false },
-                { id: 12, name: "BUGATTI VEYRON", emoji: "💨", price: 100000000, owned: false },
-                { id: 13, name: "KOENIGSEGG AGERA", emoji: "⚡", price: 300000000, owned: false },
-                { id: 14, name: "PAGANI ZONDA", emoji: "🌀", price: 500000000, owned: false },
-                { id: 15, name: "LYKAN HYPERSPORT", emoji: "👽", price: 1000000000, owned: false },
-                { id: 16, name: "DEVEL SIXTEEN", emoji: "💥", price: 3000000000, owned: false },
-                { id: 17, name: "THRUST SSC", emoji: "📏", price: 10000000000, owned: false },
-                { id: 18, name: "BLOODHOUND SSC", emoji: "🎯", price: 30000000000, owned: false },
-                { id: 19, name: "СВЕТОВОЙ МОТОЦИКЛ", emoji: "✨", price: 100000000000, owned: false }
+                { id: 9, name: "PORSCHE 911", emoji: "🏎️", price: 3000000, owned: false }
             ],
             planes: [
                 { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 50000, owned: false },
@@ -1270,17 +1093,7 @@
                 { id: 6, name: "CONCORDE", emoji: "⚡", price: 10000000, owned: false },
                 { id: 7, name: "F-22 RAPTOR", emoji: "🎯", price: 30000000, owned: false },
                 { id: 8, name: "SR-71 BLACKBIRD", emoji: "🕶️", price: 50000000, owned: false },
-                { id: 9, name: "B-2 SPIRIT", emoji: "👻", price: 100000000, owned: false },
-                { id: 10, name: "АН-225 МРИЯ", emoji: "🏆", price: 300000000, owned: false },
-                { id: 11, name: "КОСМИЧЕСКИЙ ШАТТЛ", emoji: "🚀", price: 1000000000, owned: false },
-                { id: 12, name: "STARSHIP", emoji: "⭐", price: 3000000000, owned: false },
-                { id: 13, name: "ЛУННЫЙ МОДУЛЬ", emoji: "🌕", price: 10000000000, owned: false },
-                { id: 14, name: "МАРСОХОД", emoji: "🔴", price: 30000000000, owned: false },
-                { id: 15, name: "ЗВЕЗДА СМЕРТИ", emoji: "💀", price: 100000000000, owned: false },
-                { id: 16, name: "ТЫСЯЧЕЛЕТНИЙ СОКОЛ", emoji: "🛸", price: 300000000000, owned: false },
-                { id: 17, name: "ЭНТЕРПРАЙЗ", emoji: "🖖", price: 1000000000000, owned: false },
-                { id: 18, name: "ТАРДИС", emoji: "📞", price: 3000000000000, owned: false },
-                { id: 19, name: "СВЕТОВОЙ КОРАБЛЬ", emoji: "✨", price: 10000000000000, owned: false }
+                { id: 9, name: "B-2 SPIRIT", emoji: "👻", price: 100000000, owned: false }
             ],
             ships: [
                 { id: 0, name: "ЛОДКА", emoji: "🛶", price: 10000, owned: false },
@@ -1292,17 +1105,7 @@
                 { id: 6, name: "ТАНКЕР", emoji: "⛽", price: 10000000, owned: false },
                 { id: 7, name: "КОНТЕЙНЕРОВОЗ", emoji: "📦", price: 20000000, owned: false },
                 { id: 8, name: "ЛЕДОКОЛ", emoji: "❄️", price: 50000000, owned: false },
-                { id: 9, name: "АВИАНОСЕЦ", emoji: "🛩️", price: 100000000, owned: false },
-                { id: 10, name: "ПОДВОДНАЯ ЛОДКА", emoji: "🐟", price: 200000000, owned: false },
-                { id: 11, name: "ТИТАНИК", emoji: "🧊", price: 500000000, owned: false },
-                { id: 12, name: "БИСМАРК", emoji: "⚔️", price: 1000000000, owned: false },
-                { id: 13, name: "ЯМАТО", emoji: "🗾", price: 2000000000, owned: false },
-                { id: 14, name: "МИССУРИ", emoji: "🇺🇸", price: 5000000000, owned: false },
-                { id: 15, name: "АДМИРАЛ КУЗНЕЦОВ", emoji: "🇷🇺", price: 10000000000, owned: false },
-                { id: 16, name: "ПИРАТСКИЙ КОРАБЛЬ", emoji: "🏴‍☠️", price: 20000000000, owned: false },
-                { id: 17, name: "ЛЕТУЧИЙ ГОЛЛАНДЕЦ", emoji: "👻", price: 50000000000, owned: false },
-                { id: 18, name: "КОВЧЕГ", emoji: "🌈", price: 100000000000, owned: false },
-                { id: 19, name: "ПОСЕЙДОН", emoji: "🌊", price: 200000000000, owned: false }
+                { id: 9, name: "АВИАНОСЕЦ", emoji: "🛩️", price: 100000000, owned: false }
             ],
             art: [
                 { id: 0, name: "МОНА ЛИЗА", emoji: "🖼️", price: 1000000, owned: false },
@@ -1314,17 +1117,7 @@
                 { id: 6, name: "СОТВОРЕНИЕ АДАМА", emoji: "👆", price: 7000000, owned: false },
                 { id: 7, name: "ТАЙНАЯ ВЕЧЕРЯ", emoji: "🍞", price: 8000000, owned: false },
                 { id: 8, name: "СИКСТИНСКАЯ МАДОННА", emoji: "👼", price: 9000000, owned: false },
-                { id: 9, name: "САД ЗЕМНЫХ НАСЛАЖДЕНИЙ", emoji: "🌳", price: 10000000, owned: false },
-                { id: 10, name: "ВАВИЛОНСКАЯ БАШНЯ", emoji: "🗼", price: 15000000, owned: false },
-                { id: 11, name: "ПЛЮЩ", emoji: "🌿", price: 20000000, owned: false },
-                { id: 12, name: "МАКИ", emoji: "🌹", price: 25000000, owned: false },
-                { id: 13, name: "ПОДСОЛНУХИ", emoji: "🌻", price: 30000000, owned: false },
-                { id: 14, name: "ИРИСЫ", emoji: "🌸", price: 35000000, owned: false },
-                { id: 15, name: "КУВШИНКИ", emoji: "💮", price: 40000000, owned: false },
-                { id: 16, name: "БАЛ В МУЛЕН РУЖ", emoji: "💃", price: 45000000, owned: false },
-                { id: 17, name: "АБСЕНТ", emoji: "🍸", price: 50000000, owned: false },
-                { id: 18, name: "ТАНЦЕВАЛЬНЫЙ КЛАСС", emoji: "🩰", price: 55000000, owned: false },
-                { id: 19, name: "БАЛЕТНАЯ ПАЧКА", emoji: "🎭", price: 60000000, owned: false }
+                { id: 9, name: "САД ЗЕМНЫХ НАСЛАЖДЕНИЙ", emoji: "🌳", price: 10000000, owned: false }
             ]
         };
         
@@ -1339,17 +1132,7 @@
             { id: 6, name: "AVALANCHE", emoji: "AVAX", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
             { id: 7, name: "CHAINLINK", emoji: "LINK", basePrice: 15000, maxBuy: 5000000000, volatility: 0.45 },
             { id: 8, name: "POLYGON", emoji: "MATIC", basePrice: 10000, maxBuy: 5000000000, volatility: 0.45 },
-            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45 },
-            { id: 10, name: "RIPPLE", emoji: "XRP", basePrice: 5000, maxBuy: 5000000000, volatility: 0.5 },
-            { id: 11, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, maxBuy: 5000000000, volatility: 0.6 },
-            { id: 12, name: "SHIBA INU", emoji: "🐕", basePrice: 500, maxBuy: 5000000000, volatility: 0.7 },
-            { id: 13, name: "PEPE", emoji: "🐸", basePrice: 100, maxBuy: 5000000000, volatility: 0.8 },
-            { id: 14, name: "WOJAK", emoji: "😩", basePrice: 50, maxBuy: 5000000000, volatility: 0.9 },
-            { id: 15, name: "BONK", emoji: "🦴", basePrice: 25, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0 },
-            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0 }
+            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45 }
         ];
         
         // Текущие цены крипты
@@ -1365,7 +1148,6 @@
             price: 777777777777777,
             income: 777,
             owned: false,
-            bought: false,
             revealed: false
         };
         
@@ -1399,74 +1181,6 @@
         
         function formatFullNumber(num) {
             return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        
-        // ========== ТОП-100 ==========
-        function loadTopPlayers() {
-            const saved = localStorage.getItem('imperiaTopPlayers');
-            if (saved) {
-                try {
-                    topPlayers = JSON.parse(saved);
-                } catch(e) {
-                    topPlayers = [];
-                }
-            } else {
-                topPlayers = [];
-            }
-            
-            // Удаляем админа из топа при загрузке
-            topPlayers = topPlayers.filter(p => p.nickname !== ADMIN_SECRET);
-        }
-        
-        function saveTopPlayers() {
-            topPlayers.sort((a, b) => b.totalEarned - a.totalEarned);
-            if (topPlayers.length > 100) {
-                topPlayers = topPlayers.slice(0, 100);
-            }
-            localStorage.setItem('imperiaTopPlayers', JSON.stringify(topPlayers));
-        }
-        
-        function updateTopPlayers() {
-            if (!gameState) return;
-            
-            // Не добавляем админа в топ
-            if (currentUser === ADMIN_SECRET) return;
-            
-            const existingIndex = topPlayers.findIndex(p => p.deviceId === currentUserId);
-            
-            const playerData = {
-                deviceId: currentUserId,
-                nickname: currentUser,
-                totalEarned: gameState.totalEarned || 0,
-                lastUpdate: Date.now(),
-                lastRewardWeek: gameState.lastWeeklyReward || 0,
-                hasSuguru: gameState.specialItem && gameState.specialItem.owned || false
-            };
-            
-            if (existingIndex >= 0) {
-                topPlayers[existingIndex] = playerData;
-            } else {
-                topPlayers.push(playerData);
-            }
-            
-            // Удаляем возможные дубликаты и админа
-            const uniquePlayers = [];
-            const seen = new Set();
-            for (const player of topPlayers) {
-                if (!seen.has(player.deviceId) && player.nickname !== ADMIN_SECRET) {
-                    seen.add(player.deviceId);
-                    uniquePlayers.push(player);
-                }
-            }
-            topPlayers = uniquePlayers;
-            
-            saveTopPlayers();
-        }
-        
-        function getPlayerRank() {
-            const visiblePlayers = topPlayers.filter(p => p.nickname !== ADMIN_SECRET);
-            const index = visiblePlayers.findIndex(p => p.deviceId === currentUserId);
-            return index >= 0 ? index + 1 : visiblePlayers.length + 1;
         }
         
         // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
@@ -1527,7 +1241,9 @@
                     nickname: currentUser
                 };
                 localStorage.setItem('imperiaClickerSave_' + currentUserId, JSON.stringify(saveData));
-                updateTopPlayers();
+                
+                // Обновляем в облачном хранилище
+                updatePlayerInAllPlayers();
             }
         }
         
@@ -1583,7 +1299,7 @@
         }
         
         function updateOfflineCryptoPrices(seconds) {
-            const intervals = Math.floor(seconds / 300); // Каждые 5 минут
+            const intervals = Math.floor(seconds / 300);
             for (let i = 0; i < intervals; i++) {
                 updateCryptoPrices();
             }
@@ -1643,9 +1359,9 @@
             let html = '<div class="modal-title">📊 МОЙ КРИПТОПОРТФЕЛЬ</div>';
             
             html += `
-                <div style="background: rgba(123, 31, 162, 0.3); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center;">
-                    <div style="font-size: 14px; color: #b39ddb;">💰 ОБЩАЯ СТОИМОСТЬ</div>
-                    <div style="font-size: 24px; font-weight: bold; color: #ffd700;">${formatFullNumber(totalPortfolio)}</div>
+                <div style="background: rgba(123, 31, 162, 0.2); border-radius: 12px; padding: 12px; margin-bottom: 16px; text-align: center;">
+                    <div style="font-size: 13px; color: #b39ddb;">💰 ОБЩАЯ СТОИМОСТЬ</div>
+                    <div style="font-size: 20px; font-weight: bold; color: #ffd700;">${formatFullNumber(totalPortfolio)}</div>
                 </div>
             `;
             
@@ -1666,34 +1382,26 @@
                         const profitSign = profit >= 0 ? '+' : '';
                         
                         html += `
-                            <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 10px; border-left: 4px solid #00c853;">
+                            <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid #00c853;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <span style="font-weight: bold; color: #00c853;">${cryptoData.emoji} ${cryptoData.name}</span>
                                     <span style="color: #ffd700;">${formatFullNumber(c.owned)} шт</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                                    <span style="font-size: 14px; color: #b39ddb;">Стоимость:</span>
+                                <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 12px;">
+                                    <span style="color: #b39ddb;">Стоимость:</span>
                                     <span style="color: #ffd700;">${formatFullNumber(value)}</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                                    <span style="color: #b39ddb;">Цена сейчас:</span>
+                                <div style="display: flex; justify-content: space-between; font-size: 11px;">
+                                    <span style="color: #b39ddb;">Цена:</span>
                                     <span style="color: #4CAF50;">${formatFullNumber(price)}</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                                    <span style="color: #b39ddb;">Цена покупки:</span>
-                                    <span style="color: #ff9800;">${formatFullNumber(cryptoData.basePrice)}</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 11px;">
                                     <span style="color: #b39ddb;">Прибыль:</span>
                                     <span class="${profitClass}">${profitSign}${formatFullNumber(profit)} (${profitSign}${profitPercent}%)</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                                    <span style="color: #b39ddb;">Доход/сек:</span>
-                                    <span style="color: #ff9800;">+${formatFullNumber(incomePerSec)}</span>
-                                </div>
-                                <div style="display: flex; gap: 5px; margin-top: 10px;">
-                                    <button class="btn-crypto" onclick="openTradeModal(${cryptoData.id}, 'buy')">➕ Купить</button>
-                                    <button class="btn-crypto" onclick="openTradeModal(${cryptoData.id}, 'sell')">➖ Продать</button>
+                                <div style="display: flex; gap: 5px; margin-top: 8px;">
+                                    <button class="crypto-btn" onclick="openTradeModal(${cryptoData.id}, 'buy')">Купить</button>
+                                    <button class="crypto-btn" onclick="openTradeModal(${cryptoData.id}, 'sell')">Продать</button>
                                 </div>
                             </div>
                         `;
@@ -1702,12 +1410,12 @@
             });
             
             if (!hasCrypto) {
-                html += '<div style="text-align: center; padding: 30px; color: #666;">У вас пока нет криптовалюты</div>';
+                html += '<div style="text-align: center; padding: 20px; color: #666;">У вас пока нет криптовалюты</div>';
             } else {
                 html += `
-                    <div style="background: rgba(76, 175, 80, 0.1); border-radius: 10px; padding: 10px; margin-top: 15px; text-align: center;">
-                        <div style="font-size: 14px; color: #b39ddb;">⏱️ ОБЩИЙ ДОХОД/СЕК</div>
-                        <div style="font-size: 18px; color: #4CAF50;">+${formatFullNumber(totalIncome)}</div>
+                    <div style="background: rgba(76, 175, 80, 0.1); border-radius: 10px; padding: 8px; margin-top: 12px; text-align: center;">
+                        <div style="font-size: 12px; color: #b39ddb;">⏱️ ОБЩИЙ ДОХОД/СЕК</div>
+                        <div style="font-size: 16px; color: #4CAF50;">+${formatFullNumber(totalIncome)}</div>
                     </div>
                 `;
             }
@@ -1737,7 +1445,7 @@
             let html = `
                 <div class="modal-title">${type === 'buy' ? '📈 КУПИТЬ' : '📉 ПРОДАТЬ'} ${crypto.emoji} ${crypto.name}</div>
                 
-                <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 12px; margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                         <span>💰 Цена:</span>
                         <span style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
@@ -1755,65 +1463,49 @@
             
             if (type === 'buy') {
                 html += `
-                    <div style="margin: 15px 0;">
-                        <div style="color:#ffd700; margin-bottom: 10px;">⚡ Быстрый выбор:</div>
+                    <div style="margin: 12px 0;">
+                        <div style="color:#ffd700; margin-bottom: 8px;">⚡ Быстрый выбор:</div>
                         <div class="quick-amount-container">
                             <div class="quick-amount-btn" onclick="setTradeAmount(1)">1</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(10)">10</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(100)">100</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(1000)">1K</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(10000)">10K</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(${maxBuy})">МАКС</div>
                         </div>
                     </div>
                     
                     <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${maxBuy}" value="1">
                     
-                    <div style="display: flex; gap: 10px; margin: 15px 0;">
-                        <button class="btn-crypto" onclick="quickBuyMaxMoney(${cryptoId})">💰 На все деньги (${formatFullNumber(Math.min(maxBuy, maxBuyWithMoney))} шт)</button>
-                    </div>
-                    
-                    <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 15px 0;">
+                    <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 12px 0;">
                         <div style="display: flex; justify-content: space-between;">
                             <span>💰 Стоимость:</span>
                             <span id="totalPrice" style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
                         </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                            <span>📊 Доступно:</span>
-                            <span style="color:#4CAF50;">${formatFullNumber(maxBuy)} шт</span>
-                        </div>
                     </div>
                     
-                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'buy')">✅ ПОДТВЕРДИТЬ ПОКУПКУ</button>
+                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'buy')">✅ ПОДТВЕРДИТЬ</button>
                 `;
             } else {
                 html += `
-                    <div style="margin: 15px 0;">
-                        <div style="color:#ffd700; margin-bottom: 10px;">⚡ Быстрый выбор:</div>
+                    <div style="margin: 12px 0;">
+                        <div style="color:#ffd700; margin-bottom: 8px;">⚡ Быстрый выбор:</div>
                         <div class="quick-amount-container">
                             <div class="quick-amount-btn" onclick="setTradeAmount(1)">1</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(10)">10</div>
                             <div class="quick-amount-btn" onclick="setTradeAmount(100)">100</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(1000)">1K</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(10000)">10K</div>
-                            <div class="quick-amount-btn" onclick="setTradeAmount(${maxSell})">ВСЁ (${formatFullNumber(maxSell)} шт)</div>
+                            <div class="quick-amount-btn" onclick="setTradeAmount(${maxSell})">ВСЁ</div>
                         </div>
                     </div>
                     
                     <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${maxSell}" value="1">
                     
-                    <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 15px 0;">
+                    <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 12px 0;">
                         <div style="display: flex; justify-content: space-between;">
                             <span>💰 Получите:</span>
                             <span id="totalPrice" style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
                         </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                            <span>📊 У вас:</span>
-                            <span style="color:#4CAF50;">${formatFullNumber(maxSell)} шт</span>
-                        </div>
                     </div>
                     
-                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'sell')">✅ ПОДТВЕРДИТЬ ПРОДАЖУ</button>
+                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'sell')">✅ ПОДТВЕРДИТЬ</button>
                 `;
             }
             
@@ -1838,22 +1530,6 @@
             if (input) {
                 input.value = amount;
                 input.dispatchEvent(new Event('input'));
-            }
-        }
-        
-        function quickBuyMaxMoney(cryptoId) {
-            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
-            const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
-            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
-            
-            const maxBuy = crypto.maxBuy - userCrypto.owned;
-            const maxWithMoney = Math.floor(gameState.balance / currentPrice);
-            const maxPossible = Math.min(maxBuy, maxWithMoney);
-            
-            const input = document.getElementById('tradeAmount');
-            if (input) {
-                input.value = maxPossible;
-                updateTotalPrice(cryptoId, 'buy');
             }
         }
         
@@ -1942,15 +1618,15 @@
                     <div class="welcome-title">IMPERIA CLICKER 2026</div>
                     
                     <div class="welcome-card">
-                        <div style="font-size: 48px; margin-bottom: 20px;">👑</div>
-                        <h2 style="color: #ffd700; margin-bottom: 20px;">ДОБРО ПОЖАЛОВАТЬ!</h2>
+                        <div style="font-size: 40px; margin-bottom: 16px;">👑</div>
+                        <h2 style="color: #ffd700; margin-bottom: 16px;">ДОБРО ПОЖАЛОВАТЬ!</h2>
                         
                         <div class="warning-box">
                             <h3>⚠️ ВНИМАНИЕ!</h3>
                             <ul>
-                                <li>❌ Все данные сохраняются ТОЛЬКО на этом устройстве</li>
-                                <li>❌ Если удалить игру - прогресс НЕ ВОССТАНАВЛИВАЕТСЯ</li>
-                                <li>✅ Рекомендуем не удалять игру, чтобы сохранить прогресс</li>
+                                <li>❌ Все данные сохраняются локально</li>
+                                <li>❌ При удалении игры прогресс НЕ ВОССТАНАВЛИВАЕТСЯ</li>
+                                <li>✅ Все игроки навсегда остаются в топе</li>
                             </ul>
                         </div>
                         
@@ -1961,7 +1637,7 @@
                         
                         <button class="btn btn-gold" id="startBtn" disabled>🚀 НАЧАТЬ ИГРУ</button>
                         
-                        <div style="margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.5);">
+                        <div style="margin-top: 16px; font-size: 11px; color: rgba(255,255,255,0.5);">
                             Версия: ${APP_VERSION}
                         </div>
                     </div>
@@ -2010,7 +1686,6 @@
             updateUI();
             renderTab('home');
             saveGame();
-            updateTopPlayers();
         }
         
         function updateUI() {
@@ -2029,37 +1704,20 @@
             if (!settings.soundEnabled) return;
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
                 
                 oscillator.type = 'sine';
                 oscillator.frequency.value = 523.25;
                 
-                gainNode.gain.value = 0.15;
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                gainNode.gain.value = 0.1;
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
                 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioCtx.destination);
                 
                 oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.08);
-                
-                const oscillator2 = audioCtx.createOscillator();
-                const gainNode2 = audioCtx.createGain();
-                
-                oscillator2.type = 'triangle';
-                oscillator2.frequency.value = 659.25;
-                
-                gainNode2.gain.value = 0.1;
-                gainNode2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-                
-                oscillator2.connect(gainNode2);
-                gainNode2.connect(audioCtx.destination);
-                
-                oscillator2.start();
-                oscillator2.stop(audioCtx.currentTime + 0.08);
-                
+                oscillator.stop(audioCtx.currentTime + 0.05);
             } catch(e) {}
         }
         
@@ -2071,7 +1729,7 @@
             el.style.left = x + 'px';
             el.style.top = y + 'px';
             document.body.appendChild(el);
-            setTimeout(() => el.remove(), 1000);
+            setTimeout(() => el.remove(), 800);
         }
         
         function handleClick(event) {
@@ -2180,29 +1838,25 @@
         }
         
         function renderTop(content) {
-            updateTopPlayers();
+            const topPlayers = getTopPlayers();
             
             let html = '<div class="card"><div class="card-title">🏆 ТОП-100 ИГРОКОВ</div>';
             
-            const visiblePlayers = topPlayers.filter(p => p.nickname !== ADMIN_SECRET);
-            
-            if (visiblePlayers.length === 0) {
-                html += '<div style="text-align:center; padding:30px;">ПОКА НИКОГО НЕТ</div>';
+            if (topPlayers.length === 0) {
+                html += '<div style="text-align:center; padding:20px;">ПОКА НИКОГО НЕТ</div>';
             } else {
-                const myRank = getPlayerRank();
+                const myRank = topPlayers.findIndex(p => p.deviceId === currentUserId) + 1;
                 
                 html += `
-                    <div style="text-align:center; margin:10px; color:#ffd700; font-size:18px;">
-                        🏅 ВАШЕ МЕСТО: ${myRank}
+                    <div style="text-align:center; margin:8px; color:#ffd700; font-size:16px;">
+                        🏅 ВАШЕ МЕСТО: ${myRank || 'не в топе'}
                     </div>
-                    <div style="text-align:center; margin:5px; color:#4CAF50; font-size:14px;">
+                    <div style="text-align:center; margin:5px; color:#4CAF50; font-size:12px;">
                         🎁 Награды: 1 место: 1000💎 | 2 место: 500💎 | 3 место: 100💎
                     </div>
                 `;
                 
-                html += '<div style="margin-bottom:10px; text-align:center; color:#ffd700;">ПО ОБЩЕМУ ЗАРАБОТКУ</div>';
-                
-                visiblePlayers.slice(0, 20).forEach((player, index) => {
+                topPlayers.forEach((player, index) => {
                     const rank = index + 1;
                     let rankClass = '';
                     if (rank === 1) rankClass = 'top-rank-1';
@@ -2217,7 +1871,7 @@
                     const isCurrentPlayer = player.deviceId === currentUserId;
                     
                     html += `
-                        <div class="top-item" style="${isCurrentPlayer ? 'background: rgba(255,215,0,0.2); border:2px solid gold;' : ''}">
+                        <div class="top-item" style="${isCurrentPlayer ? 'background: rgba(255,215,0,0.1); border:1px solid gold;' : ''}">
                             <div class="top-rank ${rankClass}">${rank}</div>
                             <div class="top-name">${player.nickname} ${isCurrentPlayer ? '👑' : ''} ${player.hasSuguru ? '<span class="suguru-badge">💎</span>' : ''}</div>
                             <div class="top-money">${formatNumber(player.totalEarned)}💰</div>
@@ -2228,9 +1882,8 @@
                 
                 html += `
                     <div class="top-update-time">
-                        ⏱️ Обновляется каждые 30 секунд<br>
-                        🏆 Награды каждое воскресенье<br>
-                        Всего игроков: ${visiblePlayers.length}
+                        ⏱️ Всего игроков: ${allPlayers.length}<br>
+                        🏆 Награды каждое воскресенье
                     </div>
                 `;
             }
@@ -2243,7 +1896,7 @@
             let html = '<div class="card"><div class="card-title">💼 МОИ БИЗНЕСЫ</div>';
             
             if (!gameState.myBusinesses || gameState.myBusinesses.length === 0) {
-                html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
+                html += '<div style="text-align:center; padding:20px;">У ВАС НЕТ БИЗНЕСОВ</div>';
             } else {
                 gameState.myBusinesses.forEach((business, index) => {
                     const t = businessTemplates[business.templateId];
@@ -2255,7 +1908,7 @@
                     html += `
                         <div class="business-item" onclick="openBusiness(${index})">
                             <div class="business-header">
-                                <span class="business-name">${t.name} #${index + 1}</span>
+                                <span class="business-name">${t.name}</span>
                                 <span class="business-level">${business.level || 1}/${t.maxLevel}</span>
                             </div>
                             <div class="business-stats">
@@ -2304,7 +1957,7 @@
                         </div>
                         ${ownedCount >= 10 ? 
                             '<div style="color:#f44336; text-align:center;">⚠️ МАКСИМУМ (10 ШТУК)</div>' : 
-                            '<div class="btn btn-small" style="margin-top:10px; pointer-events:none;">КУПИТЬ</div>'
+                            '<div class="btn btn-small" style="margin-top:8px; pointer-events:none;">КУПИТЬ</div>'
                         }
                     </div>
                 `;
@@ -2374,28 +2027,26 @@
             const modalContent = document.getElementById('businessModalContent');
             
             let content = `
-                <div class="modal-title">${t.name} #${index + 1}</div>
+                <div class="modal-title">${t.name}</div>
                 <div style="text-align:center;">
-                    <div style="font-size:48px; margin:15px;">${t.name.charAt(0)}</div>
-                    <div style="margin:10px;">📊 УРОВЕНЬ: ${business.level || 1}/${t.maxLevel}</div>
-                    <div style="margin:10px;">💰 ДОХОД: +${formatFullNumber(t.baseIncome * (business.level || 1))}/сек</div>
-                    <div style="margin:10px;">📈 ЗАРАБОТАНО: ${formatFullNumber(business.totalEarned || 0)}</div>
-                    <div style="margin:10px;">💸 ВЛОЖЕНО: ${formatFullNumber(totalSpent)}</div>
-                    <div style="margin:10px;">🏷️ ПРОДАЖА: ${formatFullNumber(sellPrice)} (50%)</div>
-                    <div style="margin:10px;">⏱️ ВРЕМЯ: ${business.upgradeTime || t.upgradeTime}С</div>
+                    <div style="font-size:40px; margin:12px;">${t.name.charAt(0)}</div>
+                    <div style="margin:8px;">📊 УРОВЕНЬ: ${business.level || 1}/${t.maxLevel}</div>
+                    <div style="margin:8px;">💰 ДОХОД: +${formatFullNumber(t.baseIncome * (business.level || 1))}/сек</div>
+                    <div style="margin:8px;">📈 ЗАРАБОТАНО: ${formatFullNumber(business.totalEarned || 0)}</div>
+                    <div style="margin:8px;">💸 ПРОДАЖА: ${formatFullNumber(sellPrice)}</div>
             `;
             
             if ((business.level || 1) < t.maxLevel) {
                 if (business.upgradeEnd && business.upgradeEnd > Date.now()) {
                     const timeLeft = Math.ceil((business.upgradeEnd - Date.now()) / 1000);
                     content += `
-                        <div style="margin:15px; color:#ff9800;">
+                        <div style="margin:12px; color:#ff9800;">
                             ⏱️ УЛУЧШЕНИЕ... ${timeLeft}С
                         </div>
                     `;
                 } else {
                     content += `
-                        <div style="margin:15px;">
+                        <div style="margin:12px;">
                             <div class="btn btn-gold" onclick="startUpgrade(${index})">
                                 🚀 УЛУЧШИТЬ (${formatFullNumber(business.upgradeCost || 0)}💰)
                             </div>
@@ -2403,11 +2054,11 @@
                     `;
                 }
             } else {
-                content += '<div style="margin:15px; color:#ffd700;">✅ МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>';
+                content += '<div style="margin:12px; color:#ffd700;">✅ МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>';
             }
             
             content += `
-                <div style="margin:15px;">
+                <div style="margin:12px;">
                     <div class="sell-btn" onclick="sellBusiness(${index})">
                         💰 ПРОДАТЬ (${formatFullNumber(sellPrice)}💰)
                     </div>
@@ -2523,7 +2174,7 @@
             });
         }
         
-        // ========== КРИПТА (рендер с кнопкой портфеля) ==========
+        // ========== КРИПТА ==========
         function renderCrypto(content) {
             let html = '<div class="card"><div class="card-title">📈 КРИПТОРЫНОК</div>';
             
@@ -2534,7 +2185,7 @@
                 </div>
             `;
             
-            html += '<div style="text-align:center; margin-bottom:15px; color:#00c853; font-size:14px;">⏱️ Цены обновляются каждые 5 минут</div>';
+            html += '<div style="text-align:center; margin-bottom:12px; color:#00c853; font-size:12px;">⏱️ Цены обновляются каждые 5 минут</div>';
             
             if (gameState.specialItem && !gameState.specialItem.owned) {
                 html += `
@@ -2576,19 +2227,17 @@
                         <div style="flex:1;">
                             <div class="crypto-name">${crypto.emoji} ${crypto.name}</div>
                             <div class="crypto-price">💰 ${formatFullNumber(currentPrice)} <span style="color:${changeColor};">(${priceChange}%)</span></div>
-                            <div class="crypto-owned">Владею: ${formatFullNumber(userCrypto.owned)} / ${formatFullNumber(crypto.maxBuy)}</div>
+                            <div class="crypto-owned">Владею: ${formatFullNumber(userCrypto.owned)}</div>
                             <div class="crypto-profit">⏱️ Доход: +${formatFullNumber(totalIncome)}/сек</div>
-                            ${userCrypto.owned > 0 ? `<div style="color:${profit >= 0 ? '#4CAF50' : '#f44336'}; font-size:12px;">📈 Прибыль: ${profitSign}${formatFullNumber(profit)}</div>` : ''}
-                            ${isSoldOut ? '<div style="color:#f44336; font-weight:bold; margin-top:5px;">⚠️ РАСПРОДАНО</div>' : ''}
                         </div>
                         <div class="crypto-actions">
                             ${!isSoldOut ? 
                                 '<button class="crypto-btn" onclick="openTradeModal(' + crypto.id + ', \'buy\')">Купить</button>' : 
-                                '<button class="crypto-btn" style="opacity:0.5; cursor:not-allowed;" disabled>Купить</button>'
+                                '<button class="crypto-btn" style="opacity:0.5;" disabled>Купить</button>'
                             }
                             ${userCrypto.owned > 0 ? 
                                 '<button class="crypto-btn" onclick="openTradeModal(' + crypto.id + ', \'sell\')">Продать</button>' : 
-                                '<button class="crypto-btn" style="opacity:0.5; cursor:not-allowed;" disabled>Продать</button>'
+                                '<button class="crypto-btn" style="opacity:0.5;" disabled>Продать</button>'
                             }
                         </div>
                     </div>
@@ -2610,7 +2259,7 @@
                 return;
             }
             
-            if (confirm(`Купить Suguru Coin за ${formatFullNumber(specialItem.price)}💰?\n\nДоход: +777/сек\nВсего 1 в мире!`)) {
+            if (confirm(`Купить Suguru Coin за ${formatFullNumber(specialItem.price)}💰?\n\nДоход: +777/сек`)) {
                 gameState.balance -= specialItem.price;
                 gameState.specialItem.owned = true;
                 gameState.specialItem.revealed = true;
@@ -2618,7 +2267,7 @@
                 saveGame();
                 updateUI();
                 renderCurrentTab();
-                updateTopPlayers();
+                updatePlayerInAllPlayers();
                 alert('✅ ПОЗДРАВЛЯЮ!\n\nВы купили легендарный Suguru Coin!\nДоход +777/сек');
             }
         }
@@ -2641,7 +2290,7 @@
                     <div class="collection-item" onclick="showCollection('${c.key}')">
                         <span>${c.emoji}</span>
                         <div class="collection-name">${c.name}</div>
-                        <div class="collection-owned">${c.count}/20+</div>
+                        <div class="collection-owned">${c.count}/10</div>
                     </div>
                 `;
             });
@@ -2839,14 +2488,14 @@
             let totalCrypto = gameState.crypto.reduce((sum, c) => sum + c.owned, 0);
             let totalPortfolio = calculateTotalCryptoPortfolio();
             
-            const myRank = getPlayerRank();
+            const myRank = allPlayers.findIndex(p => p.deviceId === currentUserId) + 1;
             
             content.innerHTML = `
                 <div class="card">
                     <div class="card-title">📊 СТАТИСТИКА</div>
                     
                     <div class="property-item" style="justify-content:space-between;">
-                        <span>👆 ВСЕГО КЛИКОВ</span>
+                        <span>👆 КЛИКОВ</span>
                         <span style="color:#ffd700;">${formatFullNumber(gameState.totalClicks || 0)}</span>
                     </div>
                     <div class="property-item" style="justify-content:space-between;">
@@ -2863,30 +2512,26 @@
                     </div>
                     <div class="property-item" style="justify-content:space-between;">
                         <span>🎨 КОЛЛЕКЦИЯ</span>
-                        <span style="color:#ffd700;">${totalCollections}/100+</span>
+                        <span style="color:#ffd700;">${totalCollections}/50</span>
                     </div>
                     <div class="property-item" style="justify-content:space-between;">
-                        <span>📈 КРИПТА (шт)</span>
-                        <span style="color:#ffd700;">${formatFullNumber(totalCrypto)} монет</span>
+                        <span>📈 КРИПТА</span>
+                        <span style="color:#ffd700;">${formatFullNumber(totalCrypto)} шт</span>
                     </div>
                     <div class="property-item" style="justify-content:space-between;">
                         <span>💰 ПОРТФЕЛЬ</span>
                         <span style="color:#ffd700;">${formatFullNumber(totalPortfolio)}</span>
                     </div>
                     <div class="property-item" style="justify-content:space-between;">
-                        <span>🏆 МЕСТО В ТОПЕ</span>
-                        <span style="color:#ffd700;">${myRank}</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>🎮 В ИГРЕ</span>
-                        <span style="color:#ffd700;">${Math.floor((gameState.playTime || 0) / 60)} МИН</span>
+                        <span>🏆 МЕСТО</span>
+                        <span style="color:#ffd700;">${myRank || 'не в топе'}</span>
                     </div>
                     <div class="property-item" style="justify-content:space-between;">
                         <span>💎 АЛМАЗЫ</span>
                         <span style="color:#ffd700;">${gameState.diamonds || 0}</span>
                     </div>
                     
-                    <div style="margin-top:20px;">
+                    <div style="margin-top:16px;">
                         <button class="btn btn-danger" onclick="resetGame()">🔄 СБРОСИТЬ ПРОГРЕСС</button>
                     </div>
                 </div>
@@ -2926,19 +2571,18 @@
             }
             
             html += `
-                    <div class="warning-box" style="margin-top:20px;">
+                    <div class="warning-box" style="margin-top:16px;">
                         <h3>⚠️ ВНИМАНИЕ!</h3>
-                        <p style="color:#ff9999; font-size:14px;">
+                        <p style="color:#ff9999; font-size:13px;">
                             Все данные хранятся локально на этом устройстве.<br>
                             При удалении игры прогресс НЕ ВОССТАНАВЛИВАЕТСЯ.
                         </p>
                     </div>
                     
-                    <div style="margin-top:30px; text-align:center;">
+                    <div style="margin-top:20px; text-align:center;">
                         <div class="info-text">📅 ИЗДАНИЕ 2026</div>
                         <div class="info-text">👨‍💻 СОЗДАТЕЛИ: SuguruStudio</div>
                         <div class="info-text">🔧 ВЕРСИЯ: ${APP_VERSION}</div>
-                        <div class="info-text"><a href="#" class="footer-link" onclick="alert('Политика конфиденциальности: Мы не собираем ваши данные. Вся информация хранится локально на вашем устройстве.'); return false;">🔒 ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a></div>
                     </div>
                 </div>
             `;
@@ -2988,58 +2632,20 @@
             saveGame();
             closeNicknameModal();
             renderCurrentTab();
-            updateTopPlayers();
+            updatePlayerInAllPlayers();
         }
         
         function enableAdminMode() {
             isAdmin = true;
-            document.body.classList.add('admin-mode');
-            document.querySelector('.app-container').classList.add('admin-app');
-            document.querySelector('.header').classList.add('admin-header');
-            document.getElementById('username').classList.add('admin-username');
-            document.querySelectorAll('.balance-box').forEach(el => el.classList.add('admin-balance'));
-            document.querySelector('.bottom-nav').classList.add('admin-nav');
-            
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes adminGrant {
-                    0% { transform: scale(1); filter: hue-rotate(0deg); }
-                    50% { transform: scale(1.1); filter: hue-rotate(90deg); }
-                    100% { transform: scale(1); filter: hue-rotate(0deg); }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            const flash = document.createElement('div');
-            flash.style.position = 'fixed';
-            flash.style.top = '0';
-            flash.style.left = '0';
-            flash.style.width = '100%';
-            flash.style.height = '100%';
-            flash.style.background = 'rgba(255, 0, 0, 0.3)';
-            flash.style.zIndex = '9999';
-            flash.style.pointerEvents = 'none';
-            flash.style.animation = 'adminGrant 1s ease-out';
-            document.body.appendChild(flash);
-            
-            setTimeout(() => flash.remove(), 1000);
-            
-            alert('🔥 ВАМ ВЫДАНЫ ПРАВА АДМИНИСТРАТОРА!\n\nВсе элементы интерфейса перешли в режим администратора.');
         }
         
         function disableAdminMode() {
             isAdmin = false;
-            document.body.classList.remove('admin-mode');
-            document.querySelector('.app-container').classList.remove('admin-app');
-            document.querySelector('.header').classList.remove('admin-header');
-            document.getElementById('username').classList.remove('admin-username');
-            document.querySelectorAll('.balance-box').forEach(el => el.classList.remove('admin-balance'));
-            document.querySelector('.bottom-nav').classList.remove('admin-nav');
         }
         
         function resetGame() {
             if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС?\n\nЭто действие необратимо!')) {
-                // Полностью обнуляем игру, но сохраняем ник и deviceId
+                // Полностью обнуляем игру
                 gameState = {
                     balance: 0,
                     diamonds: 10,
@@ -3063,9 +2669,8 @@
                 
                 cryptoPrices = gameState.cryptoPrices;
                 
-                // Удаляем из топа
-                topPlayers = topPlayers.filter(p => p.deviceId !== currentUserId);
-                saveTopPlayers();
+                // Обновляем в облачном хранилище
+                updatePlayerInAllPlayers();
                 
                 saveGame();
                 updateUI();
@@ -3084,14 +2689,13 @@
             let html = `
                 <div class="modal-title" style="color:#ff0000;">🔧 АДМИН ПАНЕЛЬ</div>
                 
-                <div style="margin-bottom:20px;">
+                <div style="margin-bottom:16px;">
                     <div class="btn btn-gold" style="background:#ff4444;" onclick="adminGiveMoney()">💰 ВЫДАТЬ ДЕНЬГИ</div>
                     <div class="btn btn-gold" style="background:#ff4444;" onclick="adminGiveDiamonds()">💎 ВЫДАТЬ АЛМАЗЫ</div>
                     <div class="btn btn-gold" style="background:#ff4444;" onclick="adminGiveCrypto()">📈 ВЫДАТЬ КРИПТУ</div>
                     <div class="btn btn-gold" style="background:#ff4444;" onclick="adminGiveBusiness()">💼 ВЫДАТЬ БИЗНЕС</div>
                     <div class="btn btn-gold" style="background:#ff4444;" onclick="adminLevelUp()">📊 ПОВЫСИТЬ УРОВЕНЬ</div>
-                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminResetPlayer()">🔄 ОБНУЛИТЬ ИГРОКА</div>
-                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminBlockPlayer()">⛔ ЗАБЛОКИРОВАТЬ</div>
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminResetPlayer()">🔄 ОБНУЛИТЬ</div>
                     <div class="btn btn-gold" style="background:#ff4444;" onclick="adminRemoveFromTop()">🗑️ УДАЛИТЬ ИЗ ТОПА</div>
                 </div>
                 
@@ -3100,7 +2704,6 @@
             
             modalContent.innerHTML = html;
             modal.classList.add('active');
-            document.querySelector('.modal-content').classList.add('admin-modal');
         }
         
         function closeAdminModal() {
@@ -3108,7 +2711,7 @@
         }
         
         function getTargetPlayerData(targetNick) {
-            const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+            const targetPlayer = allPlayers.find(p => p.nickname === targetNick);
             if (!targetPlayer) return null;
             
             const targetData = localStorage.getItem('imperiaClickerSave_' + targetPlayer.deviceId);
@@ -3295,9 +2898,7 @@
             if (!targetNick) return;
             
             if (targetNick === currentUser) {
-                if (confirm('Обнулить свой прогресс?')) {
-                    resetGame();
-                }
+                resetGame();
                 return;
             }
             
@@ -3308,33 +2909,40 @@
             }
             
             if (confirm(`Обнулить прогресс игрока ${targetNick}?`)) {
-                localStorage.removeItem('imperiaClickerSave_' + targetInfo.player.deviceId);
-                topPlayers = topPlayers.filter(p => p.deviceId !== targetInfo.player.deviceId);
-                saveTopPlayers();
+                // Обнуляем данные игрока
+                const newGameState = {
+                    balance: 0,
+                    diamonds: 10,
+                    exp: 0,
+                    level: 1,
+                    clickPower: 1,
+                    clickPowerLevel: 0,
+                    autoClickerLevel: 0,
+                    critLevel: 0,
+                    totalClicks: 0,
+                    totalEarned: 0,
+                    playTime: 0,
+                    lastOnlineTime: Date.now(),
+                    lastWeeklyReward: 0,
+                    myBusinesses: [],
+                    collections: JSON.parse(JSON.stringify(collectionItems)),
+                    crypto: cryptoCurrencies.map(c => ({ id: c.id, owned: 0 })),
+                    cryptoPrices: cryptoCurrencies.map(c => c.basePrice),
+                    specialItem: { owned: false, revealed: false }
+                };
+                
+                targetInfo.data.gameState = newGameState;
+                localStorage.setItem('imperiaClickerSave_' + targetInfo.player.deviceId, JSON.stringify(targetInfo.data));
+                
+                // Обновляем в облачном хранилище
+                const playerIndex = allPlayers.findIndex(p => p.deviceId === targetInfo.player.deviceId);
+                if (playerIndex >= 0) {
+                    allPlayers[playerIndex].totalEarned = 0;
+                    allPlayers[playerIndex].hasSuguru = false;
+                }
+                saveAllPlayers();
+                
                 alert(`✅ Прогресс игрока ${targetNick} обнулен!`);
-            }
-        }
-        
-        function adminBlockPlayer() {
-            const targetNick = prompt('Введите ник игрока для блокировки:');
-            if (!targetNick) return;
-            
-            if (targetNick === currentUser) {
-                alert('❌ Нельзя заблокировать себя!');
-                return;
-            }
-            
-            const targetInfo = getTargetPlayerData(targetNick);
-            if (!targetInfo) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            if (confirm(`Заблокировать игрока ${targetNick}?`)) {
-                topPlayers = topPlayers.filter(p => p.deviceId !== targetInfo.player.deviceId);
-                saveTopPlayers();
-                localStorage.removeItem('imperiaClickerSave_' + targetInfo.player.deviceId);
-                alert(`✅ Игрок ${targetNick} заблокирован и удален из игры!`);
             }
         }
         
@@ -3354,8 +2962,9 @@
             }
             
             if (confirm(`Удалить игрока ${targetNick} из топа?`)) {
-                topPlayers = topPlayers.filter(p => p.deviceId !== targetInfo.player.deviceId);
-                saveTopPlayers();
+                // Удаляем из облачного хранилища
+                allPlayers = allPlayers.filter(p => p.deviceId !== targetInfo.player.deviceId);
+                saveAllPlayers();
                 alert(`✅ Игрок ${targetNick} удален из топа!`);
                 renderCurrentTab();
             }
@@ -3425,7 +3034,7 @@
         
         setInterval(() => {
             if (gameState) {
-                updateTopPlayers();
+                // Обновляем топ каждые 30 секунд
                 const activeTab = document.querySelector('.nav-item.active');
                 if (activeTab && activeTab.dataset.tab === 'top') {
                     renderTab('top');
@@ -3442,20 +3051,17 @@
                 
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 this.classList.add('active');
-                if (isAdmin) {
-                    this.classList.add('admin-active');
-                }
                 renderTab(this.dataset.tab);
             });
         });
         
         // ========== ЗАПУСК ==========
         window.onload = function() {
-            loadTopPlayers();
+            loadAllPlayers();
             
             if (loadGame()) {
                 if (currentUser === ADMIN_SECRET) {
-                    enableAdminMode();
+                    isAdmin = true;
                 }
                 
                 document.getElementById('header').style.display = 'block';
@@ -3467,7 +3073,7 @@
                 
                 updateUI();
                 renderTab('home');
-                updateTopPlayers();
+                updatePlayerInAllPlayers();
             } else {
                 showWelcomeScreen();
             }
@@ -3489,7 +3095,6 @@
             window.openTradeModal = openTradeModal;
             window.closeTradeModal = closeTradeModal;
             window.setTradeAmount = setTradeAmount;
-            window.quickBuyMaxMoney = quickBuyMaxMoney;
             window.executeTrade = executeTrade;
             window.buyUpgrade = buyUpgrade;
             window.exchangeDiamonds = exchangeDiamonds;
@@ -3508,7 +3113,6 @@
             window.adminGiveBusiness = adminGiveBusiness;
             window.adminLevelUp = adminLevelUp;
             window.adminResetPlayer = adminResetPlayer;
-            window.adminBlockPlayer = adminBlockPlayer;
             window.adminRemoveFromTop = adminRemoveFromTop;
         };
     </script>
