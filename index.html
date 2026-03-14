@@ -13,20 +13,10 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        html, body {
-            overscroll-behavior: none;
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            touch-action: pan-y pinch-zoom;
-        }
-        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #0a050f 0%, #1a1025 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -45,45 +35,6 @@
             display: flex;
             flex-direction: column;
             border: 2px solid #ffd700;
-            overscroll-behavior: contain;
-            transition: all 0.5s;
-            position: relative;
-        }
-        
-        .app-container.admin-mode {
-            border: 4px solid #ff0000;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
-            animation: adminBorderPulse 2s infinite;
-        }
-        
-        .app-container.admin-mode::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: repeating-linear-gradient(
-                45deg,
-                rgba(255, 0, 0, 0.1) 0px,
-                rgba(255, 0, 0, 0.1) 20px,
-                transparent 20px,
-                transparent 40px
-            );
-            animation: adminStripes 20s linear infinite;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        
-        @keyframes adminStripes {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes adminBorderPulse {
-            0% { border-color: #ff0000; box-shadow: 0 0 30px #ff0000; }
-            50% { border-color: #ff6666; box-shadow: 0 0 60px #ff0000; }
-            100% { border-color: #ff0000; box-shadow: 0 0 30px #ff0000; }
         }
         
         .header {
@@ -92,80 +43,46 @@
             padding: 15px;
             text-align: center;
             border-bottom: 3px solid #ffd700;
-            flex-shrink: 0;
-            transition: all 0.5s;
-        }
-        
-        .header.admin-mode {
-            border-bottom: 3px solid #ff0000;
-            background: linear-gradient(135deg, #3a1a1a 0%, #2a0f0f 100%);
         }
         
         .username {
             font-size: 16px;
             color: #ffd700;
             font-weight: bold;
+            cursor: pointer;
             display: inline-block;
             padding: 5px 15px;
             border-radius: 30px;
             background: rgba(0,0,0,0.3);
-            cursor: pointer;
         }
         
         .admin-badge {
             background: linear-gradient(135deg, #ff0000, #990000);
             color: white;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: bold;
-            margin-left: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 8px;
             display: inline-block;
             border: 1px solid #ff6666;
-            animation: adminGlow 1s infinite;
-            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+            animation: adminPulse 1s infinite;
         }
         
-        @keyframes adminGlow {
-            0% { box-shadow: 0 0 5px #ff0000; }
-            50% { box-shadow: 0 0 20px #ff0000; }
-            100% { box-shadow: 0 0 5px #ff0000; }
+        @keyframes adminPulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; box-shadow: 0 0 10px red; }
+            100% { opacity: 0.8; }
         }
         
         .special-badge {
             background: linear-gradient(135deg, #ff00ff, #ffd700);
             color: black;
-            padding: 2px 8px;
-            border-radius: 30px;
+            padding: 2px 6px;
+            border-radius: 20px;
             font-size: 12px;
-            font-weight: bold;
-            margin-left: 8px;
+            margin-left: 5px;
             display: inline-block;
-            border: 1px solid gold;
-            animation: specialGlow 2s infinite;
-        }
-        
-        @keyframes specialGlow {
-            0% { box-shadow: 0 0 5px #ff00ff; }
-            50% { box-shadow: 0 0 15px #ff00ff; }
-            100% { box-shadow: 0 0 5px #ff00ff; }
-        }
-        
-        .admin-grant-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,0,0,0.3) 0%, transparent 70%);
-            animation: grantFlash 2s ease-out;
-            pointer-events: none;
-            z-index: 10000;
-        }
-        
-        @keyframes grantFlash {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(2); }
+            font-weight: bold;
         }
         
         .offline-badge {
@@ -233,8 +150,6 @@
             padding: 15px;
             color: white;
             scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain;
         }
         
         .content::-webkit-scrollbar {
@@ -265,7 +180,6 @@
             position: relative;
             z-index: 5;
             pointer-events: auto;
-            transition: transform 0.1s;
         }
         
         .click-btn:active {
@@ -335,10 +249,6 @@
             transform: scale(0.97);
         }
         
-        .btn-success {
-            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
-        }
-        
         .btn-gold {
             background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
             color: black;
@@ -355,27 +265,129 @@
             border: 2px solid #ff6666;
             color: white;
             font-weight: bold;
-            box-shadow: 0 0 20px rgba(255,0,0,0.5);
-            margin: 5px 0;
-            padding: 12px 15px;
-            font-size: 14px;
         }
         
         .btn-admin-small {
-            background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
-            border: 2px solid #ff9999;
+            background: linear-gradient(135deg, #ff0000 0%, #990000 100%);
+            border: 1px solid #ff6666;
             color: white;
-            font-weight: bold;
             padding: 8px 12px;
             border-radius: 20px;
             font-size: 12px;
             cursor: pointer;
-            margin: 2px;
+            margin: 5px;
         }
         
-        .btn-admin:hover {
-            transform: scale(0.98);
-            background: linear-gradient(135deg, #cc0000 0%, #880000 100%);
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 30px;
+            padding: 15px 20px;
+            width: 100%;
+            margin: 10px 0;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .input-field:focus {
+            border-color: #ffd700;
+        }
+        
+        .admin-input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff0000;
+            border-radius: 30px;
+            padding: 10px 15px;
+            width: 100%;
+            margin: 5px 0;
+            color: white;
+        }
+        
+        .admin-select {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff0000;
+            border-radius: 30px;
+            padding: 10px 15px;
+            width: 100%;
+            margin: 5px 0;
+            color: white;
+        }
+        
+        .bottom-nav {
+            display: flex;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 5px;
+            gap: 5px;
+            border-top: 3px solid #ffd700;
+            overflow-x: auto;
+            scrollbar-width: none;
+            white-space: nowrap;
+        }
+        
+        .bottom-nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-item {
+            flex: 0 0 auto;
+            text-align: center;
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 11px;
+            min-width: 70px;
+        }
+        
+        .nav-item span {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .nav-item.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+        }
+        
+        .shop-item {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            color: #ffd700;
+            font-size: 18px;
+        }
+        
+        .item-price {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(135deg, #4a2a6a 0%, #3a1a5a 100%);
+            border: 2px solid #ffd700;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
         }
         
         .business-item {
@@ -412,33 +424,11 @@
             margin: 10px 0;
         }
         
-        .business-progress {
-            background: rgba(255, 255, 255, 0.15);
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        
-        .business-bar {
-            height: 100%;
-            background: #ffd700;
-            width: 0%;
-        }
-        
-        .upgrade-time {
-            font-size: 14px;
-            color: #ff9800;
-        }
-        
         .crypto-item {
             background: rgba(0, 200, 83, 0.1);
             border-radius: 15px;
             padding: 15px;
             margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             border: 2px solid #00c853;
         }
         
@@ -466,20 +456,17 @@
         .crypto-actions {
             display: flex;
             gap: 5px;
+            margin-top: 10px;
         }
         
         .crypto-btn {
             background: rgba(255,255,255,0.1);
             border: 1px solid #00c853;
             color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 15px;
             cursor: pointer;
-        }
-        
-        .crypto-btn:active {
-            background: rgba(0,200,83,0.3);
+            font-size: 12px;
         }
         
         .collection-grid {
@@ -538,7 +525,6 @@
         .collection-title {
             font-weight: bold;
             font-size: 18px;
-            margin-bottom: 5px;
         }
         
         .collection-price {
@@ -548,8 +534,8 @@
         
         .property-owned {
             background: #2e7d32;
-            padding: 8px 16px;
-            border-radius: 25px;
+            padding: 5px 10px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
         }
@@ -558,42 +544,46 @@
             background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,0,255,0.2));
             border: 3px solid #ff00ff;
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             margin: 20px 0;
             text-align: center;
-            animation: specialGlow 2s infinite;
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #ff00ff; }
+            50% { box-shadow: 0 0 30px #ff00ff; }
+            100% { box-shadow: 0 0 10px #ff00ff; }
         }
         
         .special-emoji {
-            font-size: 64px;
+            font-size: 48px;
             margin-bottom: 10px;
         }
         
         .special-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: #ff00ff;
-            margin-bottom: 10px;
         }
         
         .special-price {
-            font-size: 18px;
+            font-size: 14px;
             color: #ffd700;
-            margin-bottom: 15px;
         }
         
         .special-income {
-            font-size: 16px;
+            font-size: 14px;
             color: #4CAF50;
-            margin-bottom: 15px;
         }
         
         .special-owned {
             background: #ff00ff;
             color: black;
-            padding: 10px;
-            border-radius: 30px;
+            padding: 5px 10px;
+            border-radius: 20px;
             font-weight: bold;
+            font-size: 14px;
         }
         
         .modal {
@@ -606,7 +596,7 @@
             background: rgba(0, 0, 0, 0.95);
             justify-content: center;
             align-items: center;
-            z-index: 10000;
+            z-index: 1000;
         }
         
         .modal.active {
@@ -625,25 +615,12 @@
             overflow-y: auto;
         }
         
-        .modal-content.admin-modal {
-            border: 3px solid #ff0000;
-            box-shadow: 0 0 30px #ff0000;
-        }
-        
         .modal-title {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
             color: #ffd700;
             text-align: center;
-            border-bottom: 2px solid #ffd700;
-            padding-bottom: 10px;
-        }
-        
-        .modal-title.admin-title {
-            color: #ff0000;
-            border-bottom: 2px solid #ff0000;
-            text-shadow: 0 0 10px #ff0000;
         }
         
         .close-btn {
@@ -659,24 +636,6 @@
             border: 1px solid #ffd700;
         }
         
-        .close-btn.admin-close {
-            background: #ff0000;
-            border-color: #ff6666;
-        }
-        
-        .sell-btn {
-            background: #ff9800;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 30px;
-            text-align: center;
-            margin-top: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            border: 1px solid #ffd700;
-        }
-        
         .top-item {
             display: flex;
             align-items: center;
@@ -685,14 +644,6 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
             border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.3s;
-        }
-        
-        .top-item.banned {
-            opacity: 0.5;
-            filter: grayscale(0.8);
-            background: rgba(100, 0, 0, 0.2);
-            border-color: #ff0000;
         }
         
         .top-rank {
@@ -710,17 +661,6 @@
             flex: 1;
             font-size: 16px;
             font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .top-special-icon {
-            font-size: 16px;
-            animation: specialGlow 2s infinite;
         }
         
         .top-money {
@@ -730,88 +670,26 @@
             margin-left: 10px;
         }
         
-        .top-banned-icon {
-            color: #ff0000;
+        .top-special {
             font-size: 14px;
             margin-left: 5px;
         }
         
-        .top-update-time {
-            font-size: 12px;
-            color: rgba(255,255,255,0.5);
-            text-align: center;
-            margin-top: 10px;
-        }
-        
-        .admin-panel {
-            background: rgba(100, 0, 0, 0.3);
-            border: 2px solid #ff0000;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .admin-input {
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #ff0000;
-            border-radius: 30px;
-            padding: 12px 15px;
+        .admin-grant-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            margin: 8px 0;
-            color: white;
-            font-size: 14px;
-            outline: none;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,0,0,0.3) 0%, transparent 70%);
+            animation: grantFlash 2s ease-out;
+            pointer-events: none;
+            z-index: 9999;
         }
         
-        .admin-input:focus {
-            border-color: #ff6666;
-            box-shadow: 0 0 20px rgba(255,0,0,0.5);
-        }
-        
-        .admin-select {
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #ff0000;
-            border-radius: 30px;
-            padding: 12px 15px;
-            width: 100%;
-            margin: 8px 0;
-            color: white;
-            font-size: 14px;
-            outline: none;
-        }
-        
-        .admin-select option {
-            background: #1a1025;
-            color: white;
-        }
-        
-        .admin-section {
-            background: rgba(255, 0, 0, 0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #ff0000;
-        }
-        
-        .admin-section-title {
-            color: #ff0000;
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 15px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        .admin-button-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin: 10px 0;
-        }
-        
-        .hidden {
-            display: none !important;
+        @keyframes grantFlash {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
         }
         
         .floating-effect {
@@ -833,6 +711,7 @@
         .settings-group {
             margin-bottom: 20px;
         }
+        
         .settings-item {
             display: flex;
             align-items: center;
@@ -840,11 +719,12 @@
             padding: 15px;
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
-            margin-bottom: 10px;
         }
+        
         .settings-label {
             font-size: 16px;
         }
+        
         .settings-switch {
             width: 50px;
             height: 26px;
@@ -854,9 +734,11 @@
             cursor: pointer;
             border: 2px solid #ffd700;
         }
+        
         .settings-switch.active {
             background: #ffd700;
         }
+        
         .settings-switch::after {
             content: '';
             position: absolute;
@@ -868,20 +750,16 @@
             left: 0;
             transition: 0.2s;
         }
+        
         .settings-switch.active::after {
             left: 24px;
         }
+        
         .info-text {
             color: rgba(255,255,255,0.7);
             font-size: 14px;
             text-align: center;
             margin: 10px 0;
-        }
-        .footer-link {
-            color: #ffd700;
-            text-decoration: none;
-            font-weight: bold;
-            cursor: pointer;
         }
         
         .version-text {
@@ -891,43 +769,27 @@
             margin-top: 5px;
         }
         
-        .shop-item {
-            background: rgba(255, 255, 255, 0.07);
+        .admin-button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .admin-section {
+            background: rgba(255,0,0,0.1);
             border-radius: 15px;
-            padding: 18px;
+            padding: 15px;
             margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            border: 1px solid #ff0000;
         }
         
-        .item-info {
-            flex: 1;
-        }
-        
-        .item-name {
-            font-weight: bold;
-            color: #ffd700;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-        
-        .item-price {
-            color: #4CAF50;
+        .admin-section-title {
+            color: #ff0000;
             font-weight: bold;
             font-size: 16px;
-        }
-        
-        .buy-btn {
-            background: linear-gradient(135deg, #4a2a6a 0%, #3a1a5a 100%);
-            border: 2px solid #ffd700;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
+            margin-bottom: 10px;
+            text-align: center;
         }
     </style>
 </head>
@@ -981,10 +843,6 @@
         <div class="modal-content" id="collectionModalContent"></div>
     </div>
     
-    <div class="modal" id="cryptoModal">
-        <div class="modal-content" id="cryptoModalContent"></div>
-    </div>
-    
     <div class="modal" id="nicknameModal">
         <div class="modal-content">
             <div class="modal-title">✏️ ИЗМЕНИТЬ НИК</div>
@@ -995,10 +853,10 @@
     </div>
     
     <div class="modal" id="adminModal">
-        <div class="modal-content admin-modal" id="adminModalContent">
-            <div class="modal-title admin-title">👑 АДМИН ПАНЕЛЬ</div>
+        <div class="modal-content">
+            <div class="modal-title">👑 АДМИН ПАНЕЛЬ</div>
             <div id="adminContent"></div>
-            <div class="close-btn admin-close" onclick="closeAdminModal()">ЗАКРЫТЬ</div>
+            <div class="close-btn" onclick="closeAdminModal()">ЗАКРЫТЬ</div>
         </div>
     </div>
     
@@ -1008,20 +866,19 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '4.0.0';
+        const APP_VERSION = '5.0.0';
         const ADMIN_NICK = '2a3d4g5j';
         let currentUser = null;
         let currentUserId = null;
         let gameState = null;
         let isAdmin = false;
-        let cryptoPrices = [];
         
         let settings = {
             soundEnabled: true,
             effectsEnabled: true
         };
         
-        // ========== ГЛОБАЛЬНЫЙ ТОП ==========
+        // ========== ТОП-100 ==========
         let globalPlayers = [];
         let bannedPlayers = JSON.parse(localStorage.getItem('bannedPlayers')) || [];
         
@@ -1053,132 +910,46 @@
             { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45 }
         ];
         
+        let cryptoPrices = [];
+        
         // ========== КОЛЛЕКЦИИ ==========
         const collectionItems = {
-            houses: [
-                { id: 0, name: "КВАРТИРА-СТУДИЯ", emoji: "🏢", price: 50000, owned: false },
-                { id: 1, name: "ДВУХКОМНАТНАЯ", emoji: "🏠", price: 150000, owned: false },
-                { id: 2, name: "ТРЕХКОМНАТНАЯ", emoji: "🏡", price: 300000, owned: false },
-                { id: 3, name: "ПЕНТХАУС", emoji: "🏬", price: 1000000, owned: false },
-                { id: 4, name: "ЗАГОРОДНЫЙ ДОМ", emoji: "🏘️", price: 2000000, owned: false },
-                { id: 5, name: "ОСОБНЯК", emoji: "🏰", price: 5000000, owned: false },
-                { id: 6, name: "ВИЛЛА", emoji: "🏛️", price: 10000000, owned: false },
-                { id: 7, name: "ЗАМОК", emoji: "🏯", price: 50000000, owned: false },
-                { id: 8, name: "ДВОРЕЦ", emoji: "🕌", price: 100000000, owned: false },
-                { id: 9, name: "НЕБОСКРЕБ", emoji: "🏙️", price: 500000000, owned: false },
-                { id: 10, name: "ОСТРОВ", emoji: "🏝️", price: 1000000000, owned: false },
-                { id: 11, name: "КОСМИЧЕСКАЯ СТАНЦИЯ", emoji: "🚀", price: 5000000000, owned: false },
-                { id: 12, name: "ЛУННАЯ БАЗА", emoji: "🌕", price: 10000000000, owned: false },
-                { id: 13, name: "МАРСИАНСКАЯ КОЛОНИЯ", emoji: "🔴", price: 50000000000, owned: false },
-                { id: 14, name: "СФЕРА ДАЙСОНА", emoji: "⚪", price: 100000000000, owned: false },
-                { id: 15, name: "МУЛЬТИВСЕЛЕННАЯ", emoji: "🌌", price: 500000000000, owned: false },
-                { id: 16, name: "РАЙСКИЙ САД", emoji: "🌺", price: 1000000000000, owned: false },
-                { id: 17, name: "ХРУСТАЛЬНЫЙ ДВОРЕЦ", emoji: "💎", price: 5000000000000, owned: false },
-                { id: 18, name: "ЗОЛОТОЙ ХРАМ", emoji: "🏯", price: 10000000000000, owned: false },
-                { id: 19, name: "ИМПЕРИЯ", emoji: "👑", price: 50000000000000, owned: false }
-            ],
-            cars: [
-                { id: 0, name: "ЛАДА ГРАНТА", emoji: "🚗", price: 20000, owned: false },
-                { id: 1, name: "LADA VESTA", emoji: "🚙", price: 50000, owned: false },
-                { id: 2, name: "RENAULT LOGAN", emoji: "🚌", price: 80000, owned: false },
-                { id: 3, name: "KIA RIO", emoji: "🚎", price: 150000, owned: false },
-                { id: 4, name: "HYUNDAI SOLARIS", emoji: "🏎️", price: 200000, owned: false },
-                { id: 5, name: "TOYOTA CAMRY", emoji: "🚓", price: 300000, owned: false },
-                { id: 6, name: "MERCEDES E-CLASS", emoji: "🚘", price: 500000, owned: false },
-                { id: 7, name: "BMW X5", emoji: "🚙", price: 800000, owned: false },
-                { id: 8, name: "AUDI R8", emoji: "🚗", price: 1500000, owned: false },
-                { id: 9, name: "PORSCHE 911", emoji: "🏎️", price: 3000000, owned: false },
-                { id: 10, name: "LAMBORGHINI AVENTADOR", emoji: "🚀", price: 10000000, owned: false },
-                { id: 11, name: "FERRARI LA FERRARI", emoji: "🔥", price: 30000000, owned: false },
-                { id: 12, name: "BUGATTI VEYRON", emoji: "💨", price: 100000000, owned: false },
-                { id: 13, name: "KOENIGSEGG AGERA", emoji: "⚡", price: 300000000, owned: false },
-                { id: 14, name: "PAGANI ZONDA", emoji: "🌀", price: 500000000, owned: false },
-                { id: 15, name: "LYKAN HYPERSPORT", emoji: "👽", price: 1000000000, owned: false },
-                { id: 16, name: "DEVEL SIXTEEN", emoji: "💥", price: 3000000000, owned: false },
-                { id: 17, name: "THRUST SSC", emoji: "📏", price: 10000000000, owned: false },
-                { id: 18, name: "BLOODHOUND SSC", emoji: "🎯", price: 30000000000, owned: false },
-                { id: 19, name: "СВЕТОВОЙ МОТОЦИКЛ", emoji: "✨", price: 100000000000, owned: false }
-            ],
-            planes: [
-                { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 50000, owned: false },
-                { id: 1, name: "CESSNA 172", emoji: "🛩️", price: 150000, owned: false },
-                { id: 2, name: "BOEING 737", emoji: "🛫", price: 500000, owned: false },
-                { id: 3, name: "AIRBUS A320", emoji: "🛬", price: 800000, owned: false },
-                { id: 4, name: "BOEING 747", emoji: "🛰️", price: 2000000, owned: false },
-                { id: 5, name: "AIRBUS A380", emoji: "🌍", price: 5000000, owned: false },
-                { id: 6, name: "CONCORDE", emoji: "⚡", price: 10000000, owned: false },
-                { id: 7, name: "F-22 RAPTOR", emoji: "🎯", price: 30000000, owned: false },
-                { id: 8, name: "SR-71 BLACKBIRD", emoji: "🕶️", price: 50000000, owned: false },
-                { id: 9, name: "B-2 SPIRIT", emoji: "👻", price: 100000000, owned: false },
-                { id: 10, name: "АН-225 МРИЯ", emoji: "🏆", price: 300000000, owned: false },
-                { id: 11, name: "КОСМИЧЕСКИЙ ШАТТЛ", emoji: "🚀", price: 1000000000, owned: false },
-                { id: 12, name: "STARSHIP", emoji: "⭐", price: 3000000000, owned: false },
-                { id: 13, name: "ЛУННЫЙ МОДУЛЬ", emoji: "🌕", price: 10000000000, owned: false },
-                { id: 14, name: "МАРСОХОД", emoji: "🔴", price: 30000000000, owned: false },
-                { id: 15, name: "ЗВЕЗДА СМЕРТИ", emoji: "💀", price: 100000000000, owned: false },
-                { id: 16, name: "ТЫСЯЧЕЛЕТНИЙ СОКОЛ", emoji: "🛸", price: 300000000000, owned: false },
-                { id: 17, name: "ЭНТЕРПРАЙЗ", emoji: "🖖", price: 1000000000000, owned: false },
-                { id: 18, name: "ТАРДИС", emoji: "📞", price: 3000000000000, owned: false },
-                { id: 19, name: "СВЕТОВОЙ КОРАБЛЬ", emoji: "✨", price: 10000000000000, owned: false }
-            ],
-            ships: [
-                { id: 0, name: "ЛОДКА", emoji: "🛶", price: 10000, owned: false },
-                { id: 1, name: "КАТЕР", emoji: "⛵", price: 50000, owned: false },
-                { id: 2, name: "ЯХТА", emoji: "🛥️", price: 200000, owned: false },
-                { id: 3, name: "ПАРУСНИК", emoji: "⛵", price: 500000, owned: false },
-                { id: 4, name: "ТЕПЛОХОД", emoji: "🚢", price: 1000000, owned: false },
-                { id: 5, name: "ЛАЙНЕР", emoji: "🛳️", price: 5000000, owned: false },
-                { id: 6, name: "ТАНКЕР", emoji: "⛽", price: 10000000, owned: false },
-                { id: 7, name: "КОНТЕЙНЕРОВОЗ", emoji: "📦", price: 20000000, owned: false },
-                { id: 8, name: "ЛЕДОКОЛ", emoji: "❄️", price: 50000000, owned: false },
-                { id: 9, name: "АВИАНОСЕЦ", emoji: "🛩️", price: 100000000, owned: false },
-                { id: 10, name: "ПОДВОДНАЯ ЛОДКА", emoji: "🐟", price: 200000000, owned: false },
-                { id: 11, name: "ТИТАНИК", emoji: "🧊", price: 500000000, owned: false },
-                { id: 12, name: "БИСМАРК", emoji: "⚔️", price: 1000000000, owned: false },
-                { id: 13, name: "ЯМАТО", emoji: "🗾", price: 2000000000, owned: false },
-                { id: 14, name: "МИССУРИ", emoji: "🇺🇸", price: 5000000000, owned: false },
-                { id: 15, name: "АДМИРАЛ КУЗНЕЦОВ", emoji: "🇷🇺", price: 10000000000, owned: false },
-                { id: 16, name: "ПИРАТСКИЙ КОРАБЛЬ", emoji: "🏴‍☠️", price: 20000000000, owned: false },
-                { id: 17, name: "ЛЕТУЧИЙ ГОЛЛАНДЕЦ", emoji: "👻", price: 50000000000, owned: false },
-                { id: 18, name: "КОВЧЕГ", emoji: "🌈", price: 100000000000, owned: false },
-                { id: 19, name: "ПОСЕЙДОН", emoji: "🌊", price: 200000000000, owned: false }
-            ],
-            art: [
-                { id: 0, name: "МОНА ЛИЗА", emoji: "🖼️", price: 1000000, owned: false },
-                { id: 1, name: "ЗВЕЗДНАЯ НОЧЬ", emoji: "🌃", price: 2000000, owned: false },
-                { id: 2, name: "КРИК", emoji: "😱", price: 3000000, owned: false },
-                { id: 3, name: "ДЕВУШКА С ЖЕМЧУГОМ", emoji: "👧", price: 4000000, owned: false },
-                { id: 4, name: "ПОСТОЯНСТВО ПАМЯТИ", emoji: "⏰", price: 5000000, owned: false },
-                { id: 5, name: "РОЖДЕНИЕ ВЕНЕРЫ", emoji: "🐚", price: 6000000, owned: false },
-                { id: 6, name: "СОТВОРЕНИЕ АДАМА", emoji: "👆", price: 7000000, owned: false },
-                { id: 7, name: "ТАЙНАЯ ВЕЧЕРЯ", emoji: "🍞", price: 8000000, owned: false },
-                { id: 8, name: "СИКСТИНСКАЯ МАДОННА", emoji: "👼", price: 9000000, owned: false },
-                { id: 9, name: "САД ЗЕМНЫХ НАСЛАЖДЕНИЙ", emoji: "🌳", price: 10000000, owned: false },
-                { id: 10, name: "ВАВИЛОНСКАЯ БАШНЯ", emoji: "🗼", price: 15000000, owned: false },
-                { id: 11, name: "ПЛЮЩ", emoji: "🌿", price: 20000000, owned: false },
-                { id: 12, name: "МАКИ", emoji: "🌹", price: 25000000, owned: false },
-                { id: 13, name: "ПОДСОЛНУХИ", emoji: "🌻", price: 30000000, owned: false },
-                { id: 14, name: "ИРИСЫ", emoji: "🌸", price: 35000000, owned: false },
-                { id: 15, name: "КУВШИНКИ", emoji: "💮", price: 40000000, owned: false },
-                { id: 16, name: "БАЛ В МУЛЕН РУЖ", emoji: "💃", price: 45000000, owned: false },
-                { id: 17, name: "АБСЕНТ", emoji: "🍸", price: 50000000, owned: false },
-                { id: 18, name: "ТАНЦЕВАЛЬНЫЙ КЛАСС", emoji: "🩰", price: 55000000, owned: false },
-                { id: 19, name: "БАЛЕТНАЯ ПАЧКА", emoji: "🎭", price: 60000000, owned: false }
-            ]
+            houses: [],
+            cars: [],
+            planes: [],
+            ships: [],
+            art: []
         };
+        
+        // Заполняем коллекции
+        for (let i = 0; i < 20; i++) {
+            collectionItems.houses.push({ id: i, name: `ДОМ ${i+1}`, emoji: "🏠", price: 50000 * (i+1), owned: false });
+            collectionItems.cars.push({ id: i, name: `МАШИНА ${i+1}`, emoji: "🚗", price: 20000 * (i+1), owned: false });
+            collectionItems.planes.push({ id: i, name: `САМОЛЕТ ${i+1}`, emoji: "✈️", price: 100000 * (i+1), owned: false });
+            collectionItems.ships.push({ id: i, name: `КОРАБЛЬ ${i+1}`, emoji: "🚢", price: 30000 * (i+1), owned: false });
+            collectionItems.art.push({ id: i, name: `КАРТИНА ${i+1}`, emoji: "🖼️", price: 1000000 * (i+1), owned: false });
+        }
         
         // ========== СУПЕР-МОНЕТА ==========
         let specialItem = {
-            id: 999,
-            name: "???????",
-            hiddenName: "SUGURU COIN",
-            emoji: "❓",
-            hiddenEmoji: "💎",
             price: 777777777777777,
             income: 777,
             owned: false,
             revealed: false
         };
+        
+        // ========== ФОРМАТИРОВАНИЕ ==========
+        function formatNumber(num) {
+            if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+            return Math.floor(num).toString();
+        }
+        
+        function formatFullNumber(num) {
+            return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
         
         // ========== ГЕНЕРАЦИЯ ID ==========
         function getDeviceId() {
@@ -1194,34 +965,19 @@
         
         // ========== ГЕНЕРАЦИЯ СЛУЧАЙНОГО НИКА ==========
         function generateRandomNickname() {
-            const randomNum = Math.floor(Math.random() * 900) + 100;
-            return `ИГРОК${randomNum}`;
+            const num = Math.floor(Math.random() * 900) + 100;
+            return `ИГРОК${num}`;
         }
         
-        // ========== ФОРМАТИРОВАНИЕ ==========
-        function formatNumber(num) {
-            if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
-            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
-            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
-            if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
-            return Math.floor(num).toString();
-        }
-        
-        function formatFullNumber(num) {
-            return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        
-        // ========== ГЛОБАЛЬНЫЙ ТОП ==========
+        // ========== ЗАГРУЗКА ТОПА ==========
         function loadGlobalPlayers() {
-            const saved = localStorage.getItem('imperiaGlobalPlayers');
+            const saved = localStorage.getItem('globalPlayers');
             if (saved) {
                 try {
                     globalPlayers = JSON.parse(saved);
                 } catch(e) {
                     globalPlayers = [];
                 }
-            } else {
-                globalPlayers = [];
             }
             globalPlayers = globalPlayers.filter(p => p.nickname !== ADMIN_NICK);
         }
@@ -1230,7 +986,7 @@
             const filtered = globalPlayers.filter(p => p.nickname !== ADMIN_NICK);
             filtered.sort((a, b) => b.totalEarned - a.totalEarned);
             globalPlayers = filtered.slice(0, 100);
-            localStorage.setItem('imperiaGlobalPlayers', JSON.stringify(globalPlayers));
+            localStorage.setItem('globalPlayers', JSON.stringify(globalPlayers));
         }
         
         function updateGlobalPlayer() {
@@ -1238,19 +994,18 @@
             if (currentUser === ADMIN_NICK) return;
             if (bannedPlayers.includes(currentUserId)) return;
             
-            const existingIndex = globalPlayers.findIndex(p => p.deviceId === currentUserId);
-            const playerData = {
+            const index = globalPlayers.findIndex(p => p.deviceId === currentUserId);
+            const data = {
                 deviceId: currentUserId,
                 nickname: currentUser,
                 totalEarned: gameState.totalEarned || 0,
-                hasSpecialItem: gameState.specialItem?.owned || false,
-                lastUpdate: Date.now()
+                hasSpecial: gameState.specialItem?.owned || false
             };
             
-            if (existingIndex >= 0) {
-                globalPlayers[existingIndex] = playerData;
+            if (index >= 0) {
+                globalPlayers[index] = data;
             } else {
-                globalPlayers.push(playerData);
+                globalPlayers.push(data);
             }
             saveGlobalPlayers();
         }
@@ -1260,9 +1015,9 @@
             return index >= 0 ? index + 1 : globalPlayers.length + 1;
         }
         
-        // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
+        // ========== ЗАГРУЗКА ИГРЫ ==========
         function loadGame() {
-            const saved = localStorage.getItem('imperiaSave_' + currentUserId);
+            const saved = localStorage.getItem('save_' + currentUserId);
             if (saved) {
                 try {
                     const data = JSON.parse(saved);
@@ -1270,29 +1025,58 @@
                     settings = data.settings || { soundEnabled: true, effectsEnabled: true };
                     currentUser = data.nickname || generateRandomNickname();
                     
-                    if (!gameState.collections) {
-                        gameState.collections = JSON.parse(JSON.stringify(collectionItems));
-                    }
-                    if (!gameState.crypto) {
-                        gameState.crypto = cryptoCurrencies.map(c => ({ id: c.id, owned: 0 }));
-                    }
+                    if (!gameState.collections) gameState.collections = JSON.parse(JSON.stringify(collectionItems));
+                    if (!gameState.crypto) gameState.crypto = cryptoCurrencies.map(c => ({ id: c.id, owned: 0 }));
                     if (!gameState.cryptoPrices) {
                         cryptoPrices = cryptoCurrencies.map(c => c.basePrice);
                         gameState.cryptoPrices = cryptoPrices;
                     } else {
                         cryptoPrices = gameState.cryptoPrices;
                     }
-                    if (gameState.specialItem === undefined) {
-                        gameState.specialItem = { owned: false, revealed: false };
-                    }
+                    if (gameState.specialItem === undefined) gameState.specialItem = { owned: false, revealed: false };
                     
                     const now = Date.now();
                     const lastOnline = gameState.lastOnlineTime || now;
                     const secondsPassed = Math.floor((now - lastOnline) / 1000);
                     
                     if (secondsPassed > 10) {
-                        calculateOfflineEarnings(secondsPassed);
+                        let income = 0;
+                        if (gameState.autoClickerLevel) income += gameState.autoClickerLevel * secondsPassed;
+                        if (gameState.myBusinesses) {
+                            gameState.myBusinesses.forEach(b => {
+                                const t = businessTemplates[b.templateId];
+                                if (b.level > 0 && t) income += t.baseIncome * b.level * secondsPassed;
+                            });
+                        }
+                        if (gameState.crypto && cryptoPrices) {
+                            gameState.crypto.forEach(c => {
+                                const cd = cryptoCurrencies.find(cr => cr.id === c.id);
+                                if (c.owned > 0 && cd) {
+                                    const price = cryptoPrices[c.id] || cd.basePrice;
+                                    income += (price / 2000) * c.owned * secondsPassed;
+                                }
+                            });
+                        }
+                        if (gameState.specialItem?.owned) income += 777 * secondsPassed;
+                        
+                        if (income > 0) {
+                            const earned = Math.floor(income);
+                            gameState.balance = (gameState.balance || 0) + earned;
+                            gameState.totalEarned = (gameState.totalEarned || 0) + earned;
+                            
+                            const minutes = Math.floor(secondsPassed / 60);
+                            const secs = secondsPassed % 60;
+                            alert(`⏱️ ОФФЛАЙН ДОХОД\nОтсутствовал: ${minutes} мин ${secs} сек\n💰 ЗАРАБОТАНО: ${formatFullNumber(earned)} монет`);
+                            
+                            const badge = document.getElementById('offlineBadge');
+                            if (badge) {
+                                badge.style.display = 'inline-block';
+                                badge.textContent = `⏱️ +${formatFullNumber(earned)} ЗА ОФФЛАЙН`;
+                                setTimeout(() => badge.style.display = 'none', 5000);
+                            }
+                        }
                     }
+                    
                     gameState.lastOnlineTime = now;
                     return true;
                 } catch(e) {
@@ -1311,15 +1095,13 @@
                     settings: settings,
                     nickname: currentUser
                 };
-                localStorage.setItem('imperiaSave_' + currentUserId, JSON.stringify(saveData));
+                localStorage.setItem('save_' + currentUserId, JSON.stringify(saveData));
                 updateGlobalPlayer();
             }
         }
         
         function startNewGame() {
-            const randomNick = generateRandomNickname();
-            currentUser = randomNick;
-            
+            currentUser = generateRandomNickname();
             gameState = {
                 balance: 0,
                 diamonds: 10,
@@ -1333,82 +1115,27 @@
                 totalEarned: 0,
                 playTime: 0,
                 lastOnlineTime: Date.now(),
-                lastWeeklyReward: 0,
                 myBusinesses: [],
                 collections: JSON.parse(JSON.stringify(collectionItems)),
                 crypto: cryptoCurrencies.map(c => ({ id: c.id, owned: 0 })),
                 cryptoPrices: cryptoCurrencies.map(c => c.basePrice),
                 specialItem: { owned: false, revealed: false }
             };
-            
             cryptoPrices = gameState.cryptoPrices;
-            
             document.getElementById('username').innerHTML = `👑 ${currentUser}`;
             updateUI();
             renderTab('home');
             saveGame();
         }
         
-        // ========== ОФФЛАЙН ДОХОД ==========
-        function calculateOfflineEarnings(seconds) {
-            let income = 0;
-            
-            if (gameState.autoClickerLevel > 0) {
-                income += gameState.autoClickerLevel * seconds;
-            }
-            
-            if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
-                gameState.myBusinesses.forEach(b => {
-                    const t = businessTemplates[b.templateId];
-                    if (b.level > 0 && t) {
-                        income += t.baseIncome * b.level * seconds;
-                    }
-                });
-            }
-            
-            if (gameState.crypto && cryptoPrices) {
-                gameState.crypto.forEach(c => {
-                    const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                    if (c.owned > 0 && cryptoData) {
-                        const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                        income += (price / 2000) * c.owned * seconds;
-                    }
-                });
-            }
-            
-            if (gameState.specialItem && gameState.specialItem.owned) {
-                income += 777 * seconds;
-            }
-            
-            if (income > 0) {
-                const earned = Math.floor(income);
-                gameState.balance = (gameState.balance || 0) + earned;
-                gameState.totalEarned = (gameState.totalEarned || 0) + earned;
-                
-                const minutes = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                
-                alert(`⏱️ ОФФЛАЙН ДОХОД\nОтсутствовал: ${minutes} мин ${secs} сек\n💰 ЗАРАБОТАНО: ${formatFullNumber(earned)} монет`);
-                
-                const badge = document.getElementById('offlineBadge');
-                if (badge) {
-                    badge.style.display = 'inline-block';
-                    badge.textContent = `⏱️ +${formatFullNumber(earned)} ЗА ОФФЛАЙН`;
-                    setTimeout(() => badge.style.display = 'none', 5000);
-                }
-            }
-        }
-        
-        // ========== ОБНОВЛЕНИЕ ЦЕН КРИПТЫ ==========
-        function updateCryptoPrices() {
-            cryptoPrices = cryptoPrices.map((price, i) => {
-                const crypto = cryptoCurrencies[i];
-                const change = (Math.random() - 0.5) * 2 * crypto.volatility;
-                let newPrice = price * (1 + change);
-                newPrice = Math.max(newPrice, crypto.basePrice * 0.1);
-                newPrice = Math.min(newPrice, crypto.basePrice * 10);
-                return Math.floor(newPrice);
-            });
+        function updateUI() {
+            if (!gameState) return;
+            document.getElementById('balance').textContent = formatFullNumber(gameState.balance || 0);
+            document.getElementById('diamonds').textContent = gameState.diamonds || 0;
+            document.getElementById('level').textContent = gameState.level || 1;
+            const expNeeded = (gameState.level || 1) * 1000;
+            const expPercent = ((gameState.exp || 0) / expNeeded) * 100;
+            document.getElementById('levelProgress').style.width = Math.min(expPercent, 100) + '%';
         }
         
         // ========== ЗВУК ==========
@@ -1416,37 +1143,28 @@
             if (!settings.soundEnabled) return;
             try {
                 if (window.AudioContext || window.webkitAudioContext) {
-                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = 523.25;
+                    gain.gain.value = 0.15;
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.08);
                     
-                    const oscillator = audioCtx.createOscillator();
-                    const gainNode = audioCtx.createGain();
-                    
-                    oscillator.type = 'sine';
-                    oscillator.frequency.value = 523.25;
-                    
-                    gainNode.gain.value = 0.15;
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioCtx.destination);
-                    
-                    oscillator.start();
-                    oscillator.stop(audioCtx.currentTime + 0.08);
-                    
-                    const oscillator2 = audioCtx.createOscillator();
-                    const gainNode2 = audioCtx.createGain();
-                    
-                    oscillator2.type = 'triangle';
-                    oscillator2.frequency.value = 659.25;
-                    
-                    gainNode2.gain.value = 0.1;
-                    gainNode2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-                    
-                    oscillator2.connect(gainNode2);
-                    gainNode2.connect(audioCtx.destination);
-                    
-                    oscillator2.start();
-                    oscillator2.stop(audioCtx.currentTime + 0.08);
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.type = 'triangle';
+                    osc2.frequency.value = 659.25;
+                    gain2.gain.value = 0.1;
+                    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    osc2.start();
+                    osc2.stop(ctx.currentTime + 0.08);
                 }
             } catch(e) {}
         }
@@ -1464,13 +1182,8 @@
         
         function handleClick(event) {
             if (!gameState) return;
-            
             let power = (gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5);
-            
-            if (Math.random() * 100 < (gameState.critLevel || 0) * 10) {
-                power *= 10;
-            }
-            
+            if (Math.random() * 100 < (gameState.critLevel || 0) * 10) power *= 10;
             const earned = Math.floor(power);
             gameState.balance = (gameState.balance || 0) + earned;
             gameState.totalClicks = (gameState.totalClicks || 0) + 1;
@@ -1484,49 +1197,24 @@
             }
             
             playClickSound();
-            if (event) {
-                createFloatingEffect(event.clientX, event.clientY, `+${earned}💰`);
-            }
-            
+            if (event) createFloatingEffect(event.clientX, event.clientY, `+${earned}💰`);
             updateUI();
             saveGame();
             renderCurrentTab();
         }
         
-        function updateUI() {
-            if (!gameState) return;
-            
-            document.getElementById('balance').textContent = formatFullNumber(gameState.balance || 0);
-            document.getElementById('diamonds').textContent = gameState.diamonds || 0;
-            document.getElementById('level').textContent = gameState.level || 1;
-            
-            const expNeeded = (gameState.level || 1) * 1000;
-            const expPercent = ((gameState.exp || 0) / expNeeded) * 100;
-            document.getElementById('levelProgress').style.width = Math.min(expPercent, 100) + '%';
-        }
-        
         function renderTab(tab) {
             if (!gameState) return;
-            
             const content = document.getElementById('content');
             
-            if (tab === 'home') {
-                renderHome(content);
-            } else if (tab === 'mybusiness') {
-                renderMyBusiness(content);
-            } else if (tab === 'crypto') {
-                renderCrypto(content);
-            } else if (tab === 'collection') {
-                renderCollection(content);
-            } else if (tab === 'shop') {
-                renderShop(content);
-            } else if (tab === 'top') {
-                renderTop(content);
-            } else if (tab === 'stats') {
-                renderStats(content);
-            } else if (tab === 'settings') {
-                renderSettings(content);
-            }
+            if (tab === 'home') renderHome(content);
+            else if (tab === 'mybusiness') renderMyBusiness(content);
+            else if (tab === 'crypto') renderCrypto(content);
+            else if (tab === 'collection') renderCollection(content);
+            else if (tab === 'shop') renderShop(content);
+            else if (tab === 'top') renderTop(content);
+            else if (tab === 'stats') renderStats(content);
+            else if (tab === 'settings') renderSettings(content);
         }
         
         function renderCurrentTab() {
@@ -1538,30 +1226,26 @@
             const power = (gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5);
             let total = gameState.autoClickerLevel || 0;
             
-            if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
+            if (gameState.myBusinesses) {
                 gameState.myBusinesses.forEach(b => {
                     const t = businessTemplates[b.templateId];
-                    if (b.level > 0 && t) {
-                        total += t.baseIncome * b.level;
-                    }
+                    if (b.level > 0 && t) total += t.baseIncome * b.level;
                 });
             }
             
             if (gameState.crypto && cryptoPrices) {
                 gameState.crypto.forEach(c => {
                     if (c.owned > 0) {
-                        const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                        if (cryptoData) {
-                            const price = cryptoPrices[c.id] || cryptoData.basePrice;
+                        const cd = cryptoCurrencies.find(cr => cr.id === c.id);
+                        if (cd) {
+                            const price = cryptoPrices[c.id] || cd.basePrice;
                             total += (price / 2000) * c.owned;
                         }
                     }
                 });
             }
             
-            if (gameState.specialItem && gameState.specialItem.owned) {
-                total += 777;
-            }
+            if (gameState.specialItem?.owned) total += 777;
             
             content.innerHTML = `
                 <div id="home-content" onclick="handleClick(event)">
@@ -1581,49 +1265,36 @@
         
         function renderTop(content) {
             updateGlobalPlayer();
-            
             let html = '<div class="card"><div class="card-title">🏆 ТОП-100 ИГРОКОВ</div>';
             
             if (globalPlayers.length === 0) {
                 html += '<div style="text-align:center; padding:30px;">ПОКА НИКОГО НЕТ</div>';
             } else {
                 const myRank = getPlayerRank();
+                html += `<div style="text-align:center; margin:10px; color:#ffd700;">🏅 ВАШЕ МЕСТО: ${myRank}</div>`;
                 
-                html += `
-                    <div style="text-align:center; margin:10px; color:#ffd700; font-size:18px;">
-                        🏅 ВАШЕ МЕСТО: ${myRank}
-                    </div>
-                `;
-                
-                html += '<div style="margin-bottom:10px; text-align:center; color:#ffd700;">ПО ОБЩЕМУ ЗАРАБОТКУ</div>';
-                
-                globalPlayers.slice(0, 20).forEach((player, index) => {
-                    const rank = index + 1;
-                    let rankClass = '';
-                    if (rank === 1) rankClass = 'top-rank-1';
-                    else if (rank === 2) rankClass = 'top-rank-2';
-                    else if (rank === 3) rankClass = 'top-rank-3';
+                globalPlayers.slice(0, 20).forEach((p, i) => {
+                    const rank = i + 1;
+                    let rc = '';
+                    if (rank === 1) rc = 'top-rank-1';
+                    else if (rank === 2) rc = 'top-rank-2';
+                    else if (rank === 3) rc = 'top-rank-3';
                     
-                    const isCurrentPlayer = player.deviceId === currentUserId;
+                    const isMe = p.deviceId === currentUserId;
                     
                     html += `
-                        <div class="top-item" style="${isCurrentPlayer ? 'background: rgba(255,215,0,0.2); border:2px solid gold;' : ''}">
-                            <div class="top-rank ${rankClass}">${rank}</div>
+                        <div class="top-item" style="${isMe ? 'background: rgba(255,215,0,0.2); border:2px solid gold;' : ''}">
+                            <div class="top-rank ${rc}">${rank}</div>
                             <div class="top-name">
-                                ${player.nickname} ${isCurrentPlayer ? '👑' : ''}
-                                ${player.hasSpecialItem ? '<span class="top-special-icon">💎</span>' : ''}
+                                ${p.nickname} ${isMe ? '👑' : ''}
+                                ${p.hasSpecial ? '<span class="special-badge">💎</span>' : ''}
                             </div>
-                            <div class="top-money">${formatNumber(player.totalEarned)}💰</div>
+                            <div class="top-money">${formatNumber(p.totalEarned)}💰</div>
                         </div>
                     `;
                 });
                 
-                html += `
-                    <div class="top-update-time">
-                        ⏱️ Обновляется автоматически<br>
-                        Всего игроков: ${globalPlayers.length}
-                    </div>
-                `;
+                html += `<div class="top-update-time">⏱️ Всего игроков: ${globalPlayers.length}</div>`;
             }
             
             html += '</div>';
@@ -1636,301 +1307,42 @@
             if (!gameState.myBusinesses || gameState.myBusinesses.length === 0) {
                 html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
             } else {
-                gameState.myBusinesses.forEach((business, index) => {
-                    const t = businessTemplates[business.templateId];
+                gameState.myBusinesses.forEach((b, i) => {
+                    const t = businessTemplates[b.templateId];
                     if (!t) return;
-                    
-                    const upgrading = business.upgradeEnd && business.upgradeEnd > Date.now();
-                    const timeLeft = upgrading ? Math.ceil((business.upgradeEnd - Date.now()) / 1000) : 0;
-                    
                     html += `
-                        <div class="business-item" onclick="openBusiness(${index})">
+                        <div class="business-item" onclick="alert('Бизнес #${i+1}')">
                             <div class="business-header">
-                                <span class="business-name">${t.name} #${index + 1}</span>
-                                <span class="business-level">${business.level || 1}/${t.maxLevel}</span>
+                                <span class="business-name">${t.name}</span>
+                                <span class="business-level">Ур. ${b.level}</span>
                             </div>
                             <div class="business-stats">
-                                <span>💰 +${formatFullNumber(t.baseIncome * (business.level || 1))}/сек</span>
-                                <span>📈 ${formatFullNumber(business.totalEarned || 0)}</span>
+                                <span>💰 +${formatFullNumber(t.baseIncome * b.level)}/сек</span>
+                                <span>📈 ${formatFullNumber(b.totalEarned || 0)}</span>
                             </div>
-                            ${upgrading ? `
-                                <div class="business-progress">
-                                    <div class="business-bar" style="width: ${((Date.now() - (business.lastUpgrade || Date.now())) / ((business.upgradeEnd || Date.now()) - (business.lastUpgrade || Date.now())) * 100) || 0}%"></div>
-                                </div>
-                                <div class="upgrade-time">⏱️ УЛУЧШЕНИЕ: ${timeLeft}С</div>
-                            ` : (business.level || 1) < t.maxLevel ? `
-                                <div class="upgrade-time">💰 УЛУЧШИТЬ: ${formatFullNumber(business.upgradeCost || 0)}</div>
-                            ` : '<div style="color:#ffd700; text-align:center;">МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>'}
                         </div>
                     `;
                 });
             }
             
-            html += '<div class="btn btn-gold" onclick="openBuyBusinessModal()">➕ КУПИТЬ НОВЫЙ БИЗНЕС</div>';
             html += '</div>';
             content.innerHTML = html;
         }
         
-        function openBuyBusinessModal() {
-            const modal = document.getElementById('businessModal');
-            const modalContent = document.getElementById('businessModalContent');
-            
-            let html = '<div class="modal-title">🏪 КУПИТЬ БИЗНЕС</div>';
-            
-            businessTemplates.forEach(t => {
-                const ownedCount = gameState.myBusinesses ? gameState.myBusinesses.filter(b => b.templateId === t.id).length : 0;
-                
-                html += `
-                    <div class="business-item" style="cursor:pointer;" onclick="buyBusinessFromModal(${t.id})">
-                        <div class="business-header">
-                            <span class="business-name">${t.name}</span>
-                        </div>
-                        <div class="business-stats">
-                            <span>💰 ДОХОД: +${t.baseIncome}/сек</span>
-                            <span>⏱️ ВРЕМЯ: ${t.upgradeTime}С</span>
-                        </div>
-                        <div class="business-stats">
-                            <span>📊 КУПЛЕНО: ${ownedCount}/10</span>
-                            <span style="color:#4CAF50;">💰 ЦЕНА: ${formatFullNumber(t.baseUpgradeCost)}</span>
-                        </div>
-                        ${ownedCount >= 10 ? 
-                            '<div style="color:#f44336; text-align:center;">⚠️ МАКСИМУМ (10 ШТУК)</div>' : 
-                            '<div class="btn btn-small" style="margin-top:10px; pointer-events:none;">КУПИТЬ</div>'
-                        }
-                    </div>
-                `;
-            });
-            
-            html += '<div class="close-btn" onclick="closeBusinessModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function buyBusinessFromModal(templateId) {
-            const t = businessTemplates.find(t => t.id === templateId);
-            if (!t) return;
-            
-            const ownedCount = gameState.myBusinesses ? gameState.myBusinesses.filter(b => b.templateId === templateId).length : 0;
-            
-            if (ownedCount >= 10) {
-                alert('❌ НЕЛЬЗЯ КУПИТЬ БОЛЬШЕ 10!');
-                return;
-            }
-            
-            if ((gameState.balance || 0) < t.baseUpgradeCost) {
-                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-                return;
-            }
-            
-            gameState.balance -= t.baseUpgradeCost;
-            
-            if (!gameState.myBusinesses) gameState.myBusinesses = [];
-            
-            gameState.myBusinesses.push({
-                id: Date.now() + Math.random(),
-                templateId: templateId,
-                level: 1,
-                upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
-                upgradeTime: t.upgradeTime,
-                upgradeEnd: 0,
-                lastUpgrade: 0,
-                totalEarned: 0
-            });
-            
-            saveGame();
-            updateUI();
-            closeBusinessModal();
-            renderCurrentTab();
-            alert(`✅ Куплен ${t.name}!`);
-        }
-        
-        function openBusiness(index) {
-            const business = gameState.myBusinesses[index];
-            if (!business) return;
-            
-            const t = businessTemplates[business.templateId];
-            if (!t) return;
-            
-            let totalSpent = t.baseUpgradeCost;
-            let currentCost = t.baseUpgradeCost;
-            for (let i = 1; i < (business.level || 1); i++) {
-                currentCost = Math.floor(currentCost * 2.5);
-                totalSpent += currentCost;
-            }
-            
-            const sellPrice = Math.floor(totalSpent * 0.5);
-            
-            const modal = document.getElementById('businessModal');
-            const modalContent = document.getElementById('businessModalContent');
-            
-            let content = `
-                <div class="modal-title">${t.name} #${index + 1}</div>
-                <div style="text-align:center;">
-                    <div style="font-size:48px; margin:15px;">${t.name.charAt(0)}</div>
-                    <div style="margin:10px;">📊 УРОВЕНЬ: ${business.level || 1}/${t.maxLevel}</div>
-                    <div style="margin:10px;">💰 ДОХОД: +${formatFullNumber(t.baseIncome * (business.level || 1))}/сек</div>
-                    <div style="margin:10px;">📈 ЗАРАБОТАНО: ${formatFullNumber(business.totalEarned || 0)}</div>
-                    <div style="margin:10px;">💸 ВЛОЖЕНО: ${formatFullNumber(totalSpent)}</div>
-                    <div style="margin:10px;">🏷️ ПРОДАЖА: ${formatFullNumber(sellPrice)} (50%)</div>
-                    <div style="margin:10px;">⏱️ ВРЕМЯ: ${business.upgradeTime || t.upgradeTime}С</div>
-            `;
-            
-            if ((business.level || 1) < t.maxLevel) {
-                if (business.upgradeEnd && business.upgradeEnd > Date.now()) {
-                    const timeLeft = Math.ceil((business.upgradeEnd - Date.now()) / 1000);
-                    content += `
-                        <div style="margin:15px; color:#ff9800;">
-                            ⏱️ УЛУЧШЕНИЕ... ${timeLeft}С
-                        </div>
-                    `;
-                } else {
-                    content += `
-                        <div style="margin:15px;">
-                            <div class="btn btn-gold" onclick="startUpgrade(${index})">
-                                🚀 УЛУЧШИТЬ (${formatFullNumber(business.upgradeCost || 0)}💰)
-                            </div>
-                        </div>
-                    `;
-                }
-            } else {
-                content += '<div style="margin:15px; color:#ffd700;">✅ МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>';
-            }
-            
-            content += `
-                <div style="margin:15px;">
-                    <div class="sell-btn" onclick="sellBusiness(${index})">
-                        💰 ПРОДАТЬ (${formatFullNumber(sellPrice)}💰)
-                    </div>
-                </div>
-                </div>
-                <div class="close-btn" onclick="closeBusinessModal()">ЗАКРЫТЬ</div>
-            `;
-            
-            modalContent.innerHTML = content;
-            modal.classList.add('active');
-        }
-        
-        function startUpgrade(index) {
-            const business = gameState.myBusinesses[index];
-            if (!business) return;
-            
-            const t = businessTemplates[business.templateId];
-            if (!t) return;
-            
-            if ((business.level || 1) >= t.maxLevel) {
-                alert('❌ МАКСИМАЛЬНЫЙ УРОВЕНЬ!');
-                return;
-            }
-            
-            if (business.upgradeEnd && business.upgradeEnd > Date.now()) {
-                alert('⏱️ УЛУЧШЕНИЕ УЖЕ ИДЕТ!');
-                return;
-            }
-            
-            if ((gameState.balance || 0) < (business.upgradeCost || 0)) {
-                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-                return;
-            }
-            
-            gameState.balance -= (business.upgradeCost || 0);
-            
-            business.lastUpgrade = Date.now();
-            business.upgradeEnd = Date.now() + ((business.upgradeTime || t.upgradeTime) * 1000);
-            
-            saveGame();
-            updateUI();
-            closeBusinessModal();
-            renderCurrentTab();
-            
-            alert(`✅ Улучшение запущено на ${business.upgradeTime || t.upgradeTime} сек.`);
-            
-            setTimeout(() => {
-                if (business.upgradeEnd && business.upgradeEnd <= Date.now() && (business.level || 1) < t.maxLevel) {
-                    business.level = (business.level || 1) + 1;
-                    business.upgradeCost = Math.floor((business.upgradeCost || t.baseUpgradeCost) * 2.5);
-                    business.upgradeTime = Math.floor((business.upgradeTime || t.upgradeTime) * 1.3);
-                    business.upgradeEnd = 0;
-                    
-                    saveGame();
-                    updateUI();
-                    renderCurrentTab();
-                    
-                    alert(`✅ ${t.name} улучшен до ${business.level} уровня!`);
-                }
-            }, (business.upgradeTime || t.upgradeTime) * 1000);
-        }
-        
-        function sellBusiness(index) {
-            const business = gameState.myBusinesses[index];
-            if (!business) return;
-            
-            const t = businessTemplates[business.templateId];
-            if (!t) return;
-            
-            let totalSpent = t.baseUpgradeCost;
-            let currentCost = t.baseUpgradeCost;
-            for (let i = 1; i < (business.level || 1); i++) {
-                currentCost = Math.floor(currentCost * 2.5);
-                totalSpent += currentCost;
-            }
-            
-            const sellPrice = Math.floor(totalSpent * 0.5);
-            
-            if (confirm(`Продать ${t.name} за ${formatFullNumber(sellPrice)}💰?`)) {
-                gameState.myBusinesses.splice(index, 1);
-                gameState.balance = (gameState.balance || 0) + sellPrice;
-                
-                saveGame();
-                updateUI();
-                closeBusinessModal();
-                renderCurrentTab();
-                alert(`✅ Продано! +${formatFullNumber(sellPrice)}💰`);
-            }
-        }
-        
-        function closeBusinessModal() {
-            document.getElementById('businessModal').classList.remove('active');
-        }
-        
-        function checkBusinessUpgrades() {
-            if (!gameState || !gameState.myBusinesses) return;
-            
-            const now = Date.now();
-            
-            gameState.myBusinesses.forEach(business => {
-                const t = businessTemplates[business.templateId];
-                if (!t) return;
-                
-                if (business.upgradeEnd && business.upgradeEnd > 0 && business.upgradeEnd <= now && (business.level || 1) < t.maxLevel) {
-                    business.level = (business.level || 1) + 1;
-                    business.upgradeCost = Math.floor((business.upgradeCost || t.baseUpgradeCost) * 2.5);
-                    business.upgradeTime = Math.floor((business.upgradeTime || t.upgradeTime) * 1.3);
-                    business.upgradeEnd = 0;
-                    
-                    saveGame();
-                    renderCurrentTab();
-                }
-            });
-        }
-        
-        // ========== КРИПТА ==========
         function renderCrypto(content) {
             let html = '<div class="card"><div class="card-title">📈 КРИПТОРЫНОК</div>';
-            
-            html += '<div style="text-align:center; margin-bottom:15px; color:#00c853; font-size:14px;">⏱️ Цены обновляются каждые 5 минут</div>';
             
             if (gameState.specialItem && !gameState.specialItem.owned) {
                 html += `
                     <div class="special-item" onclick="buySpecialItem()">
-                        <div class="special-emoji">${gameState.specialItem.revealed ? specialItem.hiddenEmoji : '❓'}</div>
-                        <div class="special-title">${gameState.specialItem.revealed ? specialItem.hiddenName : '????????'}</div>
-                        <div class="special-price">💰 ${formatFullNumber(specialItem.price)}</div>
+                        <div class="special-emoji">❓</div>
+                        <div class="special-title">????????</div>
+                        <div class="special-price">💰 777.777.777.777.777</div>
                         <div class="special-income">⏱️ +777/сек</div>
                         <div class="btn btn-gold">КУПИТЬ</div>
                     </div>
                 `;
-            } else if (gameState.specialItem && gameState.specialItem.owned) {
+            } else if (gameState.specialItem?.owned) {
                 html += `
                     <div class="special-item">
                         <div class="special-emoji">💎</div>
@@ -1941,34 +1353,21 @@
                 `;
             }
             
-            cryptoCurrencies.forEach((crypto, index) => {
-                const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
-                const currentPrice = cryptoPrices[index] || crypto.basePrice;
-                const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
-                const changeColor = priceChange >= 0 ? '#4CAF50' : '#f44336';
-                
-                const totalIncome = Math.floor((currentPrice / 2000) * userCrypto.owned);
-                
-                const isSoldOut = userCrypto.owned >= crypto.maxBuy;
+            cryptoCurrencies.forEach((c, i) => {
+                const user = gameState.crypto.find(cr => cr.id === c.id) || { owned: 0 };
+                const price = cryptoPrices[i] || c.basePrice;
+                const change = ((price - c.basePrice) / c.basePrice * 100).toFixed(1);
+                const total = Math.floor((price / 2000) * user.owned);
                 
                 html += `
                     <div class="crypto-item">
-                        <div style="flex:1;">
-                            <div class="crypto-name">${crypto.emoji} ${crypto.name}</div>
-                            <div class="crypto-price">💰 ${formatFullNumber(currentPrice)} <span style="color:${changeColor};">(${priceChange}%)</span></div>
-                            <div class="crypto-owned">Владею: ${formatFullNumber(userCrypto.owned)} / ${formatFullNumber(crypto.maxBuy)}</div>
-                            <div class="crypto-profit">⏱️ Доход: +${formatFullNumber(totalIncome)}/сек</div>
-                            ${isSoldOut ? '<div style="color:#f44336; font-weight:bold; margin-top:5px;">⚠️ РАСПРОДАНО</div>' : ''}
-                        </div>
+                        <div class="crypto-name">${c.emoji} ${c.name}</div>
+                        <div class="crypto-price">💰 ${formatFullNumber(price)} <span style="color:${change >= 0 ? '#4CAF50' : '#f44336'};">(${change}%)</span></div>
+                        <div class="crypto-owned">Владею: ${formatFullNumber(user.owned)}</div>
+                        <div class="crypto-profit">⏱️ Доход: +${formatFullNumber(total)}/сек</div>
                         <div class="crypto-actions">
-                            ${!isSoldOut ? 
-                                `<button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'buy')">Купить</button>` : 
-                                '<button class="crypto-btn" style="opacity:0.5;" disabled>Купить</button>'
-                            }
-                            ${userCrypto.owned > 0 ? 
-                                `<button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'sell')">Продать</button>` : 
-                                '<button class="crypto-btn" style="opacity:0.5;" disabled>Продать</button>'
-                            }
+                            <button class="crypto-btn" onclick="openTradeModal(${c.id}, 'buy')">Купить</button>
+                            <button class="crypto-btn" onclick="openTradeModal(${c.id}, 'sell')">Продать</button>
                         </div>
                     </div>
                 `;
@@ -1978,265 +1377,52 @@
             content.innerHTML = html;
         }
         
-        function openTradeModal(cryptoId, type) {
-            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
-            const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
-            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
-            
-            const modal = document.getElementById('tradeModal');
-            const modalContent = document.getElementById('tradeModalContent');
-            
-            const maxBuy = crypto.maxBuy - userCrypto.owned;
-            const maxSell = userCrypto.owned;
-            const maxBuyWithMoney = Math.floor(gameState.balance / currentPrice);
-            
-            let html = `
-                <div class="modal-title">${type === 'buy' ? '📈 КУПИТЬ' : '📉 ПРОДАТЬ'} ${crypto.emoji} ${crypto.name}</div>
-                
-                <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; margin-bottom: 15px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                        <span>💰 Цена:</span>
-                        <span style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                        <span>📊 У вас:</span>
-                        <span style="color:#4CAF50;">${formatFullNumber(userCrypto.owned)} шт</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>💵 Баланс:</span>
-                        <span style="color:#ffd700;">${formatFullNumber(gameState.balance)}</span>
-                    </div>
-                </div>
-            `;
-            
-            if (type === 'buy') {
-                html += `
-                    <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${maxBuy}" value="1">
-                    
-                    <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 15px 0;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>💰 Стоимость:</span>
-                            <span id="totalPrice" style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                            <span>📊 Доступно:</span>
-                            <span style="color:#4CAF50;">${formatFullNumber(maxBuy)} шт</span>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'buy')">✅ КУПИТЬ</button>
-                `;
-            } else {
-                html += `
-                    <input type="number" id="tradeAmount" class="input-field" placeholder="Введите количество" min="1" max="${maxSell}" value="1">
-                    
-                    <div style="background: rgba(255,215,0,0.1); border-radius: 10px; padding: 10px; margin: 15px 0;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>💰 Получите:</span>
-                            <span id="totalPrice" style="color:#ffd700;">${formatFullNumber(currentPrice)}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                            <span>📊 У вас:</span>
-                            <span style="color:#4CAF50;">${formatFullNumber(maxSell)} шт</span>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, 'sell')">✅ ПРОДАТЬ</button>
-                `;
-            }
-            
-            html += '<div class="close-btn" onclick="closeTradeModal()">ОТМЕНА</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-            
-            setTimeout(() => {
-                const input = document.getElementById('tradeAmount');
-                if (input) {
-                    input.addEventListener('input', function() {
-                        updateTotalPrice(cryptoId, type);
-                    });
-                    updateTotalPrice(cryptoId, type);
-                }
-            }, 100);
-        }
-        
-        function updateTotalPrice(cryptoId, type) {
-            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
-            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
-            const amount = parseInt(document.getElementById('tradeAmount')?.value) || 0;
-            
-            const totalPriceEl = document.getElementById('totalPrice');
-            if (totalPriceEl) {
-                totalPriceEl.textContent = formatFullNumber(currentPrice * amount);
-            }
-        }
-        
-        function executeTrade(cryptoId, type) {
-            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
-            const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
-            const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
-            const amount = parseInt(document.getElementById('tradeAmount')?.value);
-            
-            if (!amount || amount <= 0) {
-                alert('❌ Введите корректное количество!');
-                closeTradeModal();
-                return;
-            }
-            
-            if (type === 'buy') {
-                const maxBuy = crypto.maxBuy - userCrypto.owned;
-                
-                if (amount > maxBuy) {
-                    alert(`❌ Можно купить только ${formatFullNumber(maxBuy)}!`);
-                    closeTradeModal();
-                    return;
-                }
-                
-                const totalPrice = currentPrice * amount;
-                
-                if (gameState.balance < totalPrice) {
-                    alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-                    closeTradeModal();
-                    return;
-                }
-                
-                gameState.balance -= totalPrice;
-                userCrypto.owned += amount;
-                
-                saveGame();
-                updateUI();
-                closeTradeModal();
-                renderCurrentTab();
-                alert(`✅ Куплено ${amount} ${crypto.name} за ${formatFullNumber(totalPrice)}💰`);
-                
-            } else {
-                if (amount > userCrypto.owned) {
-                    alert(`❌ У вас только ${formatFullNumber(userCrypto.owned)}!`);
-                    closeTradeModal();
-                    return;
-                }
-                
-                const totalPrice = currentPrice * amount;
-                
-                gameState.balance += totalPrice;
-                userCrypto.owned -= amount;
-                
-                saveGame();
-                updateUI();
-                closeTradeModal();
-                renderCurrentTab();
-                alert(`✅ Продано ${amount} ${crypto.name} за ${formatFullNumber(totalPrice)}💰`);
-            }
-        }
-        
-        function closeTradeModal() {
-            document.getElementById('tradeModal').classList.remove('active');
-        }
-        
-        function buySpecialItem() {
-            if (gameState.specialItem.owned) {
-                alert('❌ У вас уже есть Suguru Coin!');
-                return;
-            }
-            
-            if ((gameState.balance || 0) < specialItem.price) {
-                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-                return;
-            }
-            
-            if (confirm(`Купить Suguru Coin за ${formatFullNumber(specialItem.price)}💰?\n\nДоход: +777/сек\nВсего 1 в мире!`)) {
-                gameState.balance -= specialItem.price;
-                gameState.specialItem.owned = true;
-                gameState.specialItem.revealed = true;
-                
-                saveGame();
-                updateUI();
-                renderCurrentTab();
-                alert('✅ ПОЗДРАВЛЯЮ!\n\nВы купили легендарный Suguru Coin!');
-            }
-        }
-        
-        // ========== КОЛЛЕКЦИЯ ==========
         function renderCollection(content) {
-            let html = '<div class="card"><div class="card-title">🎨 КОЛЛЕКЦИЯ</div>';
-            
-            const collections = [
+            let html = '<div class="card"><div class="card-title">🎨 КОЛЛЕКЦИЯ</div><div class="collection-grid">';
+            const cats = [
                 { key: 'houses', name: 'ДОМА', emoji: '🏠', count: gameState.collections.houses.filter(i => i.owned).length },
                 { key: 'cars', name: 'МАШИНЫ', emoji: '🚗', count: gameState.collections.cars.filter(i => i.owned).length },
                 { key: 'planes', name: 'САМОЛЕТЫ', emoji: '✈️', count: gameState.collections.planes.filter(i => i.owned).length },
                 { key: 'ships', name: 'КОРАБЛИ', emoji: '🚢', count: gameState.collections.ships.filter(i => i.owned).length },
                 { key: 'art', name: 'ИСКУССТВО', emoji: '🖼️', count: gameState.collections.art.filter(i => i.owned).length }
             ];
-            
-            html += '<div class="collection-grid">';
-            collections.forEach(c => {
-                html += `
-                    <div class="collection-item" onclick="showCollection('${c.key}')">
-                        <span>${c.emoji}</span>
-                        <div class="collection-name">${c.name}</div>
-                        <div class="collection-owned">${c.count}/20</div>
-                    </div>
-                `;
+            cats.forEach(c => {
+                html += `<div class="collection-item" onclick="showCollection('${c.key}')"><span>${c.emoji}</span><div class="collection-name">${c.name}</div><div class="collection-owned">${c.count}/20</div></div>`;
             });
-            html += '</div>';
-            
-            html += '</div>';
+            html += '</div></div>';
             content.innerHTML = html;
         }
         
         function showCollection(type) {
             const items = gameState.collections[type];
             if (!items) return;
-            
-            const titles = {
-                houses: '🏠 ДОМА',
-                cars: '🚗 МАШИНЫ',
-                planes: '✈️ САМОЛЕТЫ',
-                ships: '🚢 КОРАБЛИ',
-                art: '🖼️ ИСКУССТВО'
-            };
-            
+            const titles = { houses: '🏠 ДОМА', cars: '🚗 МАШИНЫ', planes: '✈️ САМОЛЕТЫ', ships: '🚢 КОРАБЛИ', art: '🖼️ ИСКУССТВО' };
             const modal = document.getElementById('collectionModal');
-            const modalContent = document.getElementById('collectionModalContent');
-            
+            const mc = document.getElementById('collectionModalContent');
             let html = `<div class="modal-title">${titles[type]}</div>`;
-            
             items.forEach(item => {
-                if (!item) return;
                 html += `
                     <div class="collection-detail">
-                        <div class="collection-emoji">${item.emoji || '🏠'}</div>
+                        <div class="collection-emoji">${item.emoji}</div>
                         <div class="collection-details">
-                            <div class="collection-title">${item.name || ''}</div>
-                            <div class="collection-price">💰 ${formatFullNumber(item.price || 0)}</div>
+                            <div class="collection-title">${item.name}</div>
+                            <div class="collection-price">💰 ${formatFullNumber(item.price)}</div>
                         </div>
-                        ${item.owned ? 
-                            '<span class="property-owned">В КОЛЛЕКЦИИ</span>' : 
-                            `<div class="btn btn-small" onclick="buyCollectionItem('${type}', ${item.id})">КУПИТЬ</div>`
-                        }
+                        ${item.owned ? '<span class="property-owned">В КОЛЛЕКЦИИ</span>' : `<div class="btn btn-small" onclick="buyCollectionItem('${type}', ${item.id})">КУПИТЬ</div>`}
                     </div>
                 `;
             });
-            
             html += '<div class="close-btn" onclick="closeCollectionModal()">◀ НАЗАД</div>';
-            
-            modalContent.innerHTML = html;
+            mc.innerHTML = html;
             modal.classList.add('active');
         }
         
         function buyCollectionItem(type, id) {
             const item = gameState.collections[type].find(i => i.id === id);
             if (!item || item.owned) return;
-            
-            if ((gameState.balance || 0) < (item.price || 0)) {
-                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-                return;
-            }
-            
+            if ((gameState.balance || 0) < item.price) return alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
             gameState.balance -= item.price;
             item.owned = true;
-            
             saveGame();
             updateUI();
             closeCollectionModal();
@@ -2247,7 +1433,6 @@
             document.getElementById('collectionModal').classList.remove('active');
         }
         
-        // ========== МАГАЗИН ==========
         const upgradePrices = {
             clickPower: [1000, 5000, 25000, 125000, 625000],
             autoClicker: [2000, 10000, 50000, 250000, 1250000],
@@ -2255,68 +1440,27 @@
         };
         
         function renderShop(content) {
-            let html = '<div class="card"><div class="card-title">🏪 МАГАЗИН УЛУЧШЕНИЙ</div>';
-            
+            let html = '<div class="card"><div class="card-title">🏪 МАГАЗИН</div>';
             if ((gameState.clickPowerLevel || 0) < 5) {
-                html += `
-                    <div class="shop-item">
-                        <div class="item-info">
-                            <div class="item-name">💪 СИЛА КЛИКА +${(gameState.clickPowerLevel || 0) + 1}</div>
-                            <div class="item-price">💰 ${formatFullNumber(upgradePrices.clickPower[gameState.clickPowerLevel || 0])}</div>
-                        </div>
-                        <button class="buy-btn" onclick="buyUpgrade('clickPower')">↑</button>
-                    </div>
-                `;
+                html += `<div class="shop-item"><div class="item-info"><div class="item-name">💪 СИЛА КЛИКА +${(gameState.clickPowerLevel || 0) + 1}</div><div class="item-price">💰 ${formatFullNumber(upgradePrices.clickPower[gameState.clickPowerLevel || 0])}</div></div><button class="buy-btn" onclick="buyUpgrade('clickPower')">↑</button></div>`;
             }
-            
             if ((gameState.autoClickerLevel || 0) < 5) {
-                html += `
-                    <div class="shop-item">
-                        <div class="item-info">
-                            <div class="item-name">🤖 АВТОКЛИКЕР +${(gameState.autoClickerLevel || 0) + 1}</div>
-                            <div class="item-price">💰 ${formatFullNumber(upgradePrices.autoClicker[gameState.autoClickerLevel || 0])}</div>
-                        </div>
-                        <button class="buy-btn" onclick="buyUpgrade('autoClicker')">↑</button>
-                    </div>
-                `;
+                html += `<div class="shop-item"><div class="item-info"><div class="item-name">🤖 АВТОКЛИКЕР +${(gameState.autoClickerLevel || 0) + 1}</div><div class="item-price">💰 ${formatFullNumber(upgradePrices.autoClicker[gameState.autoClickerLevel || 0])}</div></div><button class="buy-btn" onclick="buyUpgrade('autoClicker')">↑</button></div>`;
             }
-            
             if ((gameState.critLevel || 0) < 5) {
-                html += `
-                    <div class="shop-item">
-                        <div class="item-info">
-                            <div class="item-name">⚡ КРИТ +10%</div>
-                            <div class="item-price">💰 ${formatFullNumber(upgradePrices.crit[gameState.critLevel || 0])}</div>
-                        </div>
-                        <button class="buy-btn" onclick="buyUpgrade('crit')">↑</button>
-                    </div>
-                `;
+                html += `<div class="shop-item"><div class="item-info"><div class="item-name">⚡ КРИТ +10%</div><div class="item-price">💰 ${formatFullNumber(upgradePrices.crit[gameState.critLevel || 0])}</div></div><button class="buy-btn" onclick="buyUpgrade('crit')">↑</button></div>`;
             }
-            
-            html += `
-                <div class="shop-item">
-                    <div class="item-info">
-                        <div class="item-name">💎 ОБМЕН АЛМАЗОВ</div>
-                        <div class="item-desc">1💎 = 1000💰</div>
-                    </div>
-                    <button class="buy-btn" onclick="exchangeDiamonds()">ОБМЕН</button>
-                </div>
-            `;
-            
-            html += '</div>';
+            html += `<div class="shop-item"><div class="item-info"><div class="item-name">💎 ОБМЕН АЛМАЗОВ</div><div class="item-desc">1💎 = 1000💰</div></div><button class="buy-btn" onclick="exchangeDiamonds()">ОБМЕН</button></div></div>`;
             content.innerHTML = html;
         }
         
         function buyUpgrade(type) {
             const level = gameState[type + 'Level'] || 0;
             if (level >= 5) return;
-            
             const price = upgradePrices[type][level];
-            
             if ((gameState.balance || 0) >= price) {
                 gameState.balance -= price;
                 gameState[type + 'Level'] = level + 1;
-                
                 saveGame();
                 updateUI();
                 renderCurrentTab();
@@ -2330,7 +1474,6 @@
             if ((gameState.diamonds || 0) >= 1) {
                 gameState.diamonds--;
                 gameState.balance = (gameState.balance || 0) + 1000;
-                
                 saveGame();
                 updateUI();
                 renderCurrentTab();
@@ -2340,117 +1483,48 @@
             }
         }
         
-        // ========== СТАТИСТИКА ==========
         function renderStats(content) {
-            let totalIncome = gameState.autoClickerLevel || 0;
-            
-            if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
+            let total = gameState.autoClickerLevel || 0;
+            if (gameState.myBusinesses) {
                 gameState.myBusinesses.forEach(b => {
                     const t = businessTemplates[b.templateId];
-                    if (b.level > 0 && t) {
-                        totalIncome += t.baseIncome * b.level;
-                    }
+                    if (b.level > 0 && t) total += t.baseIncome * b.level;
                 });
             }
-            
             if (gameState.crypto && cryptoPrices) {
                 gameState.crypto.forEach(c => {
                     if (c.owned > 0) {
-                        const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                        if (cryptoData) {
-                            const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            totalIncome += (price / 2000) * c.owned;
+                        const cd = cryptoCurrencies.find(cr => cr.id === c.id);
+                        if (cd) {
+                            const price = cryptoPrices[c.id] || cd.basePrice;
+                            total += (price / 2000) * c.owned;
                         }
                     }
                 });
             }
-            
-            if (gameState.specialItem && gameState.specialItem.owned) {
-                totalIncome += 777;
-            }
-            
-            const ownedBusinesses = gameState.myBusinesses ? gameState.myBusinesses.length : 0;
-            
-            let totalCollections = 0;
-            for (let key in gameState.collections) {
-                totalCollections += gameState.collections[key].filter(i => i.owned).length;
-            }
-            
-            let totalCrypto = gameState.crypto.reduce((sum, c) => sum + c.owned, 0);
-            
-            const myRank = getPlayerRank();
+            if (gameState.specialItem?.owned) total += 777;
             
             content.innerHTML = `
                 <div class="card">
                     <div class="card-title">📊 СТАТИСТИКА</div>
-                    
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>👆 ВСЕГО КЛИКОВ</span>
-                        <span style="color:#ffd700;">${formatFullNumber(gameState.totalClicks || 0)}</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>💰 ЗАРАБОТАНО</span>
-                        <span style="color:#ffd700;">${formatFullNumber(gameState.totalEarned || 0)}</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>⏱️ ДОХОД/СЕК</span>
-                        <span style="color:#ffd700;">${formatFullNumber(Math.floor(totalIncome))}</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>💼 БИЗНЕСОВ</span>
-                        <span style="color:#ffd700;">${ownedBusinesses}/100</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>🎨 КОЛЛЕКЦИЯ</span>
-                        <span style="color:#ffd700;">${totalCollections}/100</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>📈 КРИПТА</span>
-                        <span style="color:#ffd700;">${formatFullNumber(totalCrypto)} монет</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>🏆 МЕСТО В ТОПЕ</span>
-                        <span style="color:#ffd700;">${myRank}</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>🎮 В ИГРЕ</span>
-                        <span style="color:#ffd700;">${Math.floor((gameState.playTime || 0) / 60)} МИН</span>
-                    </div>
-                    <div class="property-item" style="justify-content:space-between;">
-                        <span>💎 АЛМАЗЫ</span>
-                        <span style="color:#ffd700;">${gameState.diamonds || 0}</span>
-                    </div>
-                    
-                    ${isAdmin ? `
-                        <div style="margin-top:30px;">
-                            <button class="btn btn-admin" onclick="showAdminPanel()">👑 АДМИН ПАНЕЛЬ</button>
-                        </div>
-                    ` : ''}
-                    
-                    <div style="margin-top:20px;">
-                        <button class="btn btn-danger" onclick="resetGame()">🔄 СБРОСИТЬ ПРОГРЕСС</button>
-                    </div>
+                    <div class="property-item" style="justify-content:space-between;"><span>👆 КЛИКОВ</span><span style="color:#ffd700;">${formatFullNumber(gameState.totalClicks || 0)}</span></div>
+                    <div class="property-item" style="justify-content:space-between;"><span>💰 ЗАРАБОТАНО</span><span style="color:#ffd700;">${formatFullNumber(gameState.totalEarned || 0)}</span></div>
+                    <div class="property-item" style="justify-content:space-between;"><span>⏱️ ДОХОД/СЕК</span><span style="color:#ffd700;">${formatFullNumber(Math.floor(total))}</span></div>
+                    <div class="property-item" style="justify-content:space-between;"><span>🏆 МЕСТО В ТОПЕ</span><span style="color:#ffd700;">${getPlayerRank()}</span></div>
+                    <div class="property-item" style="justify-content:space-between;"><span>💎 АЛМАЗЫ</span><span style="color:#ffd700;">${gameState.diamonds || 0}</span></div>
+                    ${isAdmin ? '<div style="margin-top:20px;"><button class="btn btn-admin" onclick="showAdminPanel()">👑 АДМИН ПАНЕЛЬ</button></div>' : ''}
+                    <div style="margin-top:20px;"><button class="btn btn-danger" onclick="resetGame()">🔄 СБРОСИТЬ</button></div>
                 </div>
             `;
         }
         
-        function resetGame() {
-            if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС?\n\nЭто действие необратимо!')) {
-                localStorage.removeItem('imperiaSave_' + currentUserId);
-                localStorage.removeItem('imperiaGlobalPlayers');
-                location.reload();
-            }
-        }
-        
-        // ========== НАСТРОЙКИ ==========
         function renderSettings(content) {
-            let html = `
+            content.innerHTML = `
                 <div class="card">
                     <div class="card-title">⚙️ НАСТРОЙКИ</div>
-                    
                     <div class="settings-group">
                         <div class="settings-item">
-                            <span class="settings-label">🔊 ЗВУК КЛИКА</span>
+                            <span class="settings-label">🔊 ЗВУК</span>
                             <div class="settings-switch ${settings.soundEnabled ? 'active' : ''}" onclick="toggleSound()"></div>
                         </div>
                         <div class="settings-item">
@@ -2458,27 +1532,13 @@
                             <div class="settings-switch ${settings.effectsEnabled ? 'active' : ''}" onclick="toggleEffects()"></div>
                         </div>
                     </div>
-                    
-                    <div class="settings-group">
-                        <div class="btn btn-gold" onclick="showNicknameModal()">✏️ ИЗМЕНИТЬ НИК</div>
-                    </div>
-                    
-                    ${isAdmin ? `
-                        <div class="settings-group">
-                            <button class="btn btn-admin" onclick="showAdminPanel()">👑 АДМИН ПАНЕЛЬ</button>
-                        </div>
-                    ` : ''}
-                    
+                    <div class="btn btn-gold" onclick="showNicknameModal()">✏️ ИЗМЕНИТЬ НИК</div>
+                    ${isAdmin ? '<div style="margin-top:10px;"><button class="btn btn-admin" onclick="showAdminPanel()">👑 АДМИН ПАНЕЛЬ</button></div>' : ''}
                     <div style="margin-top:30px; text-align:center;">
-                        <div class="info-text">📅 ИЗДАНИЕ 2026</div>
-                        <div class="info-text">👨‍💻 СОЗДАТЕЛИ: SuguruStudio</div>
                         <div class="info-text">🔧 ВЕРСИЯ: ${APP_VERSION}</div>
-                        <div class="info-text"><a href="#" class="footer-link" onclick="alert('Политика конфиденциальности'); return false;">🔒 ПОЛИТИКА</a></div>
                     </div>
                 </div>
             `;
-            
-            content.innerHTML = html;
         }
         
         function toggleSound() {
@@ -2505,107 +1565,70 @@
         function saveNickname() {
             const newNick = document.getElementById('nicknameInput').value.trim();
             if (!newNick) return;
-            
-            const oldNick = currentUser;
             currentUser = newNick;
             
-            if (currentUser === ADMIN_NICK) {
-                grantAdmin();
+            if (currentUser === ADMIN_NICK && !isAdmin) {
+                isAdmin = true;
+                const effect = document.createElement('div');
+                effect.className = 'admin-grant-effect';
+                document.body.appendChild(effect);
+                setTimeout(() => effect.remove(), 2000);
+                document.getElementById('appContainer').style.border = '4px solid red';
+                document.getElementById('appContainer').style.boxShadow = '0 0 50px red';
+                document.getElementById('username').innerHTML = `👑 ${currentUser} <span class="admin-badge">АДМИН</span>`;
+                alert('👑 ВАМ ВЫДАНЫ ПРАВА АДМИНИСТРАТОРА!');
             } else {
-                if (isAdmin) {
-                    isAdmin = false;
-                    document.getElementById('appContainer').classList.remove('admin-mode');
-                    document.getElementById('header').classList.remove('admin-mode');
-                }
-            }
-            
-            if (!isAdmin) {
                 document.getElementById('username').innerHTML = `👑 ${currentUser}`;
             }
             
-            const existingIndex = globalPlayers.findIndex(p => p.deviceId === currentUserId);
-            if (existingIndex >= 0) {
-                globalPlayers[existingIndex].nickname = currentUser;
-                saveGlobalPlayers();
-            }
-            
+            const idx = globalPlayers.findIndex(p => p.deviceId === currentUserId);
+            if (idx >= 0) globalPlayers[idx].nickname = currentUser;
+            saveGlobalPlayers();
             saveGame();
             closeNicknameModal();
             renderCurrentTab();
         }
         
-        // ========== АДМИН ФУНКЦИИ ==========
-        function grantAdmin() {
-            if (currentUser === ADMIN_NICK && !isAdmin) {
-                isAdmin = true;
-                
-                const effect = document.createElement('div');
-                effect.className = 'admin-grant-effect';
-                document.body.appendChild(effect);
-                setTimeout(() => effect.remove(), 2000);
-                
-                document.getElementById('appContainer').classList.add('admin-mode');
-                document.getElementById('header').classList.add('admin-mode');
-                
-                const usernameEl = document.getElementById('username');
-                usernameEl.innerHTML = `👑 ${currentUser} <span class="admin-badge">АДМИН</span>`;
-                
-                alert('👑 ДОБРО ПОЖАЛОВАТЬ, АДМИНИСТРАТОР!\n\nВам выданы права администратора.');
-                
-                updateUI();
-                if (document.querySelector('.nav-item.active')) {
-                    renderTab(document.querySelector('.nav-item.active').dataset.tab);
-                }
-            }
-        }
-        
         function showAdminPanel() {
             if (!isAdmin) return;
-            
             const modal = document.getElementById('adminModal');
-            const adminContent = document.getElementById('adminContent');
-            
-            let html = `
+            const ac = document.getElementById('adminContent');
+            ac.innerHTML = `
                 <div class="admin-section">
                     <div class="admin-section-title">💰 ВЫДАЧА ДЕНЕГ</div>
                     <input type="text" class="admin-input" id="adminMoneyNick" placeholder="Ник игрока">
                     <input type="number" class="admin-input" id="adminMoneyAmount" placeholder="Сумма">
-                    <button class="btn-admin" onclick="adminGiveMoney()">ВЫДАТЬ ДЕНЬГИ</button>
+                    <button class="btn-admin-small" onclick="adminGiveMoney()">ВЫДАТЬ</button>
                 </div>
-                
                 <div class="admin-section">
                     <div class="admin-section-title">💎 ВЫДАЧА АЛМАЗОВ</div>
                     <input type="text" class="admin-input" id="adminDiamondNick" placeholder="Ник игрока">
                     <input type="number" class="admin-input" id="adminDiamondAmount" placeholder="Количество">
-                    <button class="btn-admin" onclick="adminGiveDiamonds()">ВЫДАТЬ АЛМАЗЫ</button>
+                    <button class="btn-admin-small" onclick="adminGiveDiamonds()">ВЫДАТЬ</button>
                 </div>
-                
                 <div class="admin-section">
                     <div class="admin-section-title">📈 ПОВЫШЕНИЕ УРОВНЯ</div>
                     <input type="text" class="admin-input" id="adminLevelNick" placeholder="Ник игрока">
-                    <input type="number" class="admin-input" id="adminLevelAmount" placeholder="Количество уровней">
-                    <button class="btn-admin" onclick="adminAddLevel()">ПОВЫСИТЬ</button>
+                    <input type="number" class="admin-input" id="adminLevelAmount" placeholder="Уровней">
+                    <button class="btn-admin-small" onclick="adminAddLevel()">ПОВЫСИТЬ</button>
                 </div>
-                
                 <div class="admin-section">
                     <div class="admin-section-title">🪙 ВЫДАЧА КРИПТЫ</div>
                     <input type="text" class="admin-input" id="adminCryptoNick" placeholder="Ник игрока">
                     <select class="admin-select" id="adminCryptoSelect">
-                        ${cryptoCurrencies.slice(0, 10).map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('')}
+                        ${cryptoCurrencies.slice(0,5).map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('')}
                     </select>
                     <input type="number" class="admin-input" id="adminCryptoAmount" placeholder="Количество">
-                    <button class="btn-admin" onclick="adminGiveCrypto()">ВЫДАТЬ КРИПТУ</button>
+                    <button class="btn-admin-small" onclick="adminGiveCrypto()">ВЫДАТЬ</button>
                 </div>
-                
                 <div class="admin-section">
                     <div class="admin-section-title">💼 ВЫДАЧА БИЗНЕСА</div>
                     <input type="text" class="admin-input" id="adminBusinessNick" placeholder="Ник игрока">
                     <select class="admin-select" id="adminBusinessSelect">
-                        ${businessTemplates.map((b, i) => `<option value="${i}">${b.name}</option>`).join('')}
+                        ${businessTemplates.map((b,i) => `<option value="${i}">${b.name}</option>`).join('')}
                     </select>
-                    <button class="btn-admin" onclick="adminGiveBusiness()">ВЫДАТЬ БИЗНЕС</button>
+                    <button class="btn-admin-small" onclick="adminGiveBusiness()">ВЫДАТЬ</button>
                 </div>
-                
                 <div class="admin-section">
                     <div class="admin-section-title">🛡️ УПРАВЛЕНИЕ</div>
                     <input type="text" class="admin-input" id="adminPlayerNick" placeholder="Ник игрока">
@@ -2616,15 +1639,12 @@
                         <button class="btn-admin-small" onclick="adminRemoveFromTop()">УДАЛИТЬ ИЗ ТОПА</button>
                     </div>
                 </div>
-                
                 <div class="admin-section">
                     <div class="admin-section-title">👑 СУПЕР-МОНЕТА</div>
                     <input type="text" class="admin-input" id="adminSpecialNick" placeholder="Ник игрока">
-                    <button class="btn-admin" onclick="adminGiveSpecial()">ВЫДАТЬ 💎</button>
+                    <button class="btn-admin-small" onclick="adminGiveSpecial()">ВЫДАТЬ 💎</button>
                 </div>
             `;
-            
-            adminContent.innerHTML = html;
             modal.classList.add('active');
         }
         
@@ -2632,21 +1652,16 @@
             document.getElementById('adminModal').classList.remove('active');
         }
         
-        function findPlayerByNickname(nickname) {
-            const playerInTop = globalPlayers.find(p => p.nickname === nickname);
-            if (playerInTop) return playerInTop;
-            
-            const allKeys = Object.keys(localStorage);
-            for (let key of allKeys) {
-                if (key.startsWith('imperiaSave_')) {
+        function findPlayerByNickname(nick) {
+            const inTop = globalPlayers.find(p => p.nickname === nick);
+            if (inTop) return inTop;
+            const keys = Object.keys(localStorage);
+            for (let k of keys) {
+                if (k.startsWith('save_')) {
                     try {
-                        const data = JSON.parse(localStorage.getItem(key));
-                        if (data.nickname === nickname) {
-                            return {
-                                deviceId: key.replace('imperiaSave_', ''),
-                                nickname: data.nickname,
-                                data: data
-                            };
+                        const d = JSON.parse(localStorage.getItem(k));
+                        if (d.nickname === nick) {
+                            return { deviceId: k.replace('save_', ''), nickname: d.nickname, data: d };
                         }
                     } catch(e) {}
                 }
@@ -2656,370 +1671,311 @@
         
         function adminGiveMoney() {
             const nick = document.getElementById('adminMoneyNick').value;
-            const amount = parseInt(document.getElementById('adminMoneyAmount').value);
-            
-            if (!nick || !amount) {
-                alert('❌ Введите ник и сумму!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            if (player.data) {
-                player.data.gameState.balance = (player.data.gameState.balance || 0) + amount;
-                player.data.gameState.totalEarned = (player.data.gameState.totalEarned || 0) + amount;
-                localStorage.setItem(`imperiaSave_${player.deviceId}`, JSON.stringify(player.data));
+            const amt = parseInt(document.getElementById('adminMoneyAmount').value);
+            if (!nick || !amt) return alert('❌ Введите ник и сумму!');
+            const p = findPlayerByNickname(nick);
+            if (!p) return alert('❌ Игрок не найден!');
+            if (p.data) {
+                p.data.gameState.balance = (p.data.gameState.balance || 0) + amt;
+                p.data.gameState.totalEarned = (p.data.gameState.totalEarned || 0) + amt;
+                localStorage.setItem(`save_${p.deviceId}`, JSON.stringify(p.data));
             } else {
-                const index = globalPlayers.findIndex(p => p.deviceId === player.deviceId);
-                if (index >= 0) {
-                    globalPlayers[index].totalEarned += amount;
-                }
+                const idx = globalPlayers.findIndex(x => x.deviceId === p.deviceId);
+                if (idx >= 0) globalPlayers[idx].totalEarned += amt;
             }
-            
             saveGlobalPlayers();
-            alert(`✅ Выдано ${amount} монет игроку ${nick}`);
+            alert(`✅ Выдано ${amt} монет игроку ${nick}`);
             closeAdminModal();
         }
         
         function adminGiveDiamonds() {
             const nick = document.getElementById('adminDiamondNick').value;
-            const amount = parseInt(document.getElementById('adminDiamondAmount').value);
-            
-            if (!nick || !amount) {
-                alert('❌ Введите ник и количество!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player || !player.data) {
-                alert('❌ Игрок не найден или не в сети!');
-                return;
-            }
-            
-            player.data.gameState.diamonds = (player.data.gameState.diamonds || 0) + amount;
-            localStorage.setItem(`imperiaSave_${player.deviceId}`, JSON.stringify(player.data));
-            
-            alert(`✅ Выдано ${amount} алмазов игроку ${nick}`);
+            const amt = parseInt(document.getElementById('adminDiamondAmount').value);
+            if (!nick || !amt) return alert('❌ Введите ник и количество!');
+            const p = findPlayerByNickname(nick);
+            if (!p || !p.data) return alert('❌ Игрок не найден или не в сети!');
+            p.data.gameState.diamonds = (p.data.gameState.diamonds || 0) + amt;
+            localStorage.setItem(`save_${p.deviceId}`, JSON.stringify(p.data));
+            alert(`✅ Выдано ${amt} алмазов игроку ${nick}`);
             closeAdminModal();
         }
         
         function adminAddLevel() {
             const nick = document.getElementById('adminLevelNick').value;
-            const levels = parseInt(document.getElementById('adminLevelAmount').value);
-            
-            if (!nick || !levels) {
-                alert('❌ Введите ник и количество уровней!');
-                return;
+            const lvl = parseInt(document.getElementById('adminLevelAmount').value);
+            if (!nick || !lvl) return alert('❌ Введите ник и количество уровней!');
+            const p = findPlayerByNickname(nick);
+            if (!p || !p.data) return alert('❌ Игрок не найден или не в сети!');
+            for (let i = 0; i < lvl; i++) {
+                p.data.gameState.level = (p.data.gameState.level || 1) + 1;
+                p.data.gameState.diamonds = (p.data.gameState.diamonds || 0) + (p.data.gameState.level * 5);
             }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player || !player.data) {
-                alert('❌ Игрок не найден или не в сети!');
-                return;
-            }
-            
-            for (let i = 0; i < levels; i++) {
-                player.data.gameState.level = (player.data.gameState.level || 1) + 1;
-                player.data.gameState.diamonds = (player.data.gameState.diamonds || 0) + (player.data.gameState.level * 5);
-            }
-            localStorage.setItem(`imperiaSave_${player.deviceId}`, JSON.stringify(player.data));
-            
-            alert(`✅ Игроку ${nick} повышен уровень на ${levels}`);
+            localStorage.setItem(`save_${p.deviceId}`, JSON.stringify(p.data));
+            alert(`✅ Игроку ${nick} повышен уровень на ${lvl}`);
             closeAdminModal();
         }
         
         function adminGiveCrypto() {
             const nick = document.getElementById('adminCryptoNick').value;
-            const cryptoId = parseInt(document.getElementById('adminCryptoSelect').value);
-            const amount = parseInt(document.getElementById('adminCryptoAmount').value);
-            
-            if (!nick || !amount) {
-                alert('❌ Введите ник и количество!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player || !player.data) {
-                alert('❌ Игрок не найден или не в сети!');
-                return;
-            }
-            
-            const cryptoIndex = player.data.gameState.crypto.findIndex(c => c.id === cryptoId);
-            if (cryptoIndex >= 0) {
-                player.data.gameState.crypto[cryptoIndex].owned += amount;
-            } else {
-                player.data.gameState.crypto.push({ id: cryptoId, owned: amount });
-            }
-            localStorage.setItem(`imperiaSave_${player.deviceId}`, JSON.stringify(player.data));
-            
-            const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
-            alert(`✅ Выдано ${amount} ${crypto.name} игроку ${nick}`);
+            const cid = parseInt(document.getElementById('adminCryptoSelect').value);
+            const amt = parseInt(document.getElementById('adminCryptoAmount').value);
+            if (!nick || !amt) return alert('❌ Введите ник и количество!');
+            const p = findPlayerByNickname(nick);
+            if (!p || !p.data) return alert('❌ Игрок не найден или не в сети!');
+            const idx = p.data.gameState.crypto.findIndex(c => c.id === cid);
+            if (idx >= 0) p.data.gameState.crypto[idx].owned += amt;
+            else p.data.gameState.crypto.push({ id: cid, owned: amt });
+            localStorage.setItem(`save_${p.deviceId}`, JSON.stringify(p.data));
+            const c = cryptoCurrencies.find(cr => cr.id === cid);
+            alert(`✅ Выдано ${amt} ${c.name} игроку ${nick}`);
             closeAdminModal();
         }
         
         function adminGiveBusiness() {
             const nick = document.getElementById('adminBusinessNick').value;
-            const businessIndex = parseInt(document.getElementById('adminBusinessSelect').value);
-            
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player || !player.data) {
-                alert('❌ Игрок не найден или не в сети!');
-                return;
-            }
-            
-            const template = businessTemplates[businessIndex];
-            
-            if (!player.data.gameState.myBusinesses) player.data.gameState.myBusinesses = [];
-            
-            const ownedCount = player.data.gameState.myBusinesses.filter(b => b.templateId === template.id).length;
-            if (ownedCount < 10) {
-                player.data.gameState.myBusinesses.push({
+            const bid = parseInt(document.getElementById('adminBusinessSelect').value);
+            if (!nick) return alert('❌ Введите ник!');
+            const p = findPlayerByNickname(nick);
+            if (!p || !p.data) return alert('❌ Игрок не найден или не в сети!');
+            const t = businessTemplates[bid];
+            if (!p.data.gameState.myBusinesses) p.data.gameState.myBusinesses = [];
+            const cnt = p.data.gameState.myBusinesses.filter(b => b.templateId === t.id).length;
+            if (cnt < 10) {
+                p.data.gameState.myBusinesses.push({
                     id: Date.now() + Math.random(),
-                    templateId: template.id,
+                    templateId: t.id,
                     level: 1,
-                    upgradeCost: Math.floor(template.baseUpgradeCost * 2.5),
-                    upgradeTime: template.upgradeTime,
+                    upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
+                    upgradeTime: t.upgradeTime,
                     upgradeEnd: 0,
                     lastUpgrade: 0,
                     totalEarned: 0
                 });
-                localStorage.setItem(`imperiaSave_${player.deviceId}`, JSON.stringify(player.data));
-                alert(`✅ Игроку ${nick} выдан бизнес ${template.name}`);
-            } else {
-                alert('❌ У игрока уже максимум бизнесов этого типа (10)');
-            }
+                localStorage.setItem(`save_${p.deviceId}`, JSON.stringify(p.data));
+                alert(`✅ Игроку ${nick} выдан бизнес ${t.name}`);
+            } else alert('❌ У игрока уже максимум бизнесов этого типа (10)');
             closeAdminModal();
         }
         
         function adminBanPlayer() {
             const nick = document.getElementById('adminPlayerNick').value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            if (!bannedPlayers.includes(player.deviceId)) {
-                bannedPlayers.push(player.deviceId);
+            if (!nick) return alert('❌ Введите ник!');
+            const p = findPlayerByNickname(nick);
+            if (!p) return alert('❌ Игрок не найден!');
+            if (!bannedPlayers.includes(p.deviceId)) {
+                bannedPlayers.push(p.deviceId);
                 localStorage.setItem('bannedPlayers', JSON.stringify(bannedPlayers));
-                
-                globalPlayers = globalPlayers.filter(p => p.deviceId !== player.deviceId);
+                globalPlayers = globalPlayers.filter(x => x.deviceId !== p.deviceId);
                 saveGlobalPlayers();
-                
                 alert(`✅ Игрок ${nick} заблокирован`);
-            } else {
-                alert('❌ Игрок уже заблокирован');
-            }
+            } else alert('❌ Игрок уже заблокирован');
             closeAdminModal();
         }
         
         function adminUnbanPlayer() {
             const nick = document.getElementById('adminPlayerNick').value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            bannedPlayers = bannedPlayers.filter(id => id !== player.deviceId);
+            if (!nick) return alert('❌ Введите ник!');
+            const p = findPlayerByNickname(nick);
+            if (!p) return alert('❌ Игрок не найден!');
+            bannedPlayers = bannedPlayers.filter(id => id !== p.deviceId);
             localStorage.setItem('bannedPlayers', JSON.stringify(bannedPlayers));
-            
             alert(`✅ Игрок ${nick} разблокирован`);
             closeAdminModal();
         }
         
         function adminResetPlayer() {
             const nick = document.getElementById('adminPlayerNick').value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player || !player.data) {
-                alert('❌ Игрок не найден или не в сети!');
-                return;
-            }
-            
-            player.data.gameState.balance = 0;
-            player.data.gameState.diamonds = 10;
-            player.data.gameState.exp = 0;
-            player.data.gameState.level = 1;
-            player.data.gameState.clickPowerLevel = 0;
-            player.data.gameState.autoClickerLevel = 0;
-            player.data.gameState.critLevel = 0;
-            player.data.gameState.totalClicks = 0;
-            player.data.gameState.totalEarned = 0;
-            player.data.gameState.myBusinesses = [];
-            player.data.gameState.crypto = cryptoCurrencies.map(c => ({ id: c.id, owned: 0 }));
-            player.data.gameState.specialItem = { owned: false, revealed: false };
-            
-            localStorage.setItem(`imperiaSave_${player.deviceId}`, JSON.stringify(player.data));
-            
-            globalPlayers = globalPlayers.filter(p => p.deviceId !== player.deviceId);
+            if (!nick) return alert('❌ Введите ник!');
+            const p = findPlayerByNickname(nick);
+            if (!p || !p.data) return alert('❌ Игрок не найден или не в сети!');
+            p.data.gameState.balance = 0;
+            p.data.gameState.diamonds = 10;
+            p.data.gameState.exp = 0;
+            p.data.gameState.level = 1;
+            p.data.gameState.clickPowerLevel = 0;
+            p.data.gameState.autoClickerLevel = 0;
+            p.data.gameState.critLevel = 0;
+            p.data.gameState.totalClicks = 0;
+            p.data.gameState.totalEarned = 0;
+            p.data.gameState.myBusinesses = [];
+            p.data.gameState.crypto = cryptoCurrencies.map(c => ({ id: c.id, owned: 0 }));
+            p.data.gameState.specialItem = { owned: false, revealed: false };
+            localStorage.setItem(`save_${p.deviceId}`, JSON.stringify(p.data));
+            globalPlayers = globalPlayers.filter(x => x.deviceId !== p.deviceId);
             saveGlobalPlayers();
-            
             alert(`✅ Прогресс игрока ${nick} обнулен`);
             closeAdminModal();
         }
         
         function adminRemoveFromTop() {
             const nick = document.getElementById('adminPlayerNick').value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player) {
-                alert('❌ Игрок не найден!');
-                return;
-            }
-            
-            globalPlayers = globalPlayers.filter(p => p.deviceId !== player.deviceId);
+            if (!nick) return alert('❌ Введите ник!');
+            const p = findPlayerByNickname(nick);
+            if (!p) return alert('❌ Игрок не найден!');
+            globalPlayers = globalPlayers.filter(x => x.deviceId !== p.deviceId);
             saveGlobalPlayers();
-            
             alert(`✅ Игрок ${nick} удален из топа`);
             closeAdminModal();
         }
         
         function adminGiveSpecial() {
             const nick = document.getElementById('adminSpecialNick').value;
-            if (!nick) {
-                alert('❌ Введите ник!');
-                return;
-            }
-            
-            const player = findPlayerByNickname(nick);
-            if (!player || !player.data) {
-                alert('❌ Игрок не найден или не в сети!');
-                return;
-            }
-            
-            player.data.gameState.specialItem = { owned: true, revealed: true };
-            localStorage.setItem(`imperiaSave_${player.deviceId}`, JSON.stringify(player.data));
-            
-            const topIndex = globalPlayers.findIndex(p => p.deviceId === player.deviceId);
-            if (topIndex >= 0) {
-                globalPlayers[topIndex].hasSpecialItem = true;
-            }
+            if (!nick) return alert('❌ Введите ник!');
+            const p = findPlayerByNickname(nick);
+            if (!p || !p.data) return alert('❌ Игрок не найден или не в сети!');
+            p.data.gameState.specialItem = { owned: true, revealed: true };
+            localStorage.setItem(`save_${p.deviceId}`, JSON.stringify(p.data));
+            const idx = globalPlayers.findIndex(x => x.deviceId === p.deviceId);
+            if (idx >= 0) globalPlayers[idx].hasSpecial = true;
             saveGlobalPlayers();
-            
-            alert(`✅ Игроку ${nick} выдана супер-монета Suguru Coin!`);
+            alert(`✅ Игроку ${nick} выдана супер-монета!`);
             closeAdminModal();
         }
         
-        // ========== АВТОМАТИЧЕСКИЙ ДОХОД ==========
+        function openTradeModal(cryptoId, type) {
+            const c = cryptoCurrencies.find(x => x.id === cryptoId);
+            const user = gameState.crypto.find(x => x.id === cryptoId) || { owned: 0 };
+            const price = cryptoPrices[cryptoId] || c.basePrice;
+            const modal = document.getElementById('tradeModal');
+            const mc = document.getElementById('tradeModalContent');
+            const maxBuy = c.maxBuy - user.owned;
+            const maxSell = user.owned;
+            
+            let html = `<div class="modal-title">${type === 'buy' ? '📈 КУПИТЬ' : '📉 ПРОДАТЬ'} ${c.emoji} ${c.name}</div>
+                <div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:15px; margin-bottom:15px;">
+                    <div style="display:flex; justify-content:space-between;"><span>💰 Цена:</span><span style="color:#ffd700;">${formatFullNumber(price)}</span></div>
+                    <div style="display:flex; justify-content:space-between;"><span>📊 У вас:</span><span style="color:#4CAF50;">${formatFullNumber(user.owned)} шт</span></div>
+                    <div style="display:flex; justify-content:space-between;"><span>💵 Баланс:</span><span style="color:#ffd700;">${formatFullNumber(gameState.balance)}</span></div>
+                </div>
+                <input type="number" id="tradeAmount" class="input-field" placeholder="Количество" min="1" max="${type === 'buy' ? maxBuy : maxSell}" value="1">
+                <div style="background:rgba(255,215,0,0.1); border-radius:10px; padding:10px; margin:15px 0;">
+                    <div style="display:flex; justify-content:space-between;"><span>💰 ${type === 'buy' ? 'Стоимость' : 'Получите'}:</span><span id="totalPrice" style="color:#ffd700;">${formatFullNumber(price)}</span></div>
+                </div>
+                <button class="btn btn-gold" onclick="executeTrade(${cryptoId}, '${type}')">✅ ПОДТВЕРДИТЬ</button>
+                <div class="close-btn" onclick="closeTradeModal()">ОТМЕНА</div>`;
+            mc.innerHTML = html;
+            modal.classList.add('active');
+            
+            setTimeout(() => {
+                const inp = document.getElementById('tradeAmount');
+                if (inp) {
+                    inp.addEventListener('input', () => {
+                        const amt = parseInt(inp.value) || 0;
+                        document.getElementById('totalPrice').textContent = formatFullNumber(price * amt);
+                    });
+                }
+            }, 100);
+        }
+        
+        function closeTradeModal() {
+            document.getElementById('tradeModal').classList.remove('active');
+        }
+        
+        function executeTrade(cryptoId, type) {
+            const c = cryptoCurrencies.find(x => x.id === cryptoId);
+            const user = gameState.crypto.find(x => x.id === cryptoId);
+            const price = cryptoPrices[cryptoId] || c.basePrice;
+            const amt = parseInt(document.getElementById('tradeAmount')?.value);
+            if (!amt || amt <= 0) return alert('❌ Введите корректное количество!');
+            
+            if (type === 'buy') {
+                const max = c.maxBuy - user.owned;
+                if (amt > max) return alert(`❌ Можно купить только ${formatFullNumber(max)}!`);
+                const total = price * amt;
+                if (gameState.balance < total) return alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                gameState.balance -= total;
+                user.owned += amt;
+            } else {
+                if (amt > user.owned) return alert(`❌ У вас только ${formatFullNumber(user.owned)}!`);
+                const total = price * amt;
+                gameState.balance += total;
+                user.owned -= amt;
+            }
+            
+            saveGame();
+            updateUI();
+            closeTradeModal();
+            renderCurrentTab();
+            alert(`✅ ${type === 'buy' ? 'Куплено' : 'Продано'} ${amt} ${c.name}`);
+        }
+        
+        function buySpecialItem() {
+            if (gameState.specialItem.owned) return alert('❌ У вас уже есть!');
+            if ((gameState.balance || 0) < specialItem.price) return alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+            if (confirm(`Купить Suguru Coin за 777.777.777.777.777💰?`)) {
+                gameState.balance -= specialItem.price;
+                gameState.specialItem.owned = true;
+                gameState.specialItem.revealed = true;
+                saveGame();
+                updateUI();
+                renderCurrentTab();
+                alert('✅ ПОЗДРАВЛЯЮ! Вы купили легендарный Suguru Coin!');
+            }
+        }
+        
+        function resetGame() {
+            if (confirm('Сбросить прогресс?')) {
+                localStorage.removeItem('save_' + currentUserId);
+                localStorage.removeItem('globalPlayers');
+                location.reload();
+            }
+        }
+        
         setInterval(() => {
             if (!gameState) return;
-            
-            let income = 0;
-            
-            if (gameState.autoClickerLevel > 0) {
-                income += gameState.autoClickerLevel;
-            }
-            
-            if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
+            let inc = gameState.autoClickerLevel || 0;
+            if (gameState.myBusinesses) {
                 gameState.myBusinesses.forEach(b => {
                     const t = businessTemplates[b.templateId];
-                    if (b.level > 0 && t) {
-                        const inc = t.baseIncome * b.level;
-                        income += inc;
-                        b.totalEarned = (b.totalEarned || 0) + inc;
-                    }
+                    if (b.level > 0 && t) inc += t.baseIncome * b.level;
                 });
             }
-            
             if (gameState.crypto && cryptoPrices) {
                 gameState.crypto.forEach(c => {
                     if (c.owned > 0) {
-                        const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                        if (cryptoData) {
-                            const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            income += (price / 2000) * c.owned;
+                        const cd = cryptoCurrencies.find(cr => cr.id === c.id);
+                        if (cd) {
+                            const price = cryptoPrices[c.id] || cd.basePrice;
+                            inc += (price / 2000) * c.owned;
                         }
                     }
                 });
             }
-            
-            if (gameState.specialItem && gameState.specialItem.owned) {
-                income += 777;
+            if (gameState.specialItem?.owned) inc += 777;
+            if (inc > 0) {
+                gameState.balance = (gameState.balance || 0) + inc;
+                gameState.totalEarned = (gameState.totalEarned || 0) + inc;
             }
-            
-            if (income > 0) {
-                gameState.balance = (gameState.balance || 0) + income;
-                gameState.totalEarned = (gameState.totalEarned || 0) + income;
-            }
-            
             gameState.playTime = (gameState.playTime || 0) + 1;
-            
             updateUI();
             saveGame();
         }, 1000);
         
-        // Обновление цен крипты каждые 5 минут
-        setInterval(() => {
-            if (gameState) {
-                updateCryptoPrices();
-                const activeTab = document.querySelector('.nav-item.active');
-                if (activeTab && activeTab.dataset.tab === 'crypto') {
-                    renderTab('crypto');
-                }
-            }
-        }, 300000);
-        
-        // Обновление топа каждые 30 секунд
         setInterval(() => {
             if (gameState) {
                 updateGlobalPlayer();
-                const activeTab = document.querySelector('.nav-item.active');
-                if (activeTab && activeTab.dataset.tab === 'top') {
-                    renderTab('top');
-                }
+                if (document.querySelector('.nav-item.active')?.dataset.tab === 'top') renderTab('top');
             }
         }, 30000);
         
-        // Проверка улучшений
-        setInterval(checkBusinessUpgrades, 1000);
-        
-        // ========== НАВИГАЦИЯ ==========
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 if (!gameState) return;
-                
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 this.classList.add('active');
                 renderTab(this.dataset.tab);
             });
         });
         
-        // ========== ЗАПУСК ==========
         window.onload = function() {
             loadGlobalPlayers();
-            
             if (loadGame()) {
                 document.getElementById('username').innerHTML = `👑 ${currentUser}`;
                 if (currentUser === ADMIN_NICK) {
-                    grantAdmin();
+                    isAdmin = true;
+                    document.getElementById('appContainer').style.border = '4px solid red';
+                    document.getElementById('appContainer').style.boxShadow = '0 0 50px red';
+                    document.getElementById('username').innerHTML = `👑 ${currentUser} <span class="admin-badge">АДМИН</span>`;
                 }
                 updateUI();
                 renderTab('home');
@@ -3028,7 +1984,6 @@
                 startNewGame();
             }
             
-            // Глобальные функции
             window.handleClick = handleClick;
             window.showNicknameModal = showNicknameModal;
             window.closeNicknameModal = closeNicknameModal;
@@ -3051,12 +2006,6 @@
             window.openTradeModal = openTradeModal;
             window.closeTradeModal = closeTradeModal;
             window.executeTrade = executeTrade;
-            window.openBuyBusinessModal = openBuyBusinessModal;
-            window.buyBusinessFromModal = buyBusinessFromModal;
-            window.openBusiness = openBusiness;
-            window.startUpgrade = startUpgrade;
-            window.sellBusiness = sellBusiness;
-            window.closeBusinessModal = closeBusinessModal;
             window.showCollection = showCollection;
             window.buyCollectionItem = buyCollectionItem;
             window.closeCollectionModal = closeCollectionModal;
