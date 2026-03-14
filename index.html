@@ -34,6 +34,10 @@
             padding: 5px;
         }
         
+        body.admin-mode {
+            background: linear-gradient(135deg, #2a0000 0%, #4a0000 100%);
+        }
+        
         .app-container {
             width: 100%;
             max-width: 400px;
@@ -49,6 +53,18 @@
             overscroll-behavior: contain;
         }
         
+        .app-container.admin-app {
+            border: 3px solid #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+            animation: adminPulse 2s infinite;
+        }
+        
+        @keyframes adminPulse {
+            0% { border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+            50% { border-color: #ff6666; box-shadow: 0 0 40px rgba(255, 0, 0, 0.8); }
+            100% { border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+        }
+        
         .header {
             background: linear-gradient(135deg, #2a1b3d 0%, #1a0f2a 100%);
             color: white;
@@ -56,6 +72,11 @@
             text-align: center;
             border-bottom: 3px solid #ffd700;
             flex-shrink: 0;
+        }
+        
+        .header.admin-header {
+            background: linear-gradient(135deg, #3d1b1b 0%, #2a0f0f 100%);
+            border-bottom: 3px solid #ff0000;
         }
         
         .username {
@@ -67,6 +88,37 @@
             border-radius: 30px;
             background: rgba(0,0,0,0.3);
             cursor: pointer;
+            position: relative;
+        }
+        
+        .username.admin-username {
+            color: #ff6666;
+            animation: adminGlow 1s infinite;
+        }
+        
+        .suguru-badge {
+            background: linear-gradient(135deg, #ffd700, #ff00ff);
+            color: black;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 8px;
+            display: inline-block;
+            border: 1px solid white;
+            animation: badgeGlow 2s infinite;
+        }
+        
+        @keyframes badgeGlow {
+            0% { box-shadow: 0 0 5px #ffd700; }
+            50% { box-shadow: 0 0 15px #ff00ff; }
+            100% { box-shadow: 0 0 5px #ffd700; }
+        }
+        
+        @keyframes adminGlow {
+            0% { text-shadow: 0 0 5px #ff0000; }
+            50% { text-shadow: 0 0 20px #ff6666; }
+            100% { text-shadow: 0 0 5px #ff0000; }
         }
         
         .warning-badge {
@@ -112,6 +164,10 @@
             border-radius: 15px;
             flex: 1;
             border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+        
+        .balance-box.admin-balance {
+            border-color: #ff0000;
         }
         
         .balance-label {
@@ -399,6 +455,10 @@
             flex-shrink: 0;
         }
         
+        .bottom-nav.admin-nav {
+            border-top-color: #ff0000;
+        }
+        
         .bottom-nav::-webkit-scrollbar {
             display: none;
         }
@@ -425,6 +485,12 @@
             color: #ffd700;
             background: rgba(255, 215, 0, 0.2);
             border: 1px solid #ffd700;
+        }
+        
+        .nav-item.admin-active {
+            color: #ff0000;
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff0000;
         }
         
         .shop-item {
@@ -814,6 +880,10 @@
             overflow-y: auto;
         }
         
+        .modal-content.admin-modal {
+            border: 3px solid #ff0000;
+        }
+        
         .modal-title {
             font-size: 24px;
             font-weight: bold;
@@ -1006,6 +1076,37 @@
         .profit-down {
             color: #f44336;
         }
+
+        .admin-panel-btn {
+            background: linear-gradient(135deg, #ff4444 0%, #aa0000 100%);
+            border: 2px solid #ffd700;
+            color: white;
+            padding: 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 18px;
+            animation: adminBtnPulse 1.5s infinite;
+        }
+
+        @keyframes adminBtnPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .admin-action {
+            background: linear-gradient(135deg, #ff6666 0%, #cc0000 100%);
+            border: 1px solid #ffd700;
+            color: white;
+            padding: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -1079,13 +1180,19 @@
             <div class="close-btn" onclick="closeNicknameModal()">ОТМЕНА</div>
         </div>
     </div>
+
+    <div class="modal" id="adminModal">
+        <div class="modal-content" id="adminModalContent"></div>
+    </div>
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '2.3.1';
+        const APP_VERSION = '2.3.2';
+        const ADMIN_SECRET = '2a3d4g5j';
         let currentUser = "ИГРОК";
         let currentUserId = null;
         let gameState = null;
+        let isAdmin = false;
         
         let settings = {
             soundEnabled: true,
@@ -1356,18 +1463,16 @@
                 nickname: currentUser,
                 totalEarned: gameState.totalEarned || 0,
                 lastUpdate: Date.now(),
-                lastRewardWeek: gameState.lastWeeklyReward || 0
+                lastRewardWeek: gameState.lastWeeklyReward || 0,
+                hasSuguru: gameState.specialItem && gameState.specialItem.owned || false
             };
             
             if (existingIndex >= 0) {
-                // Обновляем существующего игрока
                 topPlayers[existingIndex] = playerData;
             } else {
-                // Добавляем нового игрока
                 topPlayers.push(playerData);
             }
             
-            // Удаляем возможные дубликаты
             const uniquePlayers = [];
             const seen = new Set();
             for (const player of topPlayers) {
@@ -1382,8 +1487,9 @@
         }
         
         function getPlayerRank() {
-            const index = topPlayers.findIndex(p => p.deviceId === currentUserId);
-            return index >= 0 ? index + 1 : topPlayers.length + 1;
+            const visiblePlayers = topPlayers.filter(p => p.nickname !== ADMIN_SECRET);
+            const index = visiblePlayers.findIndex(p => p.deviceId === currentUserId);
+            return index >= 0 ? index + 1 : visiblePlayers.length + 1;
         }
         
         // ========== ЕЖЕНЕДЕЛЬНЫЕ НАГРАДЫ ==========
@@ -1391,16 +1497,16 @@
             if (!gameState || topPlayers.length === 0) return;
             
             const now = new Date();
-            const day = now.getDay(); // 0 = воскресенье
+            const day = now.getDay();
             const hours = now.getHours();
             const minutes = now.getMinutes();
             
-            // Проверяем каждое воскресенье в 00:00
             if (day === 0 && hours === 0 && minutes === 0) {
                 const oneWeek = 7 * 24 * 60 * 60 * 1000;
                 
                 if (now - (gameState.lastWeeklyReward || 0) > oneWeek) {
-                    const myIndex = topPlayers.findIndex(p => p.deviceId === currentUserId);
+                    const visiblePlayers = topPlayers.filter(p => p.nickname !== ADMIN_SECRET);
+                    const myIndex = visiblePlayers.findIndex(p => p.deviceId === currentUserId);
                     
                     let reward = 0;
                     if (myIndex === 0) reward = 1000;
@@ -1501,7 +1607,6 @@
                     const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                     if (c.owned > 0 && cryptoData) {
                         const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                        // Доход УМЕНЬШЕН на 50% (было price/1000, стало price/2000)
                         income += (price / 2000) * c.owned * seconds;
                     }
                 });
@@ -1519,10 +1624,8 @@
                 const minutes = Math.floor(seconds / 60);
                 const secs = seconds % 60;
                 
-                // Показываем уведомление с суммой
                 alert(`⏱️ ОФФЛАЙН ДОХОД\nОтсутствовал: ${minutes} мин ${secs} сек\n💰 ЗАРАБОТАНО: ${formatFullNumber(earned)} монет`);
                 
-                // Показываем бейдж
                 const badge = document.getElementById('offlineBadge');
                 if (badge) {
                     badge.style.display = 'inline-block';
@@ -1546,14 +1649,12 @@
             });
         }
         
-        // Функция для подсчета изменения цены в процентах
         function getPriceChange(cryptoId, currentPrice) {
             const crypto = cryptoCurrencies[cryptoId];
             if (!crypto) return 0;
             return ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
         }
         
-        // Функция для подсчета прибыли/убытка
         function calculateProfit(cryptoId, amount) {
             const crypto = cryptoCurrencies[cryptoId];
             const currentPrice = cryptoPrices[cryptoId] || crypto.basePrice;
@@ -1562,7 +1663,6 @@
             return profitPerCoin * amount;
         }
         
-        // Функция для подсчета общего портфеля крипты
         function calculateTotalCryptoPortfolio() {
             if (!gameState || !cryptoPrices) return 0;
             
@@ -1579,7 +1679,6 @@
             return total;
         }
         
-        // Функция для отображения портфеля с кнопками
         function showCryptoPortfolio() {
             if (!gameState) return;
             
@@ -1591,7 +1690,6 @@
             
             let html = '<div class="modal-title">📊 МОЙ КРИПТОПОРТФЕЛЬ</div>';
             
-            // Общая стоимость
             html += `
                 <div style="background: rgba(123, 31, 162, 0.3); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center;">
                     <div style="font-size: 14px; color: #b39ddb;">💰 ОБЩАЯ СТОИМОСТЬ</div>
@@ -1599,7 +1697,6 @@
                 </div>
             `;
             
-            // Список крипты в портфеле с кнопками
             let hasCrypto = false;
             gameState.crypto.forEach(c => {
                 if (c.owned > 0) {
@@ -1608,11 +1705,9 @@
                     if (cryptoData) {
                         const price = cryptoPrices[c.id] || cryptoData.basePrice;
                         const value = price * c.owned;
-                        // Доход УМЕНЬШЕН на 50% (price/2000)
                         const incomePerSec = Math.floor((price / 2000) * c.owned);
                         totalIncome += incomePerSec;
                         
-                        // Расчет прибыли/убытка
                         const profit = calculateProfit(c.id, c.owned);
                         const profitPercent = ((price - cryptoData.basePrice) / cryptoData.basePrice * 100).toFixed(1);
                         const profitClass = profit >= 0 ? 'profit-up' : 'profit-down';
@@ -1675,7 +1770,6 @@
             document.getElementById('portfolioModal').classList.remove('active');
         }
         
-        // Модальное окно для торговли
         function openTradeModal(cryptoId, type) {
             const crypto = cryptoCurrencies.find(c => c.id === cryptoId);
             const userCrypto = gameState.crypto.find(c => c.id === cryptoId);
@@ -1776,7 +1870,6 @@
             modalContent.innerHTML = html;
             modal.classList.add('active');
             
-            // Добавляем обработчик для обновления цены
             setTimeout(() => {
                 const input = document.getElementById('tradeAmount');
                 if (input) {
@@ -1882,6 +1975,11 @@
         }
         
         // ========== ЭКРАН ПРИВЕТСТВИЯ ==========
+        function generateRandomNickname() {
+            const randomNum = Math.floor(Math.random() * 900 + 100);
+            return `ИГРОК${randomNum}`;
+        }
+        
         function showWelcomeScreen() {
             document.getElementById('header').style.display = 'none';
             document.getElementById('bottomNav').style.display = 'none';
@@ -1928,6 +2026,8 @@
         }
         
         function startNewGame() {
+            currentUser = generateRandomNickname();
+            
             gameState = {
                 balance: 0,
                 diamonds: 10,
@@ -1973,18 +2073,16 @@
             document.getElementById('levelProgress').style.width = Math.min(expPercent, 100) + '%';
         }
         
-        // Новый приятный звук клика
         function playClickSound() {
             if (!settings.soundEnabled) return;
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 
-                // Создаем основной тон
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
                 
                 oscillator.type = 'sine';
-                oscillator.frequency.value = 523.25; // Нота До (приятный звук)
+                oscillator.frequency.value = 523.25;
                 
                 gainNode.gain.value = 0.15;
                 gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
@@ -1995,12 +2093,11 @@
                 oscillator.start();
                 oscillator.stop(audioCtx.currentTime + 0.08);
                 
-                // Добавляем второй тон для объема
                 const oscillator2 = audioCtx.createOscillator();
                 const gainNode2 = audioCtx.createGain();
                 
                 oscillator2.type = 'triangle';
-                oscillator2.frequency.value = 659.25; // Нота Ми
+                oscillator2.frequency.value = 659.25;
                 
                 gainNode2.gain.value = 0.1;
                 gainNode2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
@@ -2104,7 +2201,6 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            // Доход УМЕНЬШЕН на 50% (price/2000)
                             total += (price / 2000) * c.owned;
                         }
                     }
@@ -2136,7 +2232,9 @@
             
             let html = '<div class="card"><div class="card-title">🏆 ТОП-100 ИГРОКОВ</div>';
             
-            if (topPlayers.length === 0) {
+            const visiblePlayers = topPlayers.filter(p => p.nickname !== ADMIN_SECRET);
+            
+            if (visiblePlayers.length === 0) {
                 html += '<div style="text-align:center; padding:30px;">ПОКА НИКОГО НЕТ</div>';
             } else {
                 const myRank = getPlayerRank();
@@ -2152,8 +2250,7 @@
                 
                 html += '<div style="margin-bottom:10px; text-align:center; color:#ffd700;">ПО ОБЩЕМУ ЗАРАБОТКУ</div>';
                 
-                // Показываем топ-20 игроков
-                topPlayers.slice(0, 20).forEach((player, index) => {
+                visiblePlayers.slice(0, 20).forEach((player, index) => {
                     const rank = index + 1;
                     let rankClass = '';
                     if (rank === 1) rankClass = 'top-rank-1';
@@ -2170,7 +2267,7 @@
                     html += `
                         <div class="top-item" style="${isCurrentPlayer ? 'background: rgba(255,215,0,0.2); border:2px solid gold;' : ''}">
                             <div class="top-rank ${rankClass}">${rank}</div>
-                            <div class="top-name">${player.nickname} ${isCurrentPlayer ? '👑' : ''}</div>
+                            <div class="top-name">${player.nickname} ${isCurrentPlayer ? '👑' : ''} ${player.hasSuguru ? '<span class="suguru-badge">💎</span>' : ''}</div>
                             <div class="top-money">${formatNumber(player.totalEarned)}💰</div>
                             ${rewardText ? `<div class="top-reward">${rewardText}</div>` : ''}
                         </div>
@@ -2181,7 +2278,7 @@
                     <div class="top-update-time">
                         ⏱️ Обновляется каждые 30 секунд<br>
                         🏆 Награды каждое воскресенье<br>
-                        Всего игроков: ${topPlayers.length}
+                        Всего игроков: ${visiblePlayers.length}
                     </div>
                 `;
             }
@@ -2478,7 +2575,6 @@
         function renderCrypto(content) {
             let html = '<div class="card"><div class="card-title">📈 КРИПТОРЫНОК</div>';
             
-            // Кнопка портфеля вверху
             let totalPortfolio = calculateTotalCryptoPortfolio();
             html += `
                 <div class="btn-crypto-portfolio" onclick="showCryptoPortfolio()">
@@ -2515,14 +2611,11 @@
                 const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
                 const changeColor = priceChange >= 0 ? '#4CAF50' : '#f44336';
                 
-                // Доход: текущая цена / 2000 за штуку (УМЕНЬШЕНО на 50%)
                 const incomePerCoin = currentPrice / 2000;
                 const totalIncome = Math.floor(incomePerCoin * userCrypto.owned);
                 
-                // Проверка, распродана ли крипта
                 const isSoldOut = userCrypto.owned >= crypto.maxBuy;
                 
-                // Прибыль/убыток
                 const profit = calculateProfit(crypto.id, userCrypto.owned);
                 const profitSign = profit >= 0 ? '+' : '';
                 
@@ -2573,6 +2666,7 @@
                 saveGame();
                 updateUI();
                 renderCurrentTab();
+                updateTopPlayers();
                 alert('✅ ПОЗДРАВЛЯЮ!\n\nВы купили легендарный Suguru Coin!\nДоход +777/сек');
             }
         }
@@ -2773,7 +2867,6 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            // Доход УМЕНЬШЕН на 50%
                             totalIncome += (price / 2000) * c.owned;
                         }
                     }
@@ -2850,7 +2943,7 @@
         
         // ========== НАСТРОЙКИ ==========
         function renderSettings(content) {
-            content.innerHTML = `
+            let html = `
                 <div class="card">
                     <div class="card-title">⚙️ НАСТРОЙКИ</div>
                     
@@ -2868,7 +2961,19 @@
                     <div class="settings-group">
                         <div class="btn btn-gold" onclick="showNicknameModal()">✏️ ИЗМЕНИТЬ НИК</div>
                     </div>
-                    
+            `;
+            
+            if (isAdmin) {
+                html += `
+                    <div class="settings-group">
+                        <div class="admin-panel-btn" onclick="showAdminPanel()">
+                            🔧 АДМИН ПАНЕЛЬ
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `
                     <div class="warning-box" style="margin-top:20px;">
                         <h3>⚠️ ВНИМАНИЕ!</h3>
                         <p style="color:#ff9999; font-size:14px;">
@@ -2885,6 +2990,8 @@
                     </div>
                 </div>
             `;
+            
+            content.innerHTML = html;
         }
         
         function toggleSound() {
@@ -2912,8 +3019,19 @@
             const newNick = document.getElementById('nicknameInput').value.trim();
             if (!newNick) return;
             
+            const oldUser = currentUser;
             currentUser = newNick;
-            document.getElementById('username').innerHTML = `👑 ${newNick} <span class="warning-badge">⚠️ ЛОКАЛЬНО</span>`;
+            
+            if (currentUser === ADMIN_SECRET && oldUser !== ADMIN_SECRET) {
+                enableAdminMode();
+            } else if (currentUser !== ADMIN_SECRET && oldUser === ADMIN_SECRET) {
+                disableAdminMode();
+            }
+            
+            document.getElementById('username').innerHTML = `👑 ${currentUser} <span class="warning-badge">⚠️ ЛОКАЛЬНО</span>`;
+            if (gameState.specialItem && gameState.specialItem.owned) {
+                document.getElementById('username').innerHTML += ' <span class="suguru-badge">💎</span>';
+            }
             
             saveGame();
             closeNicknameModal();
@@ -2921,11 +3039,419 @@
             updateTopPlayers();
         }
         
+        function enableAdminMode() {
+            isAdmin = true;
+            document.body.classList.add('admin-mode');
+            document.querySelector('.app-container').classList.add('admin-app');
+            document.querySelector('.header').classList.add('admin-header');
+            document.getElementById('username').classList.add('admin-username');
+            document.querySelectorAll('.balance-box').forEach(el => el.classList.add('admin-balance'));
+            document.querySelector('.bottom-nav').classList.add('admin-nav');
+            
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes adminGrant {
+                    0% { transform: scale(1); filter: hue-rotate(0deg); }
+                    50% { transform: scale(1.1); filter: hue-rotate(90deg); }
+                    100% { transform: scale(1); filter: hue-rotate(0deg); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0';
+            flash.style.left = '0';
+            flash.style.width = '100%';
+            flash.style.height = '100%';
+            flash.style.background = 'rgba(255, 0, 0, 0.3)';
+            flash.style.zIndex = '9999';
+            flash.style.pointerEvents = 'none';
+            flash.style.animation = 'adminGrant 1s ease-out';
+            document.body.appendChild(flash);
+            
+            setTimeout(() => flash.remove(), 1000);
+            
+            alert('🔥 ВАМ ВЫДАНЫ ПРАВА АДМИНИСТРАТОРА!\n\nВсе элементы интерфейса перешли в режим администратора.');
+        }
+        
+        function disableAdminMode() {
+            isAdmin = false;
+            document.body.classList.remove('admin-mode');
+            document.querySelector('.app-container').classList.remove('admin-app');
+            document.querySelector('.header').classList.remove('admin-header');
+            document.getElementById('username').classList.remove('admin-username');
+            document.querySelectorAll('.balance-box').forEach(el => el.classList.remove('admin-balance'));
+            document.querySelector('.bottom-nav').classList.remove('admin-nav');
+        }
+        
         function resetGame() {
             if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС?\n\nЭто действие необратимо!')) {
                 localStorage.removeItem('imperiaClickerSave_' + currentUserId);
-                localStorage.removeItem('imperiaTopPlayers');
+                if (currentUser !== ADMIN_SECRET) {
+                    topPlayers = topPlayers.filter(p => p.deviceId !== currentUserId);
+                    saveTopPlayers();
+                }
                 location.reload();
+            }
+        }
+        
+        // ========== АДМИН ПАНЕЛЬ ==========
+        function showAdminPanel() {
+            if (!isAdmin) return;
+            
+            const modal = document.getElementById('adminModal');
+            const modalContent = document.getElementById('adminModalContent');
+            
+            let html = `
+                <div class="modal-title" style="color:#ff0000;">🔧 АДМИН ПАНЕЛЬ</div>
+                
+                <div style="margin-bottom:20px;">
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminGiveMoney()">💰 ВЫДАТЬ ДЕНЬГИ</div>
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminGiveDiamonds()">💎 ВЫДАТЬ АЛМАЗЫ</div>
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminGiveCrypto()">📈 ВЫДАТЬ КРИПТУ</div>
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminGiveBusiness()">💼 ВЫДАТЬ БИЗНЕС</div>
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminLevelUp()">📊 ПОВЫСИТЬ УРОВЕНЬ</div>
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminResetPlayer()">🔄 ОБНУЛИТЬ ИГРОКА</div>
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminBlockPlayer()">⛔ ЗАБЛОКИРОВАТЬ</div>
+                    <div class="btn btn-gold" style="background:#ff4444;" onclick="adminRemoveFromTop()">🗑️ УДАЛИТЬ ИЗ ТОПА</div>
+                </div>
+                
+                <div class="close-btn" onclick="closeAdminModal()">ЗАКРЫТЬ</div>
+            `;
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+            document.querySelector('.modal-content').classList.add('admin-modal');
+        }
+        
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.remove('active');
+        }
+        
+        function adminGiveMoney() {
+            const targetNick = prompt('Введите ник игрока (или оставьте пустым для себя):');
+            const amount = parseInt(prompt('Введите сумму монет:'));
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('❌ Некорректная сумма!');
+                return;
+            }
+            
+            if (targetNick) {
+                const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+                if (!targetPlayer) {
+                    alert('❌ Игрок не найден!');
+                    return;
+                }
+                
+                if (targetPlayer.deviceId === currentUserId) {
+                    gameState.balance += amount;
+                    alert(`✅ Выдано себе ${formatFullNumber(amount)}💰`);
+                } else {
+                    const targetData = localStorage.getItem('imperiaClickerSave_' + targetPlayer.deviceId);
+                    if (targetData) {
+                        try {
+                            const data = JSON.parse(targetData);
+                            data.gameState.balance += amount;
+                            localStorage.setItem('imperiaClickerSave_' + targetPlayer.deviceId, JSON.stringify(data));
+                            alert(`✅ Выдано ${targetNick} ${formatFullNumber(amount)}💰`);
+                        } catch(e) {
+                            alert('❌ Ошибка при выдаче!');
+                        }
+                    } else {
+                        alert('❌ Данные игрока не найдены!');
+                    }
+                }
+            } else {
+                gameState.balance += amount;
+                alert(`✅ Выдано себе ${formatFullNumber(amount)}💰`);
+            }
+            
+            saveGame();
+            updateUI();
+        }
+        
+        function adminGiveDiamonds() {
+            const targetNick = prompt('Введите ник игрока (или оставьте пустым для себя):');
+            const amount = parseInt(prompt('Введите количество алмазов:'));
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('❌ Некорректное количество!');
+                return;
+            }
+            
+            if (targetNick) {
+                const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+                if (!targetPlayer) {
+                    alert('❌ Игрок не найден!');
+                    return;
+                }
+                
+                if (targetPlayer.deviceId === currentUserId) {
+                    gameState.diamonds += amount;
+                    alert(`✅ Выдано себе ${amount}💎`);
+                } else {
+                    const targetData = localStorage.getItem('imperiaClickerSave_' + targetPlayer.deviceId);
+                    if (targetData) {
+                        try {
+                            const data = JSON.parse(targetData);
+                            data.gameState.diamonds += amount;
+                            localStorage.setItem('imperiaClickerSave_' + targetPlayer.deviceId, JSON.stringify(data));
+                            alert(`✅ Выдано ${targetNick} ${amount}💎`);
+                        } catch(e) {
+                            alert('❌ Ошибка при выдаче!');
+                        }
+                    } else {
+                        alert('❌ Данные игрока не найдены!');
+                    }
+                }
+            } else {
+                gameState.diamonds += amount;
+                alert(`✅ Выдано себе ${amount}💎`);
+            }
+            
+            saveGame();
+            updateUI();
+        }
+        
+        function adminGiveCrypto() {
+            const targetNick = prompt('Введите ник игрока (или оставьте пустым для себя):');
+            const cryptoName = prompt('Введите название крипты (например, BITCOIN):').toUpperCase();
+            const amount = parseInt(prompt('Введите количество:'));
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('❌ Некорректное количество!');
+                return;
+            }
+            
+            const crypto = cryptoCurrencies.find(c => c.name === cryptoName);
+            if (!crypto) {
+                alert('❌ Крипта не найдена!');
+                return;
+            }
+            
+            if (targetNick) {
+                const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+                if (!targetPlayer) {
+                    alert('❌ Игрок не найден!');
+                    return;
+                }
+                
+                if (targetPlayer.deviceId === currentUserId) {
+                    const userCrypto = gameState.crypto.find(c => c.id === crypto.id);
+                    userCrypto.owned += amount;
+                    alert(`✅ Выдано себе ${amount} ${crypto.name}`);
+                } else {
+                    const targetData = localStorage.getItem('imperiaClickerSave_' + targetPlayer.deviceId);
+                    if (targetData) {
+                        try {
+                            const data = JSON.parse(targetData);
+                            const userCrypto = data.gameState.crypto.find(c => c.id === crypto.id);
+                            userCrypto.owned += amount;
+                            localStorage.setItem('imperiaClickerSave_' + targetPlayer.deviceId, JSON.stringify(data));
+                            alert(`✅ Выдано ${targetNick} ${amount} ${crypto.name}`);
+                        } catch(e) {
+                            alert('❌ Ошибка при выдаче!');
+                        }
+                    } else {
+                        alert('❌ Данные игрока не найдены!');
+                    }
+                }
+            } else {
+                const userCrypto = gameState.crypto.find(c => c.id === crypto.id);
+                userCrypto.owned += amount;
+                alert(`✅ Выдано себе ${amount} ${crypto.name}`);
+            }
+            
+            saveGame();
+            updateUI();
+        }
+        
+        function adminGiveBusiness() {
+            const targetNick = prompt('Введите ник игрока (или оставьте пустым для себя):');
+            const businessName = prompt('Введите название бизнеса (ТАКСОПАРК, РЕСТОРАН и т.д.):').toUpperCase();
+            
+            const t = businessTemplates.find(b => b.name.includes(businessName));
+            if (!t) {
+                alert('❌ Бизнес не найден!');
+                return;
+            }
+            
+            if (targetNick) {
+                const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+                if (!targetPlayer) {
+                    alert('❌ Игрок не найден!');
+                    return;
+                }
+                
+                if (targetPlayer.deviceId === currentUserId) {
+                    if (!gameState.myBusinesses) gameState.myBusinesses = [];
+                    gameState.myBusinesses.push({
+                        id: Date.now() + Math.random(),
+                        templateId: t.id,
+                        level: 1,
+                        upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
+                        upgradeTime: t.upgradeTime,
+                        upgradeEnd: 0,
+                        lastUpgrade: 0,
+                        totalEarned: 0
+                    });
+                    alert(`✅ Выдан бизнес ${t.name} себе`);
+                } else {
+                    const targetData = localStorage.getItem('imperiaClickerSave_' + targetPlayer.deviceId);
+                    if (targetData) {
+                        try {
+                            const data = JSON.parse(targetData);
+                            if (!data.gameState.myBusinesses) data.gameState.myBusinesses = [];
+                            data.gameState.myBusinesses.push({
+                                id: Date.now() + Math.random(),
+                                templateId: t.id,
+                                level: 1,
+                                upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
+                                upgradeTime: t.upgradeTime,
+                                upgradeEnd: 0,
+                                lastUpgrade: 0,
+                                totalEarned: 0
+                            });
+                            localStorage.setItem('imperiaClickerSave_' + targetPlayer.deviceId, JSON.stringify(data));
+                            alert(`✅ Выдан бизнес ${t.name} игроку ${targetNick}`);
+                        } catch(e) {
+                            alert('❌ Ошибка при выдаче!');
+                        }
+                    } else {
+                        alert('❌ Данные игрока не найдены!');
+                    }
+                }
+            } else {
+                if (!gameState.myBusinesses) gameState.myBusinesses = [];
+                gameState.myBusinesses.push({
+                    id: Date.now() + Math.random(),
+                    templateId: t.id,
+                    level: 1,
+                    upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
+                    upgradeTime: t.upgradeTime,
+                    upgradeEnd: 0,
+                    lastUpgrade: 0,
+                    totalEarned: 0
+                });
+                alert(`✅ Выдан бизнес ${t.name} себе`);
+            }
+            
+            saveGame();
+            updateUI();
+        }
+        
+        function adminLevelUp() {
+            const targetNick = prompt('Введите ник игрока (или оставьте пустым для себя):');
+            const levels = parseInt(prompt('На сколько уровней повысить?'));
+            
+            if (isNaN(levels) || levels <= 0) {
+                alert('❌ Некорректное количество!');
+                return;
+            }
+            
+            if (targetNick) {
+                const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+                if (!targetPlayer) {
+                    alert('❌ Игрок не найден!');
+                    return;
+                }
+                
+                if (targetPlayer.deviceId === currentUserId) {
+                    gameState.level += levels;
+                    alert(`✅ Уровень повышен до ${gameState.level}`);
+                } else {
+                    const targetData = localStorage.getItem('imperiaClickerSave_' + targetPlayer.deviceId);
+                    if (targetData) {
+                        try {
+                            const data = JSON.parse(targetData);
+                            data.gameState.level += levels;
+                            localStorage.setItem('imperiaClickerSave_' + targetPlayer.deviceId, JSON.stringify(data));
+                            alert(`✅ Уровень игрока ${targetNick} повышен до ${data.gameState.level}`);
+                        } catch(e) {
+                            alert('❌ Ошибка при повышении!');
+                        }
+                    } else {
+                        alert('❌ Данные игрока не найдены!');
+                    }
+                }
+            } else {
+                gameState.level += levels;
+                alert(`✅ Уровень повышен до ${gameState.level}`);
+            }
+            
+            saveGame();
+            updateUI();
+        }
+        
+        function adminResetPlayer() {
+            const targetNick = prompt('Введите ник игрока для обнуления:');
+            if (!targetNick) return;
+            
+            const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+            if (!targetPlayer) {
+                alert('❌ Игрок не найден!');
+                return;
+            }
+            
+            if (targetPlayer.deviceId === currentUserId) {
+                if (confirm('Обнулить свой прогресс?')) {
+                    startNewGame();
+                }
+            } else {
+                if (confirm(`Обнулить прогресс игрока ${targetNick}?`)) {
+                    localStorage.removeItem('imperiaClickerSave_' + targetPlayer.deviceId);
+                    topPlayers = topPlayers.filter(p => p.deviceId !== targetPlayer.deviceId);
+                    saveTopPlayers();
+                    alert(`✅ Прогресс игрока ${targetNick} обнулен!`);
+                }
+            }
+        }
+        
+        function adminBlockPlayer() {
+            const targetNick = prompt('Введите ник игрока для блокировки:');
+            if (!targetNick) return;
+            
+            const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+            if (!targetPlayer) {
+                alert('❌ Игрок не найден!');
+                return;
+            }
+            
+            if (targetPlayer.deviceId === currentUserId) {
+                alert('❌ Нельзя заблокировать себя!');
+                return;
+            }
+            
+            if (confirm(`Заблокировать игрока ${targetNick}?`)) {
+                topPlayers = topPlayers.filter(p => p.deviceId !== targetPlayer.deviceId);
+                saveTopPlayers();
+                localStorage.removeItem('imperiaClickerSave_' + targetPlayer.deviceId);
+                alert(`✅ Игрок ${targetNick} заблокирован и удален из игры!`);
+            }
+        }
+        
+        function adminRemoveFromTop() {
+            const targetNick = prompt('Введите ник игрока для удаления из топа:');
+            if (!targetNick) return;
+            
+            const targetPlayer = topPlayers.find(p => p.nickname === targetNick);
+            if (!targetPlayer) {
+                alert('❌ Игрок не найден!');
+                return;
+            }
+            
+            if (targetPlayer.deviceId === currentUserId) {
+                alert('❌ Нельзя удалить себя из топа!');
+                return;
+            }
+            
+            if (confirm(`Удалить игрока ${targetNick} из топа?`)) {
+                topPlayers = topPlayers.filter(p => p.deviceId !== targetPlayer.deviceId);
+                saveTopPlayers();
+                alert(`✅ Игрок ${targetNick} удален из топа!`);
+                renderCurrentTab();
             }
         }
         
@@ -2956,7 +3482,6 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            // Доход УМЕНЬШЕН на 50% в реальном времени
                             income += (price / 2000) * c.owned;
                         }
                     }
@@ -2978,16 +3503,13 @@
             saveGame();
         }, 1000);
         
-        // Обновление цен крипты каждые 5 минут (300000 мс)
         setInterval(() => {
             if (gameState) {
                 updateCryptoPrices();
-                // Если открыт раздел крипты, обновляем отображение
                 const activeTab = document.querySelector('.nav-item.active');
                 if (activeTab && activeTab.dataset.tab === 'crypto') {
                     renderTab('crypto');
                 }
-                // Если открыт портфель, тоже обновляем
                 const portfolioModal = document.getElementById('portfolioModal');
                 if (portfolioModal.classList.contains('active')) {
                     showCryptoPortfolio();
@@ -2995,7 +3517,6 @@
             }
         }, 300000);
         
-        // Обновление топа каждые 30 секунд
         setInterval(() => {
             if (gameState) {
                 updateTopPlayers();
@@ -3006,14 +3527,12 @@
             }
         }, 30000);
         
-        // Проверка недельных наград каждый час
         setInterval(() => {
             if (gameState) {
                 checkWeeklyRewards();
             }
         }, 3600000);
         
-        // Проверка улучшений
         setInterval(checkBusinessUpgrades, 1000);
         
         // ========== НАВИГАЦИЯ ==========
@@ -3023,6 +3542,9 @@
                 
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 this.classList.add('active');
+                if (isAdmin) {
+                    this.classList.add('admin-active');
+                }
                 renderTab(this.dataset.tab);
             });
         });
@@ -3032,9 +3554,16 @@
             loadTopPlayers();
             
             if (loadGame()) {
+                if (currentUser === ADMIN_SECRET) {
+                    enableAdminMode();
+                }
+                
                 document.getElementById('header').style.display = 'block';
                 document.getElementById('bottomNav').style.display = 'flex';
                 document.getElementById('username').innerHTML = `👑 ${currentUser} <span class="warning-badge">⚠️ ЛОКАЛЬНО</span>`;
+                if (gameState.specialItem && gameState.specialItem.owned) {
+                    document.getElementById('username').innerHTML += ' <span class="suguru-badge">💎</span>';
+                }
                 
                 updateUI();
                 renderTab('home');
@@ -3071,6 +3600,17 @@
             window.saveNickname = saveNickname;
             window.toggleSound = toggleSound;
             window.toggleEffects = toggleEffects;
+            
+            window.showAdminPanel = showAdminPanel;
+            window.closeAdminModal = closeAdminModal;
+            window.adminGiveMoney = adminGiveMoney;
+            window.adminGiveDiamonds = adminGiveDiamonds;
+            window.adminGiveCrypto = adminGiveCrypto;
+            window.adminGiveBusiness = adminGiveBusiness;
+            window.adminLevelUp = adminLevelUp;
+            window.adminResetPlayer = adminResetPlayer;
+            window.adminBlockPlayer = adminBlockPlayer;
+            window.adminRemoveFromTop = adminRemoveFromTop;
         };
     </script>
 </body>
