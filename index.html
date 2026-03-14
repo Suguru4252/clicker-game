@@ -848,8 +848,8 @@
         }
         
         .pass-level-number {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             background: #ffd700;
             color: black;
             border-radius: 50%;
@@ -857,13 +857,14 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
+            flex-shrink: 0;
         }
         
         .pass-level-reward {
             flex: 1;
             background: rgba(255,255,255,0.05);
-            padding: 8px;
+            padding: 8px 12px;
             border-radius: 8px;
             font-size: 13px;
         }
@@ -874,6 +875,37 @@
         
         .pass-level.completed {
             opacity: 0.7;
+        }
+        
+        .pass-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .pass-nav-btn {
+            background: rgba(255,215,0,0.2);
+            border: 1px solid #ffd700;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .pass-nav-btn:active {
+            background: rgba(255,215,0,0.4);
+        }
+        
+        .pass-nav-info {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffd700;
         }
         
         .daily-business {
@@ -1175,21 +1207,24 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '3.1.0';
-        const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter']; // Несколько админов
+        const APP_VERSION = '3.2.1';
+        const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter'];
         const MAX_BUSINESSES = 10;
-        const MAX_MINING_FARMS = 20; // Максимум 20 ферм
+        const MAX_MINING_FARMS = 20;
+        const MAX_FARM_LEVEL = 500;
         let currentUser = "ИГРОК";
         let currentUserId = null;
         let gameState = null;
         let isAdmin = false;
+        
+        let passStartLevel = 1;
+        const PASS_LEVELS_PER_PAGE = 10;
         
         let settings = {
             soundEnabled: true,
             effectsEnabled: true
         };
         
-        // ========== ГЕНЕРАЦИЯ ID ==========
         function getDeviceId() {
             let deviceId = localStorage.getItem('deviceId');
             if (!deviceId) {
@@ -1364,10 +1399,8 @@
             { id: 44, name: "STRK", emoji: "STRK", basePrice: 40, maxBuy: 5000000000, volatility: 0.4 }
         ];
         
-        // Текущие цены крипты
         let cryptoPrices = [];
         
-        // СУПЕР-ВЕЩЬ: SuguruCoin
         let specialItem = {
             id: 999,
             name: "???????",
@@ -1380,18 +1413,18 @@
             revealed: false
         };
         
-        // ========== БИЗНЕСЫ ==========
+        // ========== БИЗНЕСЫ С ВРЕМЕНЕМ УЛУЧШЕНИЯ ==========
         const businessTemplates = [
-            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 100, maxLevel: 20 },
-            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 500, maxLevel: 20 },
-            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5, baseUpgradeCost: 2500, maxLevel: 20 },
-            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10, baseUpgradeCost: 10000, maxLevel: 20 },
-            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20, baseUpgradeCost: 50000, maxLevel: 20 },
-            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50, baseUpgradeCost: 250000, maxLevel: 20 },
-            { id: 6, name: "🏦 БАНК", baseIncome: 100, baseUpgradeCost: 1000000, maxLevel: 20 },
-            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200, baseUpgradeCost: 5000000, maxLevel: 20 },
-            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500, baseUpgradeCost: 25000000, maxLevel: 20 },
-            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000, baseUpgradeCost: 100000000, maxLevel: 20 }
+            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 100, upgradeTime: 30, maxLevel: 20 },
+            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 500, upgradeTime: 60, maxLevel: 20 },
+            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5, baseUpgradeCost: 2500, upgradeTime: 120, maxLevel: 20 },
+            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10, baseUpgradeCost: 10000, upgradeTime: 180, maxLevel: 20 },
+            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20, baseUpgradeCost: 50000, upgradeTime: 300, maxLevel: 20 },
+            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50, baseUpgradeCost: 250000, upgradeTime: 600, maxLevel: 20 },
+            { id: 6, name: "🏦 БАНК", baseIncome: 100, baseUpgradeCost: 1000000, upgradeTime: 1200, maxLevel: 20 },
+            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200, baseUpgradeCost: 5000000, upgradeTime: 2400, maxLevel: 20 },
+            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500, baseUpgradeCost: 25000000, upgradeTime: 4800, maxLevel: 20 },
+            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000, baseUpgradeCost: 100000000, upgradeTime: 9600, maxLevel: 20 }
         ];
         
         // ========== БОЕВОЙ ПРОПУСК (200 уровней) ==========
@@ -1399,14 +1432,13 @@
             const levels = [];
             for (let i = 1; i <= 200; i++) {
                 if (i % 10 === 0) {
-                    levels.push({ level: i, reward: 50, type: 'diamond' });
+                    levels.push({ level: i, reward: 100000, type: 'crypto' }); // 100k рандомной крипты
                 } else if (i % 5 === 0) {
                     levels.push({ level: i, reward: 1000, type: 'money' });
                 } else {
                     levels.push({ level: i, reward: 100, type: 'money' });
                 }
             }
-            // 200 уровень дает +1 слот для бизнеса
             levels[199] = { level: 200, reward: 1, type: 'business_slot' };
             return levels;
         }
@@ -1461,7 +1493,7 @@
                     }
                     
                     if (!gameState.battlePass) {
-                        gameState.battlePass = { level: 1, exp: 0, claimed: [] };
+                        gameState.battlePass = { level: 1, exp: 0, claimed: [], lastReset: Date.now() };
                     }
                     
                     if (!gameState.dailyBusinesses) {
@@ -1472,8 +1504,14 @@
                         gameState.specialItem = { owned: false, revealed: false };
                     }
                     
-                    // Проверка ежедневных бизнесов
                     const now = Date.now();
+                    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+                    
+                    // Сброс пропуска каждые 7 дней
+                    if (now - (gameState.battlePass.lastReset || 0) > oneWeek) {
+                        gameState.battlePass = { level: 1, exp: 0, claimed: [], lastReset: now };
+                    }
+                    
                     if (now - (gameState.lastDailyUpdate || 0) > 86400000) {
                         generateDailyBusinesses();
                         gameState.lastDailyUpdate = now;
@@ -1537,7 +1575,7 @@
             
             if (gameState.miningFarms) {
                 gameState.miningFarms.forEach(farm => {
-                    income += (farm.crypto.basePrice * farm.level / 100 * 1.2) * seconds; // +20% доход
+                    income += (farm.crypto.basePrice * farm.level / 100) * seconds;
                 });
             }
             
@@ -1566,7 +1604,6 @@
             }
         }
         
-        // ========== ГЕНЕРАЦИЯ ЕЖЕДНЕВНЫХ БИЗНЕСОВ ==========
         function generateDailyBusinesses() {
             const types = [
                 { name: "🎪 ЯРМАРКА", income: 50 },
@@ -1589,7 +1626,6 @@
             }
         }
         
-        // ========== КРИПТА ==========
         function updateCryptoPrices() {
             cryptoPrices = cryptoPrices.map((price, i) => {
                 const crypto = cryptoCurrencies[i];
@@ -1890,7 +1926,7 @@
                 return;
             }
             
-            const cost = 2000; // Увеличил цену
+            const cost = 1000000000; // 1 миллиард
             if (gameState.balance < cost) {
                 alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
                 return;
@@ -1918,7 +1954,12 @@
             const farm = gameState.miningFarms[index];
             if (!farm) return;
             
-            const cost = farm.level * 2000; // Увеличил цену улучшения
+            if (farm.level >= MAX_FARM_LEVEL) {
+                alert(`❌ МАКСИМАЛЬНЫЙ УРОВЕНЬ ${MAX_FARM_LEVEL}!`);
+                return;
+            }
+            
+            const cost = farm.level * 5000000000; // +500% стоимости (было *1000, стало *5000)
             if (gameState.balance < cost) {
                 alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
                 return;
@@ -1936,7 +1977,7 @@
             const farm = gameState.miningFarms[index];
             if (!farm) return;
             
-            const sellPrice = farm.level * 1000; // Цена продажи
+            const sellPrice = farm.level * 500000000; // Цена продажи
             
             if (confirm(`Продать ферму за ${formatFullNumber(sellPrice)}💰?`)) {
                 gameState.miningFarms.splice(index, 1);
@@ -1958,12 +1999,12 @@
                 return;
             }
             
-            if (gameState.diamonds < 100) {
-                alert('❌ НУЖНО 100 АЛМАЗОВ!');
+            if (gameState.diamonds < 1000) { // Было 100, стало 1000
+                alert('❌ НУЖНО 1000 АЛМАЗОВ!');
                 return;
             }
             
-            gameState.diamonds -= 100;
+            gameState.diamonds -= 1000;
             business.manager = {
                 level: 1,
                 autoUpgrade: false
@@ -1986,11 +2027,16 @@
         // ========== БОЕВОЙ ПРОПУСК ==========
         function checkBattlePassLevel() {
             if (!gameState.battlePass) {
-                gameState.battlePass = { level: 1, exp: 0, claimed: [] };
+                gameState.battlePass = { level: 1, exp: 0, claimed: [], lastReset: Date.now() };
             }
             
-            while (gameState.battlePass.exp >= 200 && gameState.battlePass.level < 200) { // Больше опыта нужно
-                gameState.battlePass.exp -= 200;
+            if (gameState.battlePass.level >= 200) return; // После 200 уровня опыт не начисляется
+            
+            // Опыт увеличивается на 10,000 за уровень
+            const expNeeded = 10000 * gameState.battlePass.level;
+            
+            while (gameState.battlePass.exp >= expNeeded && gameState.battlePass.level < 200) {
+                gameState.battlePass.exp -= expNeeded;
                 gameState.battlePass.level++;
             }
         }
@@ -2007,8 +2053,13 @@
                 gameState.balance += reward.reward;
             } else if (reward.type === 'diamond') {
                 gameState.diamonds += reward.reward;
+            } else if (reward.type === 'crypto') {
+                // Даем 100,000 рандомной крипты
+                const randomCrypto = cryptoCurrencies[Math.floor(Math.random() * cryptoCurrencies.length)];
+                const userCrypto = gameState.crypto.find(c => c.id === randomCrypto.id);
+                userCrypto.owned += 100000;
+                alert(`🎉 Вы получили 100,000 ${randomCrypto.name}!`);
             } else if (reward.type === 'business_slot' && level === 200) {
-                // Даем +1 слот для бизнеса
                 if (!gameState.businessSlots) gameState.businessSlots = MAX_BUSINESSES;
                 gameState.businessSlots = (gameState.businessSlots || MAX_BUSINESSES) + 1;
                 alert('🎉 ПОЗДРАВЛЯЕМ! Вы получили +1 слот для бизнеса!');
@@ -2020,7 +2071,6 @@
             renderTab('pass');
         }
         
-        // ========== ЕЖЕДНЕВНЫЕ БИЗНЕСЫ ==========
         function buyDailyBusiness(index) {
             const daily = gameState.dailyBusinesses[index];
             if (!daily || daily.purchased) return;
@@ -2043,7 +2093,6 @@
             
             if (!gameState.myBusinesses) gameState.myBusinesses = [];
             
-            // Проверка лимита бизнесов
             const businessLimit = gameState.businessSlots || MAX_BUSINESSES;
             if (gameState.myBusinesses.length >= businessLimit) {
                 alert(`❌ ДОСТИГНУТ ЛИМИТ БИЗНЕСОВ (${businessLimit})!`);
@@ -2057,6 +2106,8 @@
                 level: 1,
                 income: daily.income,
                 upgradeCost: 1000,
+                upgradeTime: 30,
+                upgradeEnd: 0,
                 manager: null,
                 isDaily: true,
                 dailyEndTime: daily.endTime
@@ -2067,7 +2118,6 @@
             renderTab('daily');
         }
         
-        // ========== ЭКРАН ПРИВЕТСТВИЯ ==========
         function generateRandomNickname() {
             const randomNum = Math.floor(Math.random() * 900 + 100);
             return `ИГРОК${randomNum}`;
@@ -2091,7 +2141,7 @@
                             <ul>
                                 <li>❌ Все данные сохраняются локально</li>
                                 <li>❌ При удалении игры прогресс НЕ ВОССТАНАВЛИВАЕТСЯ</li>
-                                <li>✅ Добавлены новые функции: майнинг (макс 20 ферм), менеджеры, боевой пропуск (200 уровней), ежедневные бизнесы</li>
+                                <li>✅ Добавлены новые функции: майнинг (макс 20 ферм, макс уровень 500), менеджеры (1000💎), боевой пропуск (200 уровней, обновляется каждые 7 дней), ежедневные бизнесы</li>
                             </ul>
                         </div>
                         
@@ -2123,7 +2173,7 @@
             
             gameState = {
                 balance: 0,
-                diamonds: 100,
+                diamonds: 1000, // Дали больше алмазов для менеджеров
                 exp: 0,
                 level: 1,
                 clickPower: 1,
@@ -2138,7 +2188,7 @@
                 lastDailyUpdate: Date.now(),
                 myBusinesses: [],
                 miningFarms: [],
-                battlePass: { level: 1, exp: 0, claimed: [] },
+                battlePass: { level: 1, exp: 0, claimed: [], lastReset: Date.now() },
                 dailyBusinesses: [],
                 businessSlots: MAX_BUSINESSES,
                 collections: JSON.parse(JSON.stringify(collectionItems)),
@@ -2216,11 +2266,11 @@
             gameState.balance = (gameState.balance || 0) + earned;
             gameState.totalClicks = (gameState.totalClicks || 0) + 1;
             gameState.totalEarned = (gameState.totalEarned || 0) + earned;
-            gameState.exp = (gameState.exp || 0) + earned / 100;
+            gameState.exp = (gameState.exp || 0) + earned / 100; // Уровень игрока растет от тапов
             
-            // Опыт боевого пропуска
-            if (gameState.battlePass) {
-                gameState.battlePass.exp += earned / 100;
+            // Опыт боевого пропуска (100 за тап)
+            if (gameState.battlePass && gameState.battlePass.level < 200) {
+                gameState.battlePass.exp += 100;
                 checkBattlePassLevel();
             }
             
@@ -2296,7 +2346,7 @@
             
             if (gameState.miningFarms) {
                 gameState.miningFarms.forEach(farm => {
-                    totalIncome += farm.crypto.basePrice * farm.level / 100 * 1.2; // +20% доход
+                    totalIncome += farm.crypto.basePrice * farm.level / 100;
                 });
             }
             
@@ -2306,6 +2356,8 @@
             
             const power = (gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5);
             const businessLimit = gameState.businessSlots || MAX_BUSINESSES;
+            
+            const expNeeded = gameState.battlePass ? 10000 * gameState.battlePass.level : 10000;
             
             content.innerHTML = `
                 <div id="home-content">
@@ -2324,10 +2376,10 @@
                         <div class="card-title">🎫 БОЕВОЙ ПРОПУСК</div>
                         <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                             <span>УРОВЕНЬ: ${gameState.battlePass?.level || 1}/200</span>
-                            <span>⚡ ОПЫТ: ${Math.floor(gameState.battlePass?.exp || 0)}/200</span>
+                            <span>⚡ ОПЫТ: ${Math.floor(gameState.battlePass?.exp || 0)}/${expNeeded}</span>
                         </div>
                         <div class="level-bar">
-                            <div class="level-progress" style="width: ${((gameState.battlePass?.exp || 0) / 200) * 100}%"></div>
+                            <div class="level-progress" style="width: ${((gameState.battlePass?.exp || 0) / expNeeded) * 100}%"></div>
                         </div>
                         <div class="btn btn-gold" onclick="renderTab('pass')">ПОЛУЧИТЬ НАГРАДЫ</div>
                     </div>
@@ -2346,6 +2398,9 @@
                 gameState.myBusinesses.forEach((business, index) => {
                     const t = businessTemplates[business.templateId];
                     
+                    const upgrading = business.upgradeEnd && business.upgradeEnd > Date.now();
+                    const timeLeft = upgrading ? Math.ceil((business.upgradeEnd - Date.now()) / 1000) : 0;
+                    
                     html += `
                         <div class="business-item" onclick="openBusiness(${index})">
                             <div class="business-header">
@@ -2360,7 +2415,10 @@
                                 `<div class="manager-badge" onclick="event.stopPropagation(); toggleAutoUpgrade(${index})">
                                     👔 МЕНЕДЖЕР lvl${business.manager.level} ${business.manager.autoUpgrade ? '⚡АВТО' : '💤'}
                                 </div>` : 
-                                `<div class="btn btn-purple" style="padding:8px;" onclick="event.stopPropagation(); hireManager(${index})">👔 НАНЯТЬ (100💎)</div>`
+                                `<div class="btn btn-purple" style="padding:8px;" onclick="event.stopPropagation(); hireManager(${index})">👔 НАНЯТЬ (1000💎)</div>`
+                            }
+                            ${upgrading ? 
+                                `<div class="upgrade-time">⏱️ УЛУЧШЕНИЕ: ${timeLeft}С</div>` : ''
                             }
                             ${business.isDaily && business.dailyEndTime > Date.now() ?
                                 `<div class="timer">⏱️ Осталось: ${Math.floor((business.dailyEndTime - Date.now()) / 3600000)}ч</div>` : ''
@@ -2395,14 +2453,14 @@
                         <div class="mining-farm">
                             <div class="farm-header">
                                 <span class="farm-name">${farm.crypto.emoji} ${farm.crypto.name}</span>
-                                <span class="farm-level">УРОВЕНЬ ${farm.level}</span>
+                                <span class="farm-level">УРОВЕНЬ ${farm.level}/${MAX_FARM_LEVEL}</span>
                             </div>
                             <div class="farm-progress">
                                 <div class="farm-progress-bar" style="width: ${Math.min(progressPercent, 100)}%"></div>
                             </div>
                             <div class="business-stats">
-                                <span>💰 ДОХОД: +${formatFullNumber(farm.crypto.basePrice * farm.level / 100 * 1.2)}/сек</span>
-                                <span>📈 УЛУЧШИТЬ: ${formatFullNumber(farm.level * 2000)}</span>
+                                <span>💰 ДОХОД: +${formatFullNumber(farm.crypto.basePrice * farm.level / 100)}/сек</span>
+                                <span>📈 УЛУЧШИТЬ: ${formatFullNumber(farm.level * 5000000000)}</span>
                             </div>
                             <div style="display: flex; gap: 5px;">
                                 <div class="btn btn-gold" style="padding:8px; flex:1;" onclick="upgradeMiningFarm(${index})">📈 УЛУЧШИТЬ</div>
@@ -2414,7 +2472,7 @@
             }
             
             if (gameState.miningFarms.length < MAX_MINING_FARMS) {
-                html += '<div class="btn btn-gold" onclick="buyMiningFarm()">➕ КУПИТЬ ФЕРМУ (2000💰)</div>';
+                html += '<div class="btn btn-gold" onclick="buyMiningFarm()">➕ КУПИТЬ ФЕРМУ (1.000.000.000💰)</div>';
             } else {
                 html += '<div style="text-align:center; color:#ff0000; margin:10px;">⚠️ ДОСТИГНУТ МАКСИМУМ ФЕРМ</div>';
             }
@@ -2424,8 +2482,12 @@
         
         function renderBattlePass(content) {
             if (!gameState.battlePass) {
-                gameState.battlePass = { level: 1, exp: 0, claimed: [] };
+                gameState.battlePass = { level: 1, exp: 0, claimed: [], lastReset: Date.now() };
             }
+            
+            const startLevel = passStartLevel;
+            const endLevel = Math.min(200, startLevel + PASS_LEVELS_PER_PAGE - 1);
+            const expNeeded = 10000 * gameState.battlePass.level;
             
             let html = '<div class="card"><div class="card-title">🎫 БОЕВОЙ ПРОПУСК (200 УРОВНЕЙ)</div>';
             
@@ -2433,17 +2495,19 @@
                 <div class="battle-pass">
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                         <span>УРОВЕНЬ: ${gameState.battlePass.level}/200</span>
-                        <span>⚡ ОПЫТ: ${Math.floor(gameState.battlePass.exp)}/200</span>
+                        <span>⚡ ОПЫТ: ${Math.floor(gameState.battlePass.exp)}/${expNeeded}</span>
                     </div>
                     <div class="level-bar">
-                        <div class="level-progress" style="width: ${(gameState.battlePass.exp / 200) * 100}%"></div>
+                        <div class="level-progress" style="width: ${(gameState.battlePass.exp / expNeeded) * 100}%"></div>
                     </div>
                 </div>
+                
+                <div class="pass-nav">
+                    <div class="pass-nav-btn" onclick="changePassPage(-1)">◀</div>
+                    <div class="pass-nav-info">УРОВНИ ${startLevel}-${endLevel}</div>
+                    <div class="pass-nav-btn" onclick="changePassPage(1)">▶</div>
+                </div>
             `;
-            
-            // Показываем только ближайшие уровни (текущий + 10)
-            const startLevel = Math.max(1, gameState.battlePass.level - 5);
-            const endLevel = Math.min(200, gameState.battlePass.level + 10);
             
             for (let i = startLevel; i <= endLevel; i++) {
                 const level = battlePassLevels.find(l => l.level === i);
@@ -2455,6 +2519,7 @@
                 let rewardText = '';
                 if (level.type === 'money') rewardText = `💰 ${formatFullNumber(level.reward)} монет`;
                 else if (level.type === 'diamond') rewardText = `💎 ${level.reward} алмазов`;
+                else if (level.type === 'crypto') rewardText = '🎲 100,000 рандомной крипты';
                 else if (level.type === 'business_slot') rewardText = '🎁 +1 СЛОТ БИЗНЕСА';
                 
                 html += `
@@ -2473,6 +2538,13 @@
             
             html += '</div>';
             content.innerHTML = html;
+        }
+        
+        function changePassPage(direction) {
+            passStartLevel += direction * PASS_LEVELS_PER_PAGE;
+            if (passStartLevel < 1) passStartLevel = 1;
+            if (passStartLevel > 200) passStartLevel = 191;
+            renderTab('pass');
         }
         
         function renderDaily(content) {
@@ -2811,6 +2883,7 @@
                             <span style="color:#4CAF50;">💰 ЦЕНА: ${formatFullNumber(t.baseUpgradeCost)}</span>
                         </div>
                         <div class="business-stats">
+                            <span>⏱️ ВРЕМЯ: ${t.upgradeTime}С</span>
                             <span>📊 КУПЛЕНО: ${ownedCount}/10</span>
                         </div>
                         ${ownedCount >= 10 ? 
@@ -2865,6 +2938,8 @@
                 level: 1,
                 income: t.baseIncome,
                 upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
+                upgradeTime: t.upgradeTime,
+                upgradeEnd: 0,
                 manager: null,
                 totalEarned: 0
             });
@@ -2894,6 +2969,9 @@
             const modal = document.getElementById('businessModal');
             const modalContent = document.getElementById('businessModalContent');
             
+            const upgrading = business.upgradeEnd && business.upgradeEnd > Date.now();
+            const timeLeft = upgrading ? Math.ceil((business.upgradeEnd - Date.now()) / 1000) : 0;
+            
             let content = `
                 <div class="modal-title">${business.name || t.name}</div>
                 <div style="text-align:center;">
@@ -2905,13 +2983,21 @@
             `;
             
             if ((business.level || 1) < t.maxLevel) {
-                content += `
-                    <div style="margin:12px;">
-                        <div class="btn btn-gold" onclick="startUpgrade(${index})">
-                            🚀 УЛУЧШИТЬ (${formatFullNumber(business.upgradeCost || 0)}💰)
+                if (upgrading) {
+                    content += `
+                        <div style="margin:12px; color:#ff9800;">
+                            ⏱️ УЛУЧШЕНИЕ... ${timeLeft}С
                         </div>
-                    </div>
-                `;
+                    `;
+                } else {
+                    content += `
+                        <div style="margin:12px;">
+                            <div class="btn btn-gold" onclick="startUpgrade(${index})">
+                                🚀 УЛУЧШИТЬ (${formatFullNumber(business.upgradeCost || 0)}💰)
+                            </div>
+                        </div>
+                    `;
+                }
             } else {
                 content += '<div style="margin:12px; color:#ffd700;">✅ МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>';
             }
@@ -2942,6 +3028,11 @@
                 return;
             }
             
+            if (business.upgradeEnd && business.upgradeEnd > Date.now()) {
+                alert('⏱️ УЛУЧШЕНИЕ УЖЕ ИДЕТ!');
+                return;
+            }
+            
             if ((gameState.balance || 0) < (business.upgradeCost || 0)) {
                 alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
                 return;
@@ -2949,15 +3040,31 @@
             
             gameState.balance -= (business.upgradeCost || 0);
             
-            business.level++;
-            business.income = t.baseIncome * business.level;
-            business.upgradeCost = Math.floor((business.upgradeCost || t.baseUpgradeCost) * 2.5);
+            business.lastUpgrade = Date.now();
+            business.upgradeEnd = Date.now() + ((business.upgradeTime || t.upgradeTime) * 1000);
             
             saveGame();
             updateUI();
             closeBusinessModal();
             renderCurrentTab();
-            alert(`✅ ${business.name || t.name} улучшен до ${business.level} уровня!`);
+            
+            alert(`✅ Улучшение запущено на ${business.upgradeTime || t.upgradeTime} сек.`);
+            
+            setTimeout(() => {
+                if (business.upgradeEnd && business.upgradeEnd <= Date.now() && (business.level || 1) < t.maxLevel) {
+                    business.level = (business.level || 1) + 1;
+                    business.income = t.baseIncome * business.level;
+                    business.upgradeCost = Math.floor((business.upgradeCost || t.baseUpgradeCost) * 2.5);
+                    business.upgradeTime = Math.floor((business.upgradeTime || t.upgradeTime) * 1.3);
+                    business.upgradeEnd = 0;
+                    
+                    saveGame();
+                    updateUI();
+                    renderCurrentTab();
+                    
+                    alert(`✅ ${business.name || t.name} улучшен до ${business.level} уровня!`);
+                }
+            }, (business.upgradeTime || t.upgradeTime) * 1000);
         }
         
         function sellBusiness(index) {
@@ -2995,11 +3102,26 @@
         function checkBusinessUpgrades() {
             if (!gameState || !gameState.myBusinesses) return;
             
+            const now = Date.now();
+            
             gameState.myBusinesses.forEach(business => {
-                if (business.manager && business.manager.autoUpgrade && business.level < 20) {
-                    if (Math.random() < 0.001) { // 0.1% шанс каждый тик
-                        const t = businessTemplates[business.templateId];
-                        if (t && (gameState.balance || 0) >= (business.upgradeCost || 0)) {
+                const t = businessTemplates[business.templateId];
+                if (!t) return;
+                
+                if (business.upgradeEnd && business.upgradeEnd > 0 && business.upgradeEnd <= now && (business.level || 1) < t.maxLevel) {
+                    business.level = (business.level || 1) + 1;
+                    business.income = t.baseIncome * business.level;
+                    business.upgradeCost = Math.floor((business.upgradeCost || t.baseUpgradeCost) * 2.5);
+                    business.upgradeTime = Math.floor((business.upgradeTime || t.upgradeTime) * 1.3);
+                    business.upgradeEnd = 0;
+                    
+                    saveGame();
+                    renderCurrentTab();
+                }
+                
+                if (business.manager && business.manager.autoUpgrade && business.level < t.maxLevel) {
+                    if (Math.random() < 0.001) {
+                        if ((gameState.balance || 0) >= (business.upgradeCost || 0)) {
                             gameState.balance -= business.upgradeCost;
                             business.level++;
                             business.income = t.baseIncome * business.level;
@@ -3033,7 +3155,7 @@
             
             if (gameState.miningFarms) {
                 gameState.miningFarms.forEach(farm => {
-                    totalIncome += farm.crypto.basePrice * farm.level / 100 * 1.2;
+                    totalIncome += farm.crypto.basePrice * farm.level / 100;
                 });
             }
             
@@ -3096,10 +3218,6 @@
                         <span>💎 АЛМАЗЫ</span>
                         <span style="color:#ffd700;">${gameState.diamonds || 0}</span>
                     </div>
-                    
-                    <div style="margin-top:16px;">
-                        <button class="btn btn-danger" onclick="resetGame()">🔄 СБРОСИТЬ ПРОГРЕСС</button>
-                    </div>
                 </div>
             `;
         }
@@ -3141,8 +3259,9 @@
                         <p style="color:#ff9999; font-size:13px;">
                             Все данные хранятся локально на этом устройстве.<br>
                             Максимум ${MAX_BUSINESSES} бизнесов (можно увеличить в боевом пропуске).<br>
-                            Максимум ${MAX_MINING_FARMS} майнинг-ферм.<br>
-                            Добавлены новые функции: майнинг (с продажей), менеджеры, боевой пропуск (200 уровней), ежедневные бизнесы.<br>
+                            Максимум ${MAX_MINING_FARMS} майнинг-ферм (макс уровень ${MAX_FARM_LEVEL}).<br>
+                            Менеджер стоит 1000💎.<br>
+                            Боевой пропуск обновляется каждые 7 дней.<br>
                             При удалении игры прогресс НЕ ВОССТАНАВЛИВАЕТСЯ.
                         </p>
                     </div>
@@ -3186,7 +3305,6 @@
             const oldUser = currentUser;
             currentUser = newNick;
             
-            // Проверка на админа (несколько ников)
             if (ADMIN_SECRETS.includes(currentUser) && !ADMIN_SECRETS.includes(oldUser)) {
                 enableAdminMode();
             } else if (!ADMIN_SECRETS.includes(currentUser) && ADMIN_SECRETS.includes(oldUser)) {
@@ -3216,7 +3334,6 @@
             document.querySelectorAll('.balance-box').forEach(el => el.classList.add('admin-balance'));
             document.querySelector('.bottom-nav').classList.add('admin-nav');
             
-            // Эффект появления админки
             const flash = document.createElement('div');
             flash.style.position = 'fixed';
             flash.style.top = '0';
@@ -3355,6 +3472,8 @@
                 level: 1,
                 income: t.baseIncome,
                 upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
+                upgradeTime: t.upgradeTime,
+                upgradeEnd: 0,
                 manager: null,
                 totalEarned: 0
             });
@@ -3430,11 +3549,11 @@
             resetGame();
         }
         
-        // ========== АВТОМАТИЧЕСКИЙ ДОХОД ==========
         setInterval(() => {
             if (!gameState) return;
             
             let income = 0;
+            let passExp = 0;
             
             if (gameState.autoClickerLevel > 0) {
                 income += gameState.autoClickerLevel;
@@ -3445,6 +3564,7 @@
                     const inc = b.income || 0;
                     income += inc;
                     b.totalEarned = (b.totalEarned || 0) + inc;
+                    passExp += inc; // Опыт пропуска от дохода бизнесов
                 });
             }
             
@@ -3454,7 +3574,9 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            income += (price / 32000) * c.owned;
+                            const inc = (price / 32000) * c.owned;
+                            income += inc;
+                            passExp += inc;
                         }
                     }
                 });
@@ -3469,35 +3591,28 @@
                     
                     while (farm.progress >= farm.maxProgress) {
                         farm.progress -= farm.maxProgress;
-                        const earned = Math.floor(farm.crypto.basePrice * farm.level * 1.2); // +20% доход
+                        const earned = Math.floor(farm.crypto.basePrice * farm.level);
                         gameState.balance += earned;
                         gameState.totalEarned += earned;
                         income += earned;
+                        passExp += earned;
                     }
                 });
             }
             
             if (gameState.specialItem && gameState.specialItem.owned) {
                 income += 777;
+                passExp += 777;
             }
             
             if (income > 0) {
                 gameState.balance = (gameState.balance || 0) + income;
                 gameState.totalEarned = (gameState.totalEarned || 0) + income;
                 
-                // Опыт за пассивный доход
-                const expGain = income / 100;
-                gameState.exp = (gameState.exp || 0) + expGain;
-                
-                if (gameState.battlePass) {
-                    gameState.battlePass.exp += expGain;
+                // Опыт боевого пропуска (100 за 1 сек дохода)
+                if (gameState.battlePass && gameState.battlePass.level < 200) {
+                    gameState.battlePass.exp += passExp;
                     checkBattlePassLevel();
-                }
-                
-                while (gameState.exp >= (gameState.level || 1) * 1000) {
-                    gameState.exp -= (gameState.level || 1) * 1000;
-                    gameState.level = (gameState.level || 1) + 1;
-                    gameState.diamonds = (gameState.diamonds || 0) + (gameState.level * 5);
                 }
             }
             
@@ -3523,7 +3638,6 @@
         
         setInterval(checkBusinessUpgrades, 1000);
         
-        // ========== НАВИГАЦИЯ ==========
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 if (!gameState) return;
@@ -3537,7 +3651,6 @@
             });
         });
         
-        // ========== ЗАПУСК ==========
         window.onload = function() {
             if (loadGame()) {
                 if (ADMIN_SECRETS.includes(currentUser)) {
@@ -3557,7 +3670,6 @@
                 showWelcomeScreen();
             }
             
-            // Глобальные функции
             window.handleClick = handleClick;
             window.openBuyBusinessModal = openBuyBusinessModal;
             window.buyBusinessFromModal = buyBusinessFromModal;
@@ -3571,6 +3683,7 @@
             window.upgradeMiningFarm = upgradeMiningFarm;
             window.sellMiningFarm = sellMiningFarm;
             window.claimBattlePassReward = claimBattlePassReward;
+            window.changePassPage = changePassPage;
             window.buyDailyBusiness = buyDailyBusiness;
             window.showCryptoPortfolio = showCryptoPortfolio;
             window.closePortfolioModal = closePortfolioModal;
