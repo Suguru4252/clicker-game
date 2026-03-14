@@ -1207,11 +1207,13 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '3.2.1';
+        const APP_VERSION = '3.3.0';
         const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter'];
         const MAX_BUSINESSES = 10;
         const MAX_MINING_FARMS = 20;
         const MAX_FARM_LEVEL = 500;
+        const INCOME_MULTIPLIER = 50000; // 5,000,000% = в 50,000 раз
+        
         let currentUser = "ИГРОК";
         let currentUserId = null;
         let gameState = null;
@@ -1408,35 +1410,35 @@
             emoji: "❓",
             hiddenEmoji: "💎",
             price: 777777777777777,
-            income: 777,
+            income: 777 * INCOME_MULTIPLIER,
             owned: false,
             revealed: false
         };
         
-        // ========== БИЗНЕСЫ С ВРЕМЕНЕМ УЛУЧШЕНИЯ ==========
+        // ========== БИЗНЕСЫ С МНОЖИТЕЛЕМ ==========
         const businessTemplates = [
-            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 100, upgradeTime: 30, maxLevel: 20 },
-            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 500, upgradeTime: 60, maxLevel: 20 },
-            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5, baseUpgradeCost: 2500, upgradeTime: 120, maxLevel: 20 },
-            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10, baseUpgradeCost: 10000, upgradeTime: 180, maxLevel: 20 },
-            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20, baseUpgradeCost: 50000, upgradeTime: 300, maxLevel: 20 },
-            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50, baseUpgradeCost: 250000, upgradeTime: 600, maxLevel: 20 },
-            { id: 6, name: "🏦 БАНК", baseIncome: 100, baseUpgradeCost: 1000000, upgradeTime: 1200, maxLevel: 20 },
-            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200, baseUpgradeCost: 5000000, upgradeTime: 2400, maxLevel: 20 },
-            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500, baseUpgradeCost: 25000000, upgradeTime: 4800, maxLevel: 20 },
-            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000, baseUpgradeCost: 100000000, upgradeTime: 9600, maxLevel: 20 }
+            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1 * INCOME_MULTIPLIER, baseUpgradeCost: 100, upgradeTime: 30, maxLevel: 20 },
+            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2 * INCOME_MULTIPLIER, baseUpgradeCost: 500, upgradeTime: 60, maxLevel: 20 },
+            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5 * INCOME_MULTIPLIER, baseUpgradeCost: 2500, upgradeTime: 120, maxLevel: 20 },
+            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10 * INCOME_MULTIPLIER, baseUpgradeCost: 10000, upgradeTime: 180, maxLevel: 20 },
+            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20 * INCOME_MULTIPLIER, baseUpgradeCost: 50000, upgradeTime: 300, maxLevel: 20 },
+            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50 * INCOME_MULTIPLIER, baseUpgradeCost: 250000, upgradeTime: 600, maxLevel: 20 },
+            { id: 6, name: "🏦 БАНК", baseIncome: 100 * INCOME_MULTIPLIER, baseUpgradeCost: 1000000, upgradeTime: 1200, maxLevel: 20 },
+            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200 * INCOME_MULTIPLIER, baseUpgradeCost: 5000000, upgradeTime: 2400, maxLevel: 20 },
+            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500 * INCOME_MULTIPLIER, baseUpgradeCost: 25000000, upgradeTime: 4800, maxLevel: 20 },
+            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000 * INCOME_MULTIPLIER, baseUpgradeCost: 100000000, upgradeTime: 9600, maxLevel: 20 }
         ];
         
-        // ========== БОЕВОЙ ПРОПУСК (200 уровней) ==========
+        // ========== БОЕВОЙ ПРОПУСК ==========
         function generateBattlePassLevels() {
             const levels = [];
             for (let i = 1; i <= 200; i++) {
                 if (i % 10 === 0) {
-                    levels.push({ level: i, reward: 100000, type: 'crypto' }); // 100k рандомной крипты
+                    levels.push({ level: i, reward: 100000, type: 'crypto' });
                 } else if (i % 5 === 0) {
-                    levels.push({ level: i, reward: 1000, type: 'money' });
+                    levels.push({ level: i, reward: 1000 * INCOME_MULTIPLIER, type: 'money' });
                 } else {
-                    levels.push({ level: i, reward: 100, type: 'money' });
+                    levels.push({ level: i, reward: 100 * INCOME_MULTIPLIER, type: 'money' });
                 }
             }
             levels[199] = { level: 200, reward: 1, type: 'business_slot' };
@@ -1507,7 +1509,6 @@
                     const now = Date.now();
                     const oneWeek = 7 * 24 * 60 * 60 * 1000;
                     
-                    // Сброс пропуска каждые 7 дней
                     if (now - (gameState.battlePass.lastReset || 0) > oneWeek) {
                         gameState.battlePass = { level: 1, exp: 0, claimed: [], lastReset: now };
                     }
@@ -1556,10 +1557,7 @@
             
             if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
                 gameState.myBusinesses.forEach(b => {
-                    const t = businessTemplates[b.templateId];
-                    if (b.level > 0 && t) {
-                        income += t.baseIncome * b.level * seconds;
-                    }
+                    income += (b.income || 0) * seconds;
                 });
             }
             
@@ -1568,7 +1566,7 @@
                     const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                     if (c.owned > 0 && cryptoData) {
                         const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                        income += (price / 32000) * c.owned * seconds;
+                        income += (price / 32000 * INCOME_MULTIPLIER) * c.owned * seconds;
                     }
                 });
             }
@@ -1580,7 +1578,7 @@
             }
             
             if (gameState.specialItem && gameState.specialItem.owned) {
-                income += 777 * seconds;
+                income += specialItem.income * seconds;
             }
             
             if (income > 0) {
@@ -1606,11 +1604,11 @@
         
         function generateDailyBusinesses() {
             const types = [
-                { name: "🎪 ЯРМАРКА", income: 50 },
-                { name: "🎄 НОВОГОДНИЙ БАЗАР", income: 75 },
-                { name: "🏪 ФЕРМЕРСКИЙ РЫНОК", income: 100 },
-                { name: "🎭 ТЕАТР", income: 125 },
-                { name: "🎡 ПАРК АТТРАКЦИОНОВ", income: 150 }
+                { name: "🎪 ЯРМАРКА", income: 50 * INCOME_MULTIPLIER },
+                { name: "🎄 НОВОГОДНИЙ БАЗАР", income: 75 * INCOME_MULTIPLIER },
+                { name: "🏪 ФЕРМЕРСКИЙ РЫНОК", income: 100 * INCOME_MULTIPLIER },
+                { name: "🎭 ТЕАТР", income: 125 * INCOME_MULTIPLIER },
+                { name: "🎡 ПАРК АТТРАКЦИОНОВ", income: 150 * INCOME_MULTIPLIER }
             ];
             
             gameState.dailyBusinesses = [];
@@ -1679,7 +1677,7 @@
                     if (cryptoData) {
                         const price = cryptoPrices[c.id] || cryptoData.basePrice;
                         const value = price * c.owned;
-                        const incomePerSec = Math.floor((price / 32000) * c.owned);
+                        const incomePerSec = Math.floor((price / 32000 * INCOME_MULTIPLIER) * c.owned);
                         totalIncome += incomePerSec;
                         
                         html += `
@@ -1926,7 +1924,7 @@
                 return;
             }
             
-            const cost = 1000000000; // 1 миллиард
+            const cost = 1000000000;
             if (gameState.balance < cost) {
                 alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
                 return;
@@ -1959,7 +1957,7 @@
                 return;
             }
             
-            const cost = farm.level * 5000000000; // +500% стоимости (было *1000, стало *5000)
+            const cost = farm.level * 5000000000;
             if (gameState.balance < cost) {
                 alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
                 return;
@@ -1977,7 +1975,7 @@
             const farm = gameState.miningFarms[index];
             if (!farm) return;
             
-            const sellPrice = farm.level * 500000000; // Цена продажи
+            const sellPrice = farm.level * 500000000;
             
             if (confirm(`Продать ферму за ${formatFullNumber(sellPrice)}💰?`)) {
                 gameState.miningFarms.splice(index, 1);
@@ -1999,7 +1997,7 @@
                 return;
             }
             
-            if (gameState.diamonds < 1000) { // Было 100, стало 1000
+            if (gameState.diamonds < 1000) {
                 alert('❌ НУЖНО 1000 АЛМАЗОВ!');
                 return;
             }
@@ -2030,9 +2028,8 @@
                 gameState.battlePass = { level: 1, exp: 0, claimed: [], lastReset: Date.now() };
             }
             
-            if (gameState.battlePass.level >= 200) return; // После 200 уровня опыт не начисляется
+            if (gameState.battlePass.level >= 200) return;
             
-            // Опыт увеличивается на 10,000 за уровень
             const expNeeded = 10000 * gameState.battlePass.level;
             
             while (gameState.battlePass.exp >= expNeeded && gameState.battlePass.level < 200) {
@@ -2054,7 +2051,6 @@
             } else if (reward.type === 'diamond') {
                 gameState.diamonds += reward.reward;
             } else if (reward.type === 'crypto') {
-                // Даем 100,000 рандомной крипты
                 const randomCrypto = cryptoCurrencies[Math.floor(Math.random() * cryptoCurrencies.length)];
                 const userCrypto = gameState.crypto.find(c => c.id === randomCrypto.id);
                 userCrypto.owned += 100000;
@@ -2141,6 +2137,7 @@
                             <ul>
                                 <li>❌ Все данные сохраняются локально</li>
                                 <li>❌ При удалении игры прогресс НЕ ВОССТАНАВЛИВАЕТСЯ</li>
+                                <li>✅ Заработок всех бизнесов и крипты увеличен в 50,000 раз!</li>
                                 <li>✅ Добавлены новые функции: майнинг (макс 20 ферм, макс уровень 500), менеджеры (1000💎), боевой пропуск (200 уровней, обновляется каждые 7 дней), ежедневные бизнесы</li>
                             </ul>
                         </div>
@@ -2173,7 +2170,7 @@
             
             gameState = {
                 balance: 0,
-                diamonds: 1000, // Дали больше алмазов для менеджеров
+                diamonds: 1000,
                 exp: 0,
                 level: 1,
                 clickPower: 1,
@@ -2266,9 +2263,8 @@
             gameState.balance = (gameState.balance || 0) + earned;
             gameState.totalClicks = (gameState.totalClicks || 0) + 1;
             gameState.totalEarned = (gameState.totalEarned || 0) + earned;
-            gameState.exp = (gameState.exp || 0) + earned / 100; // Уровень игрока растет от тапов
+            gameState.exp = (gameState.exp || 0) + earned / 100;
             
-            // Опыт боевого пропуска (100 за тап)
             if (gameState.battlePass && gameState.battlePass.level < 200) {
                 gameState.battlePass.exp += 100;
                 checkBattlePassLevel();
@@ -2338,7 +2334,7 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            totalIncome += (price / 32000) * c.owned;
+                            totalIncome += (price / 32000 * INCOME_MULTIPLIER) * c.owned;
                         }
                     }
                 });
@@ -2351,7 +2347,7 @@
             }
             
             if (gameState.specialItem && gameState.specialItem.owned) {
-                totalIncome += 777;
+                totalIncome += specialItem.income;
             }
             
             const power = (gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5);
@@ -2565,7 +2561,7 @@
                     <div class="daily-business">
                         <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                             <span style="font-weight:bold;">${daily.name}</span>
-                            <span style="color:#4CAF50;">💰 +${daily.income}/сек</span>
+                            <span style="color:#4CAF50;">💰 +${formatFullNumber(daily.income)}/сек</span>
                         </div>
                         <div class="timer">⏱️ ДОСТУПНО: ${hours}ч ${minutes}м</div>
                         ${!daily.purchased ? 
@@ -2599,7 +2595,7 @@
                         <div class="special-emoji">${gameState.specialItem.revealed ? specialItem.hiddenEmoji : '❓'}</div>
                         <div class="special-title">${gameState.specialItem.revealed ? specialItem.hiddenName : '????????'}</div>
                         <div class="special-price">💰 ${formatFullNumber(specialItem.price)}</div>
-                        <div class="special-income">⏱️ +777/сек</div>
+                        <div class="special-income">⏱️ +${formatFullNumber(specialItem.income)}/сек</div>
                         <div class="btn btn-gold">КУПИТЬ</div>
                     </div>
                 `;
@@ -2608,7 +2604,7 @@
                     <div class="special-item">
                         <div class="special-emoji">💎</div>
                         <div class="special-title">SUGURU COIN</div>
-                        <div class="special-income">⏱️ +777/сек</div>
+                        <div class="special-income">⏱️ +${formatFullNumber(specialItem.income)}/сек</div>
                         <div class="special-owned">ВЛАДЕЮ</div>
                     </div>
                 `;
@@ -2620,7 +2616,7 @@
                 const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
                 const changeColor = priceChange >= 0 ? '#4CAF50' : '#f44336';
                 
-                const incomePerCoin = currentPrice / 32000;
+                const incomePerCoin = currentPrice / 32000 * INCOME_MULTIPLIER;
                 const totalIncome = Math.floor(incomePerCoin * userCrypto.owned);
                 
                 const isSoldOut = userCrypto.owned >= crypto.maxBuy;
@@ -2662,7 +2658,7 @@
                 return;
             }
             
-            if (confirm(`Купить Suguru Coin за ${formatFullNumber(specialItem.price)}💰?\n\nДоход: +777/сек`)) {
+            if (confirm(`Купить Suguru Coin за ${formatFullNumber(specialItem.price)}💰?\n\nДоход: +${formatFullNumber(specialItem.income)}/сек`)) {
                 gameState.balance -= specialItem.price;
                 gameState.specialItem.owned = true;
                 gameState.specialItem.revealed = true;
@@ -2670,7 +2666,7 @@
                 saveGame();
                 updateUI();
                 renderCurrentTab();
-                alert('✅ ПОЗДРАВЛЯЮ!\n\nВы купили легендарный Suguru Coin!\nДоход +777/сек');
+                alert('✅ ПОЗДРАВЛЯЮ!\n\nВы купили легендарный Suguru Coin!');
                 
                 document.getElementById('username').innerHTML += ' <span class="suguru-badge">💎</span>';
             }
@@ -2879,7 +2875,7 @@
                             <span class="business-name">${t.name}</span>
                         </div>
                         <div class="business-stats">
-                            <span>💰 ДОХОД: +${t.baseIncome}/сек</span>
+                            <span>💰 ДОХОД: +${formatFullNumber(t.baseIncome)}/сек</span>
                             <span style="color:#4CAF50;">💰 ЦЕНА: ${formatFullNumber(t.baseUpgradeCost)}</span>
                         </div>
                         <div class="business-stats">
@@ -3147,7 +3143,7 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            totalIncome += (price / 32000) * c.owned;
+                            totalIncome += (price / 32000 * INCOME_MULTIPLIER) * c.owned;
                         }
                     }
                 });
@@ -3160,7 +3156,7 @@
             }
             
             if (gameState.specialItem && gameState.specialItem.owned) {
-                totalIncome += 777;
+                totalIncome += specialItem.income;
             }
             
             const ownedBusinesses = gameState.myBusinesses ? gameState.myBusinesses.length : 0;
@@ -3218,6 +3214,10 @@
                         <span>💎 АЛМАЗЫ</span>
                         <span style="color:#ffd700;">${gameState.diamonds || 0}</span>
                     </div>
+                    
+                    <div style="margin-top:16px;">
+                        <button class="btn btn-danger" onclick="resetGame()">🔄 СБРОСИТЬ ПРОГРЕСС</button>
+                    </div>
                 </div>
             `;
         }
@@ -3258,6 +3258,7 @@
                         <h3>⚠️ ВНИМАНИЕ!</h3>
                         <p style="color:#ff9999; font-size:13px;">
                             Все данные хранятся локально на этом устройстве.<br>
+                            Заработок всех бизнесов и крипты увеличен в 50,000 раз!<br>
                             Максимум ${MAX_BUSINESSES} бизнесов (можно увеличить в боевом пропуске).<br>
                             Максимум ${MAX_MINING_FARMS} майнинг-ферм (макс уровень ${MAX_FARM_LEVEL}).<br>
                             Менеджер стоит 1000💎.<br>
@@ -3363,7 +3364,9 @@
         
         function resetGame() {
             if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС?\n\nЭто действие необратимо!')) {
+                // Полностью очищаем сохранения
                 localStorage.removeItem('imperiaClickerSave_' + currentUserId);
+                // Перезагружаем страницу для новой игры
                 location.reload();
             }
         }
@@ -3564,7 +3567,7 @@
                     const inc = b.income || 0;
                     income += inc;
                     b.totalEarned = (b.totalEarned || 0) + inc;
-                    passExp += inc; // Опыт пропуска от дохода бизнесов
+                    passExp += inc;
                 });
             }
             
@@ -3574,7 +3577,7 @@
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
                             const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            const inc = (price / 32000) * c.owned;
+                            const inc = (price / 32000 * INCOME_MULTIPLIER) * c.owned;
                             income += inc;
                             passExp += inc;
                         }
@@ -3601,15 +3604,14 @@
             }
             
             if (gameState.specialItem && gameState.specialItem.owned) {
-                income += 777;
-                passExp += 777;
+                income += specialItem.income;
+                passExp += specialItem.income;
             }
             
             if (income > 0) {
                 gameState.balance = (gameState.balance || 0) + income;
                 gameState.totalEarned = (gameState.totalEarned || 0) + income;
                 
-                // Опыт боевого пропуска (100 за 1 сек дохода)
                 if (gameState.battlePass && gameState.battlePass.level < 200) {
                     gameState.battlePass.exp += passExp;
                     checkBattlePassLevel();
