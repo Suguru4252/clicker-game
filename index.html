@@ -189,6 +189,7 @@
             font-size: 15px;
             font-weight: 500;
             color: #ffd700;
+            cursor: pointer;
         }
         
         .section-title {
@@ -208,6 +209,7 @@
             color: #ffd700;
             font-size: 14px;
             text-decoration: none;
+            cursor: pointer;
         }
         
         .cards-row {
@@ -253,6 +255,7 @@
             font-weight: 500;
             cursor: pointer;
             width: 100%;
+            pointer-events: auto;
         }
         
         .stats-grid {
@@ -310,6 +313,7 @@
             cursor: pointer;
             font-size: 12px;
             transition: all 0.2s;
+            pointer-events: auto;
         }
         
         .nav-item span {
@@ -326,108 +330,6 @@
         .nav-item.admin-active {
             color: #ff4444;
             background: rgba(255, 68, 68, 0.1);
-        }
-        
-        .investment-category {
-            background: #1a1c24;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid #2a2c36;
-        }
-        
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        
-        .category-header h4 {
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        .category-items {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-        }
-        
-        .category-items::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .item-card {
-            background: #0f1117;
-            border-radius: 16px;
-            padding: 12px;
-            min-width: 120px;
-            border: 1px solid #2a2c36;
-        }
-        
-        .item-name {
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        
-        .item-price {
-            color: #ffd700;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .item-income {
-            color: #4caf50;
-            font-size: 12px;
-            margin-bottom: 8px;
-        }
-        
-        .item-btn {
-            background: #2a2c36;
-            border: none;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            width: 100%;
-        }
-        
-        .garage-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .garage-item {
-            background: #1a1c24;
-            border-radius: 16px;
-            padding: 12px;
-            border: 1px solid #2a2c36;
-            text-align: center;
-        }
-        
-        .garage-emoji {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-        
-        .garage-name {
-            color: white;
-            font-size: 13px;
-            font-weight: 500;
-        }
-        
-        .garage-count {
-            color: #ffd700;
-            font-size: 12px;
-            margin-top: 4px;
         }
         
         .business-item {
@@ -795,7 +697,6 @@
         </div>
     </div>
     
-    <!-- Модальные окна -->
     <div class="modal" id="modal">
         <div class="modal-content" id="modalContent"></div>
     </div>
@@ -815,10 +716,10 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '5.1.0';
+        const APP_VERSION = '6.0.0';
         const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter'];
         const MAX_BUSINESSES = 10;
-        const BASE_CLICK_POWER = 3000; // 3к за клик на 1 уровне
+        const BASE_CLICK_POWER = 3000;
         
         let currentUser = "ИГРОК";
         let currentUserId = null;
@@ -1105,6 +1006,8 @@
                 const earned = Math.floor(income);
                 gameState.balance = (gameState.balance || 0) + earned;
                 gameState.totalEarned = (gameState.totalEarned || 0) + earned;
+                
+                alert(`⏱️ ОФФЛАЙН ДОХОД\n💰 ЗАРАБОТАНО: ${formatMoney(earned)}`);
             }
         }
         
@@ -1286,17 +1189,12 @@
             alert(`✅ Улучшение запущено на ${business.upgradeTime || t.upgradeTime} сек.`);
         }
         
-        function upgradeBusiness(index) {
+        function completeUpgrade(index) {
             const business = gameState.myBusinesses[index];
             if (!business) return;
             
             const t = businessTemplates[business.templateId];
             if (!t) return;
-            
-            if ((business.level || 1) >= t.maxLevel) {
-                alert('❌ МАКСИМАЛЬНЫЙ УРОВЕНЬ!');
-                return;
-            }
             
             business.level++;
             business.income = t.baseIncome * business.level;
@@ -1307,7 +1205,6 @@
             saveGame();
             updateUI();
             renderCurrentTab();
-            alert(`✅ ${business.name} улучшен до ${business.level} уровня!`);
         }
         
         function hireManager(index) {
@@ -1319,7 +1216,7 @@
                 return;
             }
             
-            const cost = 50; // 50 алмазов за уровень менеджера
+            const cost = 50;
             
             if (gameState.diamonds < cost) {
                 alert('❌ НУЖНО 50 АЛМАЗОВ!');
@@ -1517,7 +1414,6 @@
             const modalContent = document.getElementById('modalContent');
             
             let totalPortfolio = calculateTotalCryptoPortfolio();
-            let totalIncome = 0;
             
             let html = '<div class="modal-title">📊 МОЙ КРИПТОПОРТФЕЛЬ</div>';
             
@@ -1563,6 +1459,39 @@
             modal.classList.add('active');
         }
         
+        function showAllCrypto() {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            let html = '<div class="modal-title">📈 ВСЯ КРИПТОВАЛЮТА (50+)</div>';
+            
+            cryptoCurrencies.forEach(crypto => {
+                const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
+                const currentPrice = cryptoPrices[crypto.id] || crypto.basePrice;
+                
+                html += `
+                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <span style="font-weight:600; color:#00c853;">${crypto.emoji} ${crypto.name}</span>
+                                <div style="color:#ffd700; font-size:13px;">${formatMoney(currentPrice)}</div>
+                                <div style="color:#8e8e98; font-size:11px;">У вас: ${formatFullNumber(userCrypto.owned)} шт</div>
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'buy'); closeModal();">Купить</button>
+                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'sell'); closeModal();">Продать</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
         function closeModal() {
             document.getElementById('modal').classList.remove('active');
         }
@@ -1593,6 +1522,33 @@
             alert(`✅ Получено ${reward}💎 за ${level} уровень пропуска!`);
         }
         
+        function showBattlePass() {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            let html = '<div class="modal-title">🎫 БОЕВОЙ ПРОПУСК</div>';
+            html += `<div style="text-align:center; margin-bottom:16px;">Уровень ${gameState.battlePass.level}/200</div>`;
+            
+            for (let i = 1; i <= Math.min(gameState.battlePass.level, 20); i++) {
+                const isClaimed = gameState.battlePass.claimed.includes(i);
+                html += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#0f1117; border-radius:12px; padding:12px; margin-bottom:8px;">
+                        <span>Уровень ${i}</span>
+                        <span>💎 ${i * 1000}</span>
+                        ${!isClaimed ? 
+                            `<button class="card-btn" style="width:auto;" onclick="claimBattlePassReward(${i}); closeModal();">Получить</button>` :
+                            '<span style="color:#4caf50;">✓ Получено</span>'
+                        }
+                    </div>
+                `;
+            }
+            
+            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
         // ========== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ==========
         function updateUI() {
             if (!gameState) return;
@@ -1606,12 +1562,11 @@
             const clickPower = BASE_CLICK_POWER * (gameState.clickPowerLevel + 1);
             document.getElementById('clickPower').textContent = '$ ' + formatNumber(clickPower) + ' тыс.';
             
-            // Проверяем завершение улучшений
             const now = Date.now();
             if (gameState.myBusinesses) {
-                gameState.myBusinesses.forEach(business => {
+                gameState.myBusinesses.forEach((business, index) => {
                     if (business.upgradeEnd && business.upgradeEnd <= now) {
-                        upgradeBusiness(gameState.myBusinesses.indexOf(business));
+                        completeUpgrade(index);
                     }
                 });
             }
@@ -1651,7 +1606,7 @@
         function handleClick(event) {
             if (!gameState) return;
             
-            const clickPower = BASE_CLICK_POWER * (gameState.clickPowerLevel + 1);
+            let clickPower = BASE_CLICK_POWER * (gameState.clickPowerLevel + 1);
             
             if (Math.random() * 100 < (gameState.critLevel || 0) * 10) {
                 clickPower *= 10;
@@ -1726,7 +1681,7 @@
                     <h2>💰 ${formatNumber(BASE_CLICK_POWER * (gameState.clickPowerLevel + 1))} тыс. за клик</h2>
                 </div>
                 
-                <div class="offline-earnings">
+                <div class="offline-earnings" onclick="renderTab('stats')">
                     ⏱️ ОФФЛАЙН ДОХОД РАБОТАЕТ
                 </div>
                 
@@ -1801,44 +1756,11 @@
             
             html += `
                 <div style="text-align:center; margin-top:16px;">
-                    <a href="#" style="color:#ffd700;" onclick="showAllCrypto()">Показать все 50+ криптовалют →</a>
+                    <a href="#" onclick="showAllCrypto()">Показать все 50+ криптовалют →</a>
                 </div>
             `;
             
             content.innerHTML = html;
-        }
-        
-        function showAllCrypto() {
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            let html = '<div class="modal-title">📈 ВСЯ КРИПТОВАЛЮТА (50+)</div>';
-            
-            cryptoCurrencies.forEach(crypto => {
-                const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
-                const currentPrice = cryptoPrices[crypto.id] || crypto.basePrice;
-                
-                html += `
-                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <span style="font-weight:600; color:#00c853;">${crypto.emoji} ${crypto.name}</span>
-                                <div style="color:#ffd700; font-size:13px;">${formatMoney(currentPrice)}</div>
-                                <div style="color:#8e8e98; font-size:11px;">У вас: ${formatFullNumber(userCrypto.owned)} шт</div>
-                            </div>
-                            <div style="display:flex; gap:8px;">
-                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'buy'); closeModal();">Купить</button>
-                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'sell'); closeModal();">Продать</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
         }
         
         function renderBusiness(content) {
@@ -1906,7 +1828,7 @@
                 </div>
                 
                 <div style="margin:16px 0;">
-                    <a href="#" style="color:#ffd700;" onclick="showSalon('cars')">Перейти в автосалон (20 машин) →</a>
+                    <a href="#" onclick="showSalon('cars')">Перейти в автосалон (20 машин) →</a>
                 </div>
                 
                 <div class="section-title">
@@ -1925,7 +1847,7 @@
                 </div>
                 
                 <div style="margin:16px 0;">
-                    <a href="#" style="color:#ffd700;" onclick="showSalon('planes')">Перейти в авиасалон (20 самолетов) →</a>
+                    <a href="#" onclick="showSalon('planes')">Перейти в авиасалон (20 самолетов) →</a>
                 </div>
                 
                 <div class="section-title">
@@ -1944,7 +1866,7 @@
                 </div>
                 
                 <div style="margin:16px 0;">
-                    <a href="#" style="color:#ffd700;" onclick="showSalon('ships')">Перейти в кораблесалон (20 кораблей) →</a>
+                    <a href="#" onclick="showSalon('ships')">Перейти в кораблесалон (20 кораблей) →</a>
                 </div>
                 
                 <div class="section-title" style="margin-top:20px;">
@@ -1963,7 +1885,7 @@
                 </div>
                 
                 <div style="margin-top:16px;">
-                    <a href="#" style="color:#ffd700;" onclick="showAllHouses()">Посмотреть все дома →</a>
+                    <a href="#" onclick="showAllHouses()">Посмотреть все дома →</a>
                 </div>
                 
                 <div class="section-title" style="margin-top:20px;">
@@ -1972,7 +1894,7 @@
                 </div>
                 
                 <div style="margin-bottom:20px;">
-                    <a href="#" style="color:#ffd700;" onclick="showGarage('cars')">Открыть гараж →</a>
+                    <a href="#" onclick="showGarage('cars')">Открыть гараж →</a>
                 </div>
                 
                 <div class="section-title">
@@ -1981,7 +1903,7 @@
                 </div>
                 
                 <div style="margin-bottom:20px;">
-                    <a href="#" style="color:#ffd700;" onclick="showGarage('planes')">Открыть ангар →</a>
+                    <a href="#" onclick="showGarage('planes')">Открыть ангар →</a>
                 </div>
                 
                 <div class="section-title">
@@ -1990,7 +1912,7 @@
                 </div>
                 
                 <div style="margin-bottom:20px;">
-                    <a href="#" style="color:#ffd700;" onclick="showGarage('ships')">Открыть причал →</a>
+                    <a href="#" onclick="showGarage('ships')">Открыть причал →</a>
                 </div>
             `;
         }
@@ -2058,33 +1980,6 @@
                     </button>
                 ` : ''}
             `;
-        }
-        
-        function showBattlePass() {
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            let html = '<div class="modal-title">🎫 БОЕВОЙ ПРОПУСК</div>';
-            html += `<div style="text-align:center; margin-bottom:16px;">Уровень ${gameState.battlePass.level}/200</div>`;
-            
-            for (let i = 1; i <= Math.min(gameState.battlePass.level, 20); i++) {
-                const isClaimed = gameState.battlePass.claimed.includes(i);
-                html += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:#0f1117; border-radius:12px; padding:12px; margin-bottom:8px;">
-                        <span>Уровень ${i}</span>
-                        <span>💎 ${i * 1000}</span>
-                        ${!isClaimed ? 
-                            `<button class="card-btn" style="width:auto;" onclick="claimBattlePassReward(${i}); closeModal();">Получить</button>` :
-                            '<span style="color:#4caf50;">✓ Получено</span>'
-                        }
-                    </div>
-                `;
-            }
-            
-            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
         }
         
         function showSalon(category) {
@@ -2497,10 +2392,8 @@
         
         function resetGame() {
             if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС? Это действие необратимо!')) {
-                // Полностью очищаем все сохранения
                 localStorage.removeItem('imperiaClickerSave_' + currentUserId);
                 localStorage.removeItem('deviceId');
-                // Перезагружаем страницу для новой игры
                 location.reload();
             }
         }
@@ -2599,9 +2492,8 @@
             
             updateUI();
             saveGame();
-        }, 1000); // Доход раз в секунду
+        }, 1000);
         
-        // Обновление интерфейса каждые 0.1 секунды
         setInterval(() => {
             if (gameState) {
                 updateUI();
@@ -2641,7 +2533,6 @@
                 updateUI();
                 renderTab('earn');
             } else {
-                // Новая игра
                 const randomNum = Math.floor(Math.random() * 900 + 100);
                 currentUser = `ИГРОК${randomNum}`;
                 
