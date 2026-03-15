@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ТЕСТ КАЛЕНДАРЯ 1000 ДНЕЙ</title>
+    <title>ТЕСТ КОСМИЧЕСКОЙ ПРОГРАММЫ</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -40,150 +39,221 @@
             font-size: 28px;
         }
         
-        .calendar-header {
+        .space-container {
+            background: linear-gradient(135deg, #000428, #004e92);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            border: 2px solid #ffd700;
+        }
+        
+        /* Звезды */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.2; transform: scale(1); }
+        }
+        
+        /* Планеты */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .planet-1 {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b6b, #c92a2a);
+            top: 50px;
+            right: 50px;
+            animation-delay: 0s;
+        }
+        
+        .planet-2 {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #4dabf7, #1971c2);
+            bottom: 50px;
+            left: 30px;
+            animation-delay: 2s;
+        }
+        
+        .planet-3 {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ffd43b, #e67700);
+            top: 150px;
+            left: 100px;
+            animation-delay: 1s;
+        }
+        
+        /* Ракета */
+        .rocket {
+            position: absolute;
+            width: 100px;
+            height: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 50px;
+            transition: bottom 3s ease-in-out;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.5));
+            z-index: 10;
+        }
+        
+        .rocket.launch {
+            bottom: 800px;
+        }
+        
+        .rocket-body {
+            position: relative;
+            width: 60px;
+            height: 120px;
+            background: linear-gradient(135deg, #ffd700, #ff6b6b);
+            border-radius: 50% 50% 30% 30%;
+            margin: 0 auto;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        .rocket-window {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #87CEEB;
+            border-radius: 50%;
+            top: 30px;
+            left: 20px;
+            border: 2px solid white;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0% { background: #87CEEB; }
+            50% { background: #ffffff; }
+            100% { background: #87CEEB; }
+        }
+        
+        .rocket-fin {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #c92a2a);
+            bottom: -10px;
+        }
+        
+        .rocket-fin.left {
+            left: -20px;
+            transform: skewY(30deg);
+            border-radius: 0 0 0 20px;
+        }
+        
+        .rocket-fin.right {
+            right: -20px;
+            transform: skewY(-30deg);
+            border-radius: 0 0 20px 0;
+        }
+        
+        .rocket-fire {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            background: linear-gradient(to top, #ffd700, #ff6b6b);
+            bottom: -40px;
+            left: 15px;
+            border-radius: 50%;
+            animation: fire 0.2s infinite;
+        }
+        
+        @keyframes fire {
+            0% { height: 50px; opacity: 1; }
+            50% { height: 70px; opacity: 0.8; }
+            100% { height: 50px; opacity: 1; }
+        }
+        
+        /* Уровни космоса */
+        .levels {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            background: #1a1c24;
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid #2a2c36;
+            margin: 30px 0;
+            position: relative;
+            z-index: 20;
         }
         
-        .day-info {
-            text-align: center;
-        }
-        
-        .day-number {
-            font-size: 48px;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        .day-label {
-            font-size: 14px;
-            color: #8e8e98;
-            margin-top: 5px;
-        }
-        
-        .progress-bar {
+        .level {
             flex: 1;
-            height: 12px;
-            background: #2a2c36;
-            border-radius: 6px;
-            margin: 0 20px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ffaa00);
-            width: 0%;
-            border-radius: 6px;
-        }
-        
-        .timer {
             text-align: center;
-            font-size: 18px;
-            color: #ff9800;
-            background: #1a1c24;
-            padding: 15px;
+            padding: 15px 5px;
+            background: rgba(0, 0, 0, 0.7);
             border-radius: 15px;
-            margin-bottom: 30px;
-            border: 1px solid #ffd700;
-        }
-        
-        .rewards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .reward-card {
-            background: #1a1c24;
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
             border: 1px solid #2a2c36;
             position: relative;
+            cursor: pointer;
             transition: all 0.3s;
         }
         
-        .reward-card.special-10 {
-            border: 2px solid #ff9800;
-            background: rgba(255, 152, 0, 0.1);
+        .level.unlocked {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
         }
         
-        .reward-card.special-100 {
-            border: 3px solid #ff4444;
-            background: rgba(255, 68, 68, 0.1);
-            animation: pulse 2s infinite;
+        .level.current {
+            border: 3px solid #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
         }
         
-        .reward-card.claimed {
-            opacity: 0.5;
-            border-color: #4caf50;
-        }
-        
-        .reward-card.claimed::after {
-            content: "✓";
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #4caf50;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        
-        .reward-day {
-            font-size: 14px;
-            color: #8e8e98;
-            margin-bottom: 5px;
-        }
-        
-        .reward-icon {
-            font-size: 32px;
-            margin: 10px 0;
-        }
-        
-        .reward-name {
+        .level-number {
+            font-size: 24px;
             font-weight: bold;
             color: #ffd700;
-            font-size: 14px;
-            margin-bottom: 5px;
         }
         
-        .reward-value {
-            color: #4caf50;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        
-        .claim-btn {
-            background: #ffd700;
-            border: none;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: transform 0.1s;
-        }
-        
-        .claim-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .claim-btn.disabled {
-            background: #2a2c36;
+        .level-name {
+            font-size: 12px;
             color: #8e8e98;
-            cursor: not-allowed;
+            margin: 5px 0;
         }
         
+        .level-price {
+            font-size: 14px;
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .level-bonus {
+            font-size: 11px;
+            color: #ffd700;
+            margin-top: 5px;
+        }
+        
+        /* Статистика */
         .stats {
             display: flex;
             justify-content: space-around;
@@ -210,6 +280,31 @@
             margin-top: 5px;
         }
         
+        /* Кнопки */
+        .buy-btn {
+            background: linear-gradient(135deg, #ffd700, #ff6b6b);
+            border: none;
+            color: black;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            margin-bottom: 20px;
+            transition: transform 0.1s;
+        }
+        
+        .buy-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .buy-btn.disabled {
+            background: #2a2c36;
+            color: #8e8e98;
+            cursor: not-allowed;
+        }
+        
         .test-controls {
             display: flex;
             gap: 10px;
@@ -232,245 +327,122 @@
             background: #3a3c46;
         }
         
-        .special-badge {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ff9800;
-            color: black;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: bold;
-            white-space: nowrap;
+        /* Прогресс-бар */
+        .progress-bar {
+            height: 10px;
+            background: #2a2c36;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
         }
         
-        .special-badge.mega {
-            background: #ff4444;
-            color: white;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 10px #ff4444; }
-            50% { box-shadow: 0 0 30px #ff4444; }
-            100% { box-shadow: 0 0 10px #ff4444; }
-        }
-        
-        .reset-btn {
-            background: #ff4444;
-            border: none;
-            color: white;
-            padding: 10px;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            width: 0%;
+            border-radius: 5px;
+            transition: width 0.5s;
         }
     </style>
 </head>
 <body>
     <div class="test-container">
-        <h1>📅 КАЛЕНДАРЬ 1000 ДНЕЙ</h1>
+        <h1>🚀 КОСМИЧЕСКАЯ ПРОГРАММА</h1>
         
-        <div class="calendar-header">
-            <div class="day-info">
-                <div class="day-number" id="currentDay">1</div>
-                <div class="day-label">ТЕКУЩИЙ ДЕНЬ</div>
+        <div class="space-container" id="spaceContainer">
+            <div class="stars" id="stars"></div>
+            
+            <!-- Планеты -->
+            <div class="planet planet-1"></div>
+            <div class="planet planet-2"></div>
+            <div class="planet planet-3"></div>
+            
+            <!-- Ракета -->
+            <div class="rocket" id="rocket">
+                <div class="rocket-body">
+                    <div class="rocket-window"></div>
+                    <div class="rocket-fin left"></div>
+                    <div class="rocket-fin right"></div>
+                </div>
+                <div class="rocket-fire" id="rocketFire"></div>
             </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
-            </div>
-            <div class="day-info">
-                <div class="day-number" id="totalDays">1000</div>
-                <div class="day-label">ВСЕГО</div>
-            </div>
-        </div>
-        
-        <div class="timer" id="timer">
-            ⏱️ СЛЕДУЮЩАЯ НАГРАДА ЧЕРЕЗ: 00:00:00
         </div>
         
         <div class="stats">
             <div class="stat-item">
-                <div class="stat-value" id="claimedCount">0</div>
-                <div class="stat-label">ПОЛУЧЕНО</div>
+                <div class="stat-value" id="currentLevel">0</div>
+                <div class="stat-label">ТЕКУЩИЙ УРОВЕНЬ</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="totalDiamonds">0</div>
-                <div class="stat-label">💎 ВСЕГО</div>
+                <div class="stat-value" id="totalBonus">0</div>
+                <div class="stat-label">БОНУС %</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="streakDays">0</div>
-                <div class="stat-label">СТРИК</div>
+                <div class="stat-value" id="nextPrice">1B</div>
+                <div class="stat-label">ЦЕНА</div>
             </div>
         </div>
         
-        <div class="rewards-grid" id="rewardsGrid"></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+        
+        <div class="levels" id="levels"></div>
+        
+        <button class="buy-btn" id="buyBtn" onclick="buyLevel()">🚀 ЗАПУСТИТЬ РАКЕТУ</button>
         
         <div class="test-controls">
-            <div class="test-btn" onclick="testAddDay()">➕ +1 ДЕНЬ</div>
-            <div class="test-btn" onclick="testAddWeek()">➕ +7 ДНЕЙ</div>
-            <div class="test-btn" onclick="testAddMonth()">➕ +30 ДНЕЙ</div>
+            <div class="test-btn" onclick="addMoney()">💰 +1B</div>
+            <div class="test-btn" onclick="addMoney(10)">💰 +10B</div>
+            <div class="test-btn" onclick="resetTest()">🔄 СБРОС</div>
         </div>
-        
-        <div class="reset-btn" onclick="testReset()">🔄 СБРОСИТЬ ТЕСТ</div>
     </div>
 
     <script>
         // ========== НАСТРОЙКИ ==========
-        const REWARD_TIME = 9 * 60 * 60 * 1000; // 9:00 МСК
-        const MSK_OFFSET = 3 * 60 * 60 * 1000; // UTC+3
+        const SPACE_LEVELS = [
+            { name: "🚀 СПУТНИК", bonus: 10, price: 1e9, desc: "+10% к майнингу" },
+            { name: "🛰️ ОРБИТАЛЬНАЯ СТАНЦИЯ", bonus: 20, price: 1e10, desc: "+20% к майнингу" },
+            { name: "🌕 ЛУННАЯ БАЗА", bonus: 30, price: 1e11, desc: "+30% + новая крипта" },
+            { name: "🔴 МАРСИАНСКАЯ КОЛОНИЯ", bonus: 50, price: 1e12, desc: "+50% к доходу" },
+            { name: "💫 ПОЯС АСТЕРОИДОВ", bonus: 75, price: 1e13, desc: "Алмазы с неба" },
+            { name: "🪐 СТАНЦИЯ НА ЮПИТЕРЕ", bonus: 100, price: 1e14, desc: "х2 доход" },
+            { name: "⬆️ КОСМИЧЕСКИЙ ЛИФТ", bonus: 150, price: 1e15, desc: "Мгновенные улучшения" },
+            { name: "⭐ ЗВЕЗДА", bonus: 200, price: 1e16, desc: "Своя звезда" },
+            { name: "🌌 ГАЛАКТИКА", bonus: 300, price: 1e17, desc: "Телепортация" },
+            { name: "🌀 ВСЕЛЕННАЯ", bonus: 500, price: 1e18, desc: "Властелин космоса" }
+        ];
         
         let gameState = {
-            calendarDay: 1,
-            lastClaimTime: null,
-            claimedDays: [],
-            streak: 0,
-            totalDiamonds: 0
+            balance: 5e9, // 5B для теста
+            spaceLevel: 0,
+            unlockedLevels: [0] // 0 уровень разблокирован
         };
         
-        // ========== НАГРАДЫ ==========
-        function getRewardForDay(day) {
-            // Каждые 10 дней - особые награды
-            if (day % 10 === 0) {
-                const multiplier = day / 10;
+        // ========== ГЕНЕРАЦИЯ ЗВЕЗД ==========
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
                 
-                if (day === 1000) {
-                    return {
-                        diamonds: 1000000,
-                        money: 1000000000000,
-                        title: "ИМПЕРАТОР ВСЕЛЕННОЙ",
-                        desc: "👑 ТИТУЛ + СКИН",
-                        type: 'mega'
-                    };
-                }
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
                 
-                if (day === 900) {
-                    return {
-                        diamonds: 100000,
-                        money: 100000000000,
-                        title: "КРИСТАЛЛ ВЕЧНОСТИ",
-                        desc: "💎 ВЕЧНЫЙ БУСТЕР",
-                        type: 'mega'
-                    };
-                }
-                
-                if (day === 800) {
-                    return {
-                        diamonds: 50000,
-                        money: 50000000000,
-                        title: "АЛМАЗНЫЙ БИЗНЕС",
-                        desc: "💎 СКИН + ДОХОД",
-                        type: 'mega'
-                    };
-                }
-                
-                if (day === 700) {
-                    return {
-                        diamonds: 30000,
-                        money: 30000000000,
-                        title: "СВОЙ ОСТРОВ",
-                        desc: "🏝️ 1T/СЕК",
-                        type: 'mega'
-                    };
-                }
-                
-                if (day === 600) {
-                    return {
-                        diamonds: 20000,
-                        money: 20000000000,
-                        title: "ТЕЛЕПОРТ",
-                        desc: "⚡ МГНОВЕННЫЕ АПГРЕЙДЫ",
-                        type: 'mega'
-                    };
-                }
-                
-                if (day === 500) {
-                    return {
-                        diamonds: 10000,
-                        money: 10000000000,
-                        title: "ПОЛОВИНА ПУТИ",
-                        desc: "🏆 10 000💎",
-                        type: 'mega'
-                    };
-                }
-                
-                if (day === 400) {
-                    return {
-                        diamonds: 5000,
-                        money: 5000000000,
-                        title: "КОСМИЧЕСКАЯ СТАНЦИЯ",
-                        desc: "🚀 1B/СЕК",
-                        type: 'mega'
-                    };
-                }
-                
-                if (day === 300) {
-                    return {
-                        diamonds: 3000,
-                        money: 3000000000,
-                        title: "ВЕЧНЫЙ БУСТЕР",
-                        desc: "⚡ +50% НАВСЕГДА",
-                        type: 'mega'
-                    };
-                }
-                
-                if (day === 200) {
-                    return {
-                        diamonds: 2000,
-                        money: 2000000000,
-                        title: "УНИКАЛЬНАЯ ФЕРМА",
-                        desc: "⛏️ ДОХОД х2",
-                        type: 'mega'
-                    };
-                }
-                
-                if (day === 100) {
-                    return {
-                        diamonds: 5000,
-                        money: 5000000000,
-                        title: "ЮБИЛЕЙНЫЙ СУНДУК",
-                        desc: "🎉 5000💎",
-                        type: 'mega'
-                    };
-                }
-                
-                // Каждые 10 дней (кроме круглых)
-                if (day % 100 === 0) {
-                    return {
-                        diamonds: 1000 * multiplier,
-                        money: 1000000000 * multiplier,
-                        title: `${day} ДНЕЙ!`,
-                        desc: `💰 МЕГА-НАГРАДА`,
-                        type: 'special-100'
-                    };
-                }
-                
-                return {
-                    diamonds: 100 * multiplier,
-                    money: 100000000 * multiplier,
-                    title: `${day} ДНЕЙ`,
-                    desc: `🎁 ОСОБАЯ НАГРАДА`,
-                    type: 'special-10'
-                };
+                starsContainer.appendChild(star);
             }
-            
-            // Обычные дни
-            const baseDiamonds = Math.floor(day / 10) + 5;
-            const baseMoney = 10000 * day;
-            
-            return {
-                diamonds: baseDiamonds,
-                money: baseMoney,
-                title: `День ${day}`,
-                desc: `💰 ${formatNumber(baseMoney)} + ${baseDiamonds}💎`,
-                type: 'normal'
-            };
         }
         
         // ========== ФОРМАТИРОВАНИЕ ==========
         function formatNumber(num) {
+            if (num >= 1e18) return (num / 1e18).toFixed(1) + 'Qi';
+            if (num >= 1e15) return (num / 1e15).toFixed(1) + 'Q';
             if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
             if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
             if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
@@ -478,177 +450,114 @@
             return num.toString();
         }
         
-        function formatTime(ms) {
-            if (ms < 0) return "00:00:00";
+        // ========== ПОКУПКА УРОВНЯ ==========
+        function buyLevel() {
+            const nextLevel = gameState.spaceLevel;
             
-            const hours = Math.floor(ms / (60 * 60 * 1000));
-            const minutes = Math.floor((ms % (60 * 60 * 1000)) / (60 * 1000));
-            const seconds = Math.floor((ms % (60 * 1000)) / 1000);
+            if (nextLevel >= SPACE_LEVELS.length) {
+                alert('❌ ВЫ УЖЕ ПОКОРИЛИ ВСЕЛЕННУЮ!');
+                return;
+            }
             
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const levelData = SPACE_LEVELS[nextLevel];
+            
+            if (gameState.balance < levelData.price) {
+                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                return;
+            }
+            
+            gameState.balance -= levelData.price;
+            gameState.spaceLevel++;
+            gameState.unlockedLevels.push(gameState.spaceLevel);
+            
+            // Запускаем ракету
+            launchRocket();
+            
+            renderUI();
         }
         
-        // ========== ПОЛУЧЕНИЕ НАГРАДЫ ==========
-        function claimReward(day) {
-            if (gameState.claimedDays.includes(day)) {
-                alert('❌ НАГРАДА УЖЕ ПОЛУЧЕНА!');
-                return false;
-            }
+        // ========== ЗАПУСК РАКЕТЫ ==========
+        function launchRocket() {
+            const rocket = document.getElementById('rocket');
+            const fire = document.getElementById('rocketFire');
             
-            if (day > gameState.calendarDay) {
-                alert('❌ ЭТОТ ДЕНЬ ЕЩЕ НЕ НАСТУПИЛ!');
-                return false;
-            }
+            rocket.classList.add('launch');
+            fire.style.animation = 'fire 0.1s infinite';
             
-            const reward = getRewardForDay(day);
-            gameState.claimedDays.push(day);
-            gameState.totalDiamonds += reward.diamonds;
-            
-            // Обновляем стрик
-            if (day === gameState.calendarDay) {
-                gameState.streak++;
-            }
-            
-            renderCalendar();
-            alert(`✅ ПОЛУЧЕНО: ${reward.desc}\n💰 +${formatNumber(reward.money)} монет\n💎 +${reward.diamonds} алмазов`);
-            
-            return true;
+            setTimeout(() => {
+                rocket.classList.remove('launch');
+                fire.style.animation = 'fire 0.2s infinite';
+            }, 3000);
         }
         
         // ========== РЕНДЕР ==========
-        function renderCalendar() {
-            const grid = document.getElementById('rewardsGrid');
-            const currentDay = document.getElementById('currentDay');
+        function renderUI() {
+            const currentLevel = document.getElementById('currentLevel');
+            const totalBonus = document.getElementById('totalBonus');
+            const nextPrice = document.getElementById('nextPrice');
             const progressBar = document.getElementById('progressBar');
-            const claimedCount = document.getElementById('claimedCount');
-            const totalDiamonds = document.getElementById('totalDiamonds');
-            const streakDays = document.getElementById('streakDays');
+            const levelsContainer = document.getElementById('levels');
+            const buyBtn = document.getElementById('buyBtn');
             
-            currentDay.textContent = gameState.calendarDay;
-            progressBar.style.width = `${(gameState.calendarDay / 1000) * 100}%`;
-            claimedCount.textContent = gameState.claimedDays.length;
-            totalDiamonds.textContent = gameState.totalDiamonds;
-            streakDays.textContent = gameState.streak;
+            const totalBonusValue = SPACE_LEVELS.slice(0, gameState.spaceLevel).reduce((sum, l) => sum + l.bonus, 0);
             
-            // Показываем ближайшие 30 дней
-            const startDay = Math.max(1, gameState.calendarDay - 5);
-            const endDay = Math.min(1000, startDay + 29);
+            currentLevel.textContent = gameState.spaceLevel;
+            totalBonus.textContent = totalBonusValue;
+            progressBar.style.width = (gameState.spaceLevel / SPACE_LEVELS.length) * 100 + '%';
             
-            let html = '';
-            
-            for (let day = startDay; day <= endDay; day++) {
-                const reward = getRewardForDay(day);
-                const isClaimed = gameState.claimedDays.includes(day);
-                const isAvailable = day <= gameState.calendarDay && !isClaimed;
-                
-                let cardClass = 'reward-card';
-                if (reward.type === 'special-10') cardClass += ' special-10';
-                if (reward.type === 'special-100' || reward.type === 'mega') cardClass += ' special-100';
-                if (isClaimed) cardClass += ' claimed';
-                
-                let specialBadge = '';
-                if (day % 10 === 0 && day % 100 !== 0) {
-                    specialBadge = '<div class="special-badge">🎁 10 ДНЕЙ</div>';
-                }
-                if (day % 100 === 0 && day !== 1000) {
-                    specialBadge = '<div class="special-badge mega">🌟 100 ДНЕЙ</div>';
-                }
-                if (day === 1000) {
-                    specialBadge = '<div class="special-badge mega">👑 ФИНАЛ</div>';
-                }
-                
-                html += `
-                    <div class="${cardClass}">
-                        ${specialBadge}
-                        <div class="reward-day">День ${day}</div>
-                        <div class="reward-icon">${reward.type === 'mega' ? '👑' : (day % 10 === 0 ? '🎁' : '📦')}</div>
-                        <div class="reward-name">${reward.title}</div>
-                        <div class="reward-value">+${reward.diamonds}💎</div>
-                        <div style="font-size:11px; color:#8e8e98; margin:5px 0;">${formatNumber(reward.money)}💰</div>
-                        ${isAvailable ? 
-                            `<button class="claim-btn" onclick="claimReward(${day})">ПОЛУЧИТЬ</button>` : 
-                            `<button class="claim-btn disabled" disabled>${isClaimed ? 'ПОЛУЧЕНО' : 'ЗАКРЫТО'}</button>`
-                        }
-                    </div>
-                `;
+            if (gameState.spaceLevel < SPACE_LEVELS.length) {
+                const nextLevelData = SPACE_LEVELS[gameState.spaceLevel];
+                nextPrice.textContent = formatNumber(nextLevelData.price);
+                buyBtn.textContent = `🚀 ЗАПУСТИТЬ РАКЕТУ (${formatNumber(nextLevelData.price)})`;
+                buyBtn.classList.toggle('disabled', gameState.balance < nextLevelData.price);
+            } else {
+                nextPrice.textContent = 'MAX';
+                buyBtn.textContent = '✅ ВСЕЛЕННАЯ ПОКОРЕНА';
+                buyBtn.classList.add('disabled');
             }
             
-            grid.innerHTML = html;
+            // Рендер уровней
+            let levelsHtml = '';
+            SPACE_LEVELS.forEach((level, index) => {
+                const isUnlocked = index <= gameState.spaceLevel;
+                const isCurrent = index === gameState.spaceLevel - 1;
+                
+                levelsHtml += `
+                    <div class="level ${isUnlocked ? 'unlocked' : ''} ${isCurrent ? 'current' : ''}">
+                        <div class="level-number">${index + 1}</div>
+                        <div class="level-name">${level.name}</div>
+                        <div class="level-price">${formatNumber(level.price)}</div>
+                        <div class="level-bonus">+${level.bonus}%</div>
+                    </div>
+                `;
+            });
+            
+            levelsContainer.innerHTML = levelsHtml;
         }
         
         // ========== ТЕСТОВЫЕ ФУНКЦИИ ==========
-        function testAddDay() {
-            if (gameState.calendarDay < 1000) {
-                gameState.calendarDay++;
-                // Если пропустили день - сбрасываем стрик
-                if (!gameState.claimedDays.includes(gameState.calendarDay - 1)) {
-                    gameState.streak = 0;
-                }
-                renderCalendar();
-                updateTimer();
-            }
+        function addMoney(multiplier = 1) {
+            gameState.balance += 1e9 * multiplier;
+            renderUI();
         }
         
-        function testAddWeek() {
-            for (let i = 0; i < 7; i++) {
-                if (gameState.calendarDay < 1000) {
-                    gameState.calendarDay++;
-                }
-            }
-            // Сбрасываем стрик (для теста)
-            gameState.streak = 0;
-            renderCalendar();
-            updateTimer();
-        }
-        
-        function testAddMonth() {
-            for (let i = 0; i < 30; i++) {
-                if (gameState.calendarDay < 1000) {
-                    gameState.calendarDay++;
-                }
-            }
-            gameState.streak = 0;
-            renderCalendar();
-            updateTimer();
-        }
-        
-        function testReset() {
+        function resetTest() {
             gameState = {
-                calendarDay: 1,
-                lastClaimTime: null,
-                claimedDays: [],
-                streak: 0,
-                totalDiamonds: 0
+                balance: 5e9,
+                spaceLevel: 0,
+                unlockedLevels: [0]
             };
-            renderCalendar();
-            updateTimer();
-        }
-        
-        // ========== ТАЙМЕР ==========
-        function updateTimer() {
-            const timerEl = document.getElementById('timer');
-            
-            // Для теста устанавливаем случайное время
-            const now = Date.now();
-            const nextReward = new Date();
-            nextReward.setHours(9, 0, 0, 0); // 9:00
-            nextReward.setDate(nextReward.getDate() + 1);
-            
-            const timeLeft = nextReward - now;
-            timerEl.textContent = `⏱️ СЛЕДУЮЩАЯ НАГРАДА ЧЕРЕЗ: ${formatTime(timeLeft)}`;
+            renderUI();
         }
         
         // ========== ЗАПУСК ==========
         window.onload = function() {
-            renderCalendar();
-            updateTimer();
-            setInterval(updateTimer, 1000);
+            generateStars();
+            renderUI();
             
-            window.claimReward = claimReward;
-            window.testAddDay = testAddDay;
-            window.testAddWeek = testAddWeek;
-            window.testAddMonth = testAddMonth;
-            window.testReset = testReset;
+            window.buyLevel = buyLevel;
+            window.addMoney = addMoney;
+            window.resetTest = resetTest;
         };
     </script>
 </body>
