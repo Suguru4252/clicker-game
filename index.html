@@ -464,14 +464,32 @@
             color: #8e8e98;
         }
         
-        .manager-badge {
-            background: rgba(123, 31, 162, 0.2);
-            border: 1px solid #7b1fa2;
-            border-radius: 20px;
-            padding: 6px 12px;
+        .manager-info {
+            background: rgba(123, 31, 162, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            margin-top: 8px;
             font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .manager-level {
             color: #b39ddb;
-            display: inline-block;
+        }
+        
+        .manager-bonus {
+            color: #4caf50;
+        }
+        
+        .manager-btn {
+            background: #7b1fa2;
+            border: none;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
             cursor: pointer;
         }
         
@@ -539,6 +557,41 @@
             color: #ffd700;
             font-size: 18px;
             font-weight: 600;
+        }
+        
+        .battle-pass {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1));
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .pass-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .pass-level {
+            color: #ffd700;
+            font-weight: 600;
+        }
+        
+        .pass-exp {
+            color: #8e8e98;
+        }
+        
+        .pass-progress {
+            background: rgba(255,255,255,0.1);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .pass-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff44ff);
+            width: 0%;
         }
         
         .warning-badge {
@@ -672,6 +725,20 @@
             0% { opacity: 1; transform: translateY(0); }
             100% { opacity: 0; transform: translateY(-80px); }
         }
+        
+        .level-progress {
+            background: rgba(255,255,255,0.1);
+            height: 8px;
+            border-radius: 4px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+        
+        .level-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffaa00);
+            width: 0%;
+        }
     </style>
 </head>
 <body>
@@ -693,7 +760,7 @@
             
             <div class="per-click">
                 <span class="per-click-label">💰 за клик</span>
-                <span class="per-click-value" id="clickPower">$ 4.7 тыс.</span>
+                <span class="per-click-value" id="clickPower">$ 3.0 тыс.</span>
             </div>
         </div>
         
@@ -728,12 +795,10 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '4.1.0';
+        const APP_VERSION = '5.0.0';
         const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter'];
         const MAX_BUSINESSES = 10;
-        const MAX_MINING_FARMS = 20;
-        const MAX_FARM_LEVEL = 500;
-        const INCOME_MULTIPLIER = 50000;
+        const BASE_CLICK_POWER = 3000; // 3к за клик на 1 уровне
         
         let currentUser = "ИГРОК";
         let currentUserId = null;
@@ -756,24 +821,83 @@
         
         currentUserId = getDeviceId();
         
-        // ========== КОЛЛЕКЦИИ (дома - 1 раз) ==========
-        const collectionItems = {
-            houses: [
-                { id: 0, name: "КВАРТИРА-СТУДИЯ", emoji: "🏢", price: 50000, owned: false },
-                { id: 1, name: "ДВУХКОМНАТНАЯ", emoji: "🏠", price: 150000, owned: false },
-                { id: 2, name: "ТРЕХКОМНАТНАЯ", emoji: "🏡", price: 300000, owned: false },
-                { id: 3, name: "ПЕНТХАУС", emoji: "🏬", price: 1000000, owned: false },
-                { id: 4, name: "ЗАГОРОДНЫЙ ДОМ", emoji: "🏘️", price: 2000000, owned: false },
-                { id: 5, name: "ОСОБНЯК", emoji: "🏰", price: 5000000, owned: false },
-                { id: 6, name: "ВИЛЛА", emoji: "🏛️", price: 10000000, owned: false },
-                { id: 7, name: "ЗАМОК", emoji: "🏯", price: 50000000, owned: false },
-                { id: 8, name: "ДВОРЕЦ", emoji: "🕌", price: 100000000, owned: false },
-                { id: 9, name: "НЕБОСКРЕБ", emoji: "🏙️", price: 500000000, owned: false }
-            ]
-        };
+        // ========== 50+ КРИПТОВАЛЮТ ==========
+        const cryptoCurrencies = [
+            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2 },
+            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25 },
+            { id: 2, name: "BINANCE COIN", emoji: "BNB", basePrice: 250000, maxBuy: 5000000000, volatility: 0.3 },
+            { id: 3, name: "SOLANA", emoji: "SOL", basePrice: 100000, maxBuy: 5000000000, volatility: 0.35 },
+            { id: 4, name: "CARDANO", emoji: "ADA", basePrice: 50000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 5, name: "DOT", emoji: "DOT", basePrice: 25000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 6, name: "AVALANCHE", emoji: "AVAX", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 7, name: "CHAINLINK", emoji: "LINK", basePrice: 15000, maxBuy: 5000000000, volatility: 0.45 },
+            { id: 8, name: "POLYGON", emoji: "MATIC", basePrice: 10000, maxBuy: 5000000000, volatility: 0.45 },
+            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45 },
+            { id: 10, name: "RIPPLE", emoji: "XRP", basePrice: 5000, maxBuy: 5000000000, volatility: 0.5 },
+            { id: 11, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, maxBuy: 5000000000, volatility: 0.6 },
+            { id: 12, name: "SHIBA INU", emoji: "🐕", basePrice: 500, maxBuy: 5000000000, volatility: 0.7 },
+            { id: 13, name: "PEPE", emoji: "🐸", basePrice: 100, maxBuy: 5000000000, volatility: 0.8 },
+            { id: 14, name: "WOJAK", emoji: "😩", basePrice: 50, maxBuy: 5000000000, volatility: 0.9 },
+            { id: 15, name: "BONK", emoji: "🦴", basePrice: 25, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0 },
+            { id: 20, name: "BITCOIN CASH", emoji: "BCH", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 21, name: "LINK", emoji: "🔗", basePrice: 15000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 22, name: "UNISWAP", emoji: "UNI", basePrice: 12000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 23, name: "AAVE", emoji: "AAVE", basePrice: 10000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 24, name: "MAKER", emoji: "MKR", basePrice: 8000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 25, name: "COMPOUND", emoji: "COMP", basePrice: 6000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 26, name: "YFI", emoji: "YFI", basePrice: 5000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 27, name: "SUSHI", emoji: "🍣", basePrice: 4000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 28, name: "CAKE", emoji: "🥞", basePrice: 3000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 29, name: "BAKE", emoji: "🥖", basePrice: 2000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 30, name: "XLM", emoji: "XLM", basePrice: 1500, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 31, name: "ALGO", emoji: "ALGO", basePrice: 1200, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 32, name: "VET", emoji: "VET", basePrice: 1000, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 33, name: "THETA", emoji: "THETA", basePrice: 800, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 34, name: "FILECOIN", emoji: "FIL", basePrice: 600, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 35, name: "ICP", emoji: "ICP", basePrice: 500, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 36, name: "NEAR", emoji: "NEAR", basePrice: 400, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 37, name: "APTOS", emoji: "APT", basePrice: 300, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 38, name: "SUI", emoji: "SUI", basePrice: 200, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 39, name: "SEI", emoji: "SEI", basePrice: 150, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 40, name: "TIA", emoji: "TIA", basePrice: 100, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 41, name: "INJ", emoji: "INJ", basePrice: 80, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 42, name: "ARB", emoji: "ARB", basePrice: 60, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 43, name: "OP", emoji: "OP", basePrice: 50, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 44, name: "STRK", emoji: "STRK", basePrice: 40, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 45, name: "ZKSYNC", emoji: "ZK", basePrice: 30, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 46, name: "SCROLL", emoji: "SCROLL", basePrice: 25, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 47, name: "LINEA", emoji: "LINEA", basePrice: 20, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 48, name: "BASE", emoji: "BASE", basePrice: 15, maxBuy: 5000000000, volatility: 0.4 },
+            { id: 49, name: "POLYGON ZKEVM", emoji: "POL", basePrice: 10, maxBuy: 5000000000, volatility: 0.4 }
+        ];
         
-        // ========== ПРЕДМЕТЫ ДЛЯ ГАРАЖЕЙ (покупаются много раз) ==========
-        const garageItems = {
+        let cryptoPrices = [];
+        
+        // ========== 50+ ДОМОВ ==========
+        const houses = [];
+        for (let i = 0; i < 50; i++) {
+            houses.push({
+                id: i,
+                name: `${['Квартира', 'Дом', 'Вилла', 'Особняк', 'Замок'][i % 5]} ${Math.floor(i/5) + 1}`,
+                emoji: ['🏢', '🏠', '🏡', '🏰', '🏯'][i % 5],
+                price: 50000000 + (i * 20000000),
+                owned: false,
+                upgrades: {
+                    interior: 0,
+                    kitchen: 0,
+                    bed: 0,
+                    antenna: 0,
+                    tv: 0
+                }
+            });
+        }
+        
+        // ========== ПРЕДМЕТЫ ДЛЯ САЛОНОВ ==========
+        const salonItems = {
             cars: [
                 { id: 0, name: "ЛАДА ГРАНТА", emoji: "🚗", price: 20000 },
                 { id: 1, name: "LADA VESTA", emoji: "🚙", price: 50000 },
@@ -812,25 +936,18 @@
             ]
         };
         
-        // ========== КРИПТОВАЛЮТЫ ==========
-        const cryptoCurrencies = [
-            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2 },
-            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25 },
-            { id: 2, name: "BINANCE COIN", emoji: "BNB", basePrice: 250000, maxBuy: 5000000000, volatility: 0.3 },
-            { id: 3, name: "SOLANA", emoji: "SOL", basePrice: 100000, maxBuy: 5000000000, volatility: 0.35 },
-            { id: 4, name: "CARDANO", emoji: "ADA", basePrice: 50000, maxBuy: 5000000000, volatility: 0.4 },
-            { id: 5, name: "DOT", emoji: "DOT", basePrice: 25000, maxBuy: 5000000000, volatility: 0.4 }
-        ];
-        
-        let cryptoPrices = [];
-        
-        // ========== БИЗНЕСЫ ==========
+        // ========== БИЗНЕСЫ (10 ШТУК) ==========
         const businessTemplates = [
-            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1 * INCOME_MULTIPLIER, baseUpgradeCost: 100 * INCOME_MULTIPLIER, upgradeTime: 30, maxLevel: 20 },
-            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2 * INCOME_MULTIPLIER, baseUpgradeCost: 500 * INCOME_MULTIPLIER, upgradeTime: 60, maxLevel: 20 },
-            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5 * INCOME_MULTIPLIER, baseUpgradeCost: 2500 * INCOME_MULTIPLIER, upgradeTime: 120, maxLevel: 20 },
-            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10 * INCOME_MULTIPLIER, baseUpgradeCost: 10000 * INCOME_MULTIPLIER, upgradeTime: 180, maxLevel: 20 },
-            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20 * INCOME_MULTIPLIER, baseUpgradeCost: 50000 * INCOME_MULTIPLIER, upgradeTime: 300, maxLevel: 20 }
+            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1000, baseUpgradeCost: 5000000, upgradeTime: 30, maxLevel: 20 },
+            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2000, baseUpgradeCost: 25000000, upgradeTime: 60, maxLevel: 20 },
+            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5000, baseUpgradeCost: 125000000, upgradeTime: 120, maxLevel: 20 },
+            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10000, baseUpgradeCost: 500000000, upgradeTime: 180, maxLevel: 20 },
+            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20000, baseUpgradeCost: 2500000000, upgradeTime: 300, maxLevel: 20 },
+            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50000, baseUpgradeCost: 12500000000, upgradeTime: 600, maxLevel: 20 },
+            { id: 6, name: "🏦 БАНК", baseIncome: 100000, baseUpgradeCost: 50000000000, upgradeTime: 1200, maxLevel: 20 },
+            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200000, baseUpgradeCost: 250000000000, upgradeTime: 2400, maxLevel: 20 },
+            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500000, baseUpgradeCost: 1250000000000, upgradeTime: 4800, maxLevel: 20 },
+            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000000, baseUpgradeCost: 5000000000000, upgradeTime: 9600, maxLevel: 20 }
         ];
         
         const upgradePrices = {
@@ -865,8 +982,8 @@
                     settings = data.settings || { soundEnabled: true, effectsEnabled: true };
                     currentUser = data.nickname || "ИГРОК";
                     
-                    if (!gameState.collections) {
-                        gameState.collections = JSON.parse(JSON.stringify(collectionItems));
+                    if (!gameState.houses) {
+                        gameState.houses = houses.map(h => ({ ...h }));
                     }
                     
                     if (!gameState.garages) {
@@ -884,12 +1001,12 @@
                         cryptoPrices = gameState.cryptoPrices;
                     }
                     
-                    if (!gameState.miningFarms) {
-                        gameState.miningFarms = [];
-                    }
-                    
                     if (!gameState.myBusinesses) {
                         gameState.myBusinesses = [];
+                    }
+                    
+                    if (!gameState.battlePass) {
+                        gameState.battlePass = { level: 1, exp: 0, claimed: [] };
                     }
                     
                     const now = Date.now();
@@ -932,17 +1049,11 @@
             
             if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
                 gameState.myBusinesses.forEach(b => {
-                    income += (b.income || 0) * seconds;
-                });
-            }
-            
-            if (gameState.crypto && cryptoPrices) {
-                gameState.crypto.forEach(c => {
-                    const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                    if (c.owned > 0 && cryptoData) {
-                        const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                        income += (price / 320000) * c.owned * seconds;
+                    let inc = (b.income || 0) * seconds;
+                    if (b.manager) {
+                        inc *= (1 + b.manager.level * 0.1);
                     }
+                    income += inc;
                 });
             }
             
@@ -950,14 +1061,6 @@
                 const earned = Math.floor(income);
                 gameState.balance = (gameState.balance || 0) + earned;
                 gameState.totalEarned = (gameState.totalEarned || 0) + earned;
-                
-                const minutes = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                
-                // Показываем уведомление об оффлайн доходе
-                setTimeout(() => {
-                    alert(`⏱️ ОФФЛАЙН ДОХОД\nОтсутствовал: ${minutes} мин ${secs} сек\n💰 ЗАРАБОТАНО: ${formatMoney(earned)}`);
-                }, 1000);
             }
         }
         
@@ -989,8 +1092,8 @@
         }
         
         // ========== ПОКУПКА ПРЕДМЕТОВ ==========
-        function buyGarageItem(category, itemId) {
-            const item = garageItems[category].find(i => i.id === itemId);
+        function buySalonItem(category, itemId) {
+            const item = salonItems[category].find(i => i.id === itemId);
             if (!item) return;
             
             if (gameState.balance < item.price) {
@@ -1018,7 +1121,7 @@
         }
         
         function buyHouse(houseId) {
-            const house = collectionItems.houses.find(h => h.id === houseId);
+            const house = gameState.houses.find(h => h.id === houseId);
             if (!house || house.owned) return;
             
             if (gameState.balance < house.price) {
@@ -1033,6 +1136,33 @@
             updateUI();
             renderCurrentTab();
             alert(`✅ Куплен дом ${house.name}!`);
+        }
+        
+        function upgradeHouse(houseId, upgradeType) {
+            const house = gameState.houses.find(h => h.id === houseId);
+            if (!house || !house.owned) return;
+            
+            const costs = {
+                interior: 50000000,
+                kitchen: 100000000,
+                bed: 150000000,
+                antenna: 200000000,
+                tv: 300000000
+            };
+            
+            const cost = costs[upgradeType];
+            if (gameState.balance < cost) {
+                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                return;
+            }
+            
+            gameState.balance -= cost;
+            house.upgrades[upgradeType]++;
+            
+            saveGame();
+            updateUI();
+            renderCurrentTab();
+            alert(`✅ Улучшение ${upgradeType} дома выполнено!`);
         }
         
         function getGarageCount(category) {
@@ -1108,6 +1238,36 @@
             alert(`✅ ${business.name} улучшен до ${business.level} уровня!`);
         }
         
+        function hireManager(index) {
+            const business = gameState.myBusinesses[index];
+            if (!business) return;
+            
+            if (business.manager && business.manager.level >= 10) {
+                alert('❌ МАКСИМАЛЬНЫЙ УРОВЕНЬ МЕНЕДЖЕРА!');
+                return;
+            }
+            
+            const cost = 50; // 50 алмазов за уровень менеджера
+            
+            if (gameState.diamonds < cost) {
+                alert('❌ НУЖНО 50 АЛМАЗОВ!');
+                return;
+            }
+            
+            gameState.diamonds -= cost;
+            
+            if (!business.manager) {
+                business.manager = { level: 1 };
+            } else {
+                business.manager.level++;
+            }
+            
+            saveGame();
+            updateUI();
+            renderCurrentTab();
+            alert(`✅ Менеджер улучшен до ${business.manager.level} уровня! (+${business.manager.level * 10}% прибыли)`);
+        }
+        
         function sellBusiness(index) {
             const business = gameState.myBusinesses[index];
             if (!business) return;
@@ -1133,28 +1293,6 @@
                 renderCurrentTab();
                 alert(`✅ Продано! +${formatMoney(sellPrice)}`);
             }
-        }
-        
-        function hireManager(index) {
-            const business = gameState.myBusinesses[index];
-            if (!business) return;
-            
-            if (business.manager) {
-                alert('❌ УЖЕ ЕСТЬ МЕНЕДЖЕР!');
-                return;
-            }
-            
-            if (gameState.diamonds < 1000) {
-                alert('❌ НУЖНО 1000 АЛМАЗОВ!');
-                return;
-            }
-            
-            gameState.diamonds -= 1000;
-            business.manager = { level: 1, autoUpgrade: false };
-            
-            saveGame();
-            updateUI();
-            renderCurrentTab();
         }
         
         // ========== КРИПТА ==========
@@ -1326,8 +1464,6 @@
                     if (cryptoData) {
                         const price = cryptoPrices[c.id] || cryptoData.basePrice;
                         const value = price * c.owned;
-                        const incomePerSec = Math.floor((price / 320000) * c.owned);
-                        totalIncome += incomePerSec;
                         
                         html += `
                             <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px; border-left:4px solid #00c853;">
@@ -1359,18 +1495,49 @@
             document.getElementById('modal').classList.remove('active');
         }
         
+        // ========== БОЕВОЙ ПРОПУСК ==========
+        function checkBattlePassLevel() {
+            if (!gameState.battlePass) {
+                gameState.battlePass = { level: 1, exp: 0, claimed: [] };
+            }
+            
+            while (gameState.battlePass.exp >= 1000 && gameState.battlePass.level < 200) {
+                gameState.battlePass.exp -= 1000;
+                gameState.battlePass.level++;
+            }
+        }
+        
+        function claimBattlePassReward(level) {
+            if (gameState.battlePass.claimed.includes(level)) return;
+            if (level > gameState.battlePass.level) return;
+            
+            const reward = Math.floor(level * 1000);
+            gameState.diamonds += reward;
+            gameState.battlePass.claimed.push(level);
+            
+            saveGame();
+            updateUI();
+            renderTab('profile');
+            alert(`✅ Получено ${reward}💎 за ${level} уровень пропуска!`);
+        }
+        
         // ========== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ==========
         function updateUI() {
             if (!gameState) return;
             
+            // Обновляем баланс
             document.getElementById('balance').textContent = formatMoney(gameState.balance || 0);
             
             const totalEarned = gameState.totalEarned || 0;
             const percentChange = totalEarned > 0 ? ((gameState.balance - totalEarned) / totalEarned * 100).toFixed(2) : 0;
             document.getElementById('balanceChange').innerHTML = `+ ${formatMoney(totalEarned)} (${percentChange}%) за все время`;
             
-            const power = (gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5);
-            document.getElementById('clickPower').textContent = '$ ' + formatNumber(Math.floor(power)) + ' тыс.';
+            // Сила клика: 3к * уровень
+            const clickPower = BASE_CLICK_POWER * (gameState.clickPowerLevel + 1);
+            document.getElementById('clickPower').textContent = '$ ' + formatNumber(clickPower) + ' тыс.';
+            
+            // Обновляем текущий таб, если он открыт
+            renderCurrentTab();
         }
         
         function playClickSound() {
@@ -1405,17 +1572,29 @@
         function handleClick(event) {
             if (!gameState) return;
             
-            let power = (gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5);
+            const clickPower = BASE_CLICK_POWER * (gameState.clickPowerLevel + 1);
             
             if (Math.random() * 100 < (gameState.critLevel || 0) * 10) {
-                power *= 10;
+                clickPower *= 10;
             }
             
-            const earned = Math.floor(power);
+            const earned = Math.floor(clickPower);
             gameState.balance = (gameState.balance || 0) + earned;
             gameState.totalClicks = (gameState.totalClicks || 0) + 1;
             gameState.totalEarned = (gameState.totalEarned || 0) + earned;
             gameState.exp = (gameState.exp || 0) + earned / 100;
+            
+            // Опыт пропуска
+            if (gameState.battlePass && gameState.battlePass.level < 200) {
+                gameState.battlePass.exp += 100;
+                checkBattlePassLevel();
+            }
+            
+            while (gameState.exp >= (gameState.level || 1) * 1000) {
+                gameState.exp -= (gameState.level || 1) * 1000;
+                gameState.level = (gameState.level || 1) + 1;
+                gameState.diamonds = (gameState.diamonds || 0) + (gameState.level * 5);
+            }
             
             playClickSound();
             if (event) {
@@ -1454,25 +1633,19 @@
             let totalIncome = (gameState.autoClickerLevel || 0);
             
             if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
-                gameState.myBusinesses.forEach(b => totalIncome += b.income || 0);
-            }
-            
-            if (gameState.crypto && cryptoPrices) {
-                gameState.crypto.forEach(c => {
-                    if (c.owned > 0) {
-                        const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                        if (cryptoData) {
-                            const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            totalIncome += (price / 320000) * c.owned;
-                        }
+                gameState.myBusinesses.forEach(b => {
+                    let inc = b.income || 0;
+                    if (b.manager) {
+                        inc *= (1 + b.manager.level * 0.1);
                     }
+                    totalIncome += inc;
                 });
             }
             
             content.innerHTML = `
                 <div class="click-area" onclick="handleClick(event)">
                     <p>Кликайте в этой области, чтобы зарабатывать деньги</p>
-                    <h2>💰 ${formatNumber((gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5))} тыс. за клик</h2>
+                    <h2>💰 ${formatNumber(BASE_CLICK_POWER * (gameState.clickPowerLevel + 1))} тыс. за клик</h2>
                 </div>
                 
                 <div class="offline-earnings">
@@ -1497,23 +1670,14 @@
                 <div style="background:#1a1c24; border-radius:16px; padding:16px;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                         <span>👆 Клики</span>
-                        <span style="color:#ffd700;">+${formatNumber((gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5))}/сек</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>💼 Бизнесы</span>
-                        <span style="color:#ffd700;">+${formatNumber(gameState.myBusinesses?.reduce((s, b) => s + (b.income || 0), 0) || 0)}/сек</span>
+                        <span style="color:#ffd700;">+${formatNumber(BASE_CLICK_POWER * (gameState.clickPowerLevel + 1))}/сек</span>
                     </div>
                     <div style="display:flex; justify-content:space-between;">
-                        <span>📈 Крипта</span>
-                        <span style="color:#ffd700;">+${formatNumber(gameState.crypto?.reduce((s, c) => {
-                            if (c.owned > 0) {
-                                const cd = cryptoCurrencies.find(cr => cr.id === c.id);
-                                if (cd) {
-                                    const price = cryptoPrices[c.id] || cd.basePrice;
-                                    return s + (price / 320000) * c.owned;
-                                }
-                            }
-                            return s;
+                        <span>💼 Бизнесы</span>
+                        <span style="color:#ffd700;">+${formatNumber(gameState.myBusinesses?.reduce((s, b) => {
+                            let inc = b.income || 0;
+                            if (b.manager) inc *= (1 + b.manager.level * 0.1);
+                            return s + inc;
                         }, 0) || 0)}/сек</span>
                     </div>
                 </div>
@@ -1523,38 +1687,81 @@
         function renderInvestments(content) {
             let totalPortfolio = calculateTotalCryptoPortfolio();
             
-            content.innerHTML = `
+            let html = `
                 <div class="portfolio-mini" onclick="showCryptoPortfolio()">
                     <span class="portfolio-mini-label">📊 МОЙ ПОРТФЕЛЬ</span>
                     <span class="portfolio-mini-value">${formatMoney(totalPortfolio)}</span>
                 </div>
                 
                 <div class="section-title">
-                    <h3>Криптовалюта</h3>
+                    <h3>Криптовалюта (50+)</h3>
                     <span style="color:#8e8e98;">цены обновляются каждые 5 мин</span>
                 </div>
+            `;
+            
+            // Показываем первые 10, остальные по запросу
+            const showCrypto = cryptoCurrencies.slice(0, 10);
+            showCrypto.forEach(crypto => {
+                const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
+                const currentPrice = cryptoPrices[crypto.id] || crypto.basePrice;
+                const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
+                const changeColor = priceChange >= 0 ? '#4caf50' : '#ff4444';
                 
-                ${cryptoCurrencies.map(crypto => {
-                    const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
-                    const currentPrice = cryptoPrices[crypto.id] || crypto.basePrice;
-                    const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
-                    const changeColor = priceChange >= 0 ? '#4caf50' : '#ff4444';
-                    
-                    return `
-                        <div class="crypto-item">
+                html += `
+                    <div class="crypto-item">
+                        <div>
+                            <div class="crypto-name">${crypto.emoji} ${crypto.name}</div>
+                            <div class="crypto-price">${formatMoney(currentPrice)} <span style="color:${changeColor};">(${priceChange}%)</span></div>
+                            <div class="crypto-owned">Владею: ${formatFullNumber(userCrypto.owned)} шт</div>
+                        </div>
+                        <div class="crypto-actions">
+                            <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'buy')">Купить</button>
+                            <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'sell')">Продать</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div style="text-align:center; margin-top:16px;">
+                    <a href="#" style="color:#ffd700;" onclick="showAllCrypto()">Показать все 50+ криптовалют →</a>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+        }
+        
+        function showAllCrypto() {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            let html = '<div class="modal-title">📈 ВСЯ КРИПТОВАЛЮТА (50+)</div>';
+            
+            cryptoCurrencies.forEach(crypto => {
+                const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
+                const currentPrice = cryptoPrices[crypto.id] || crypto.basePrice;
+                
+                html += `
+                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <div class="crypto-name">${crypto.emoji} ${crypto.name}</div>
-                                <div class="crypto-price">${formatMoney(currentPrice)} <span style="color:${changeColor};">(${priceChange}%)</span></div>
-                                <div class="crypto-owned">Владею: ${formatFullNumber(userCrypto.owned)} шт</div>
+                                <span style="font-weight:600; color:#00c853;">${crypto.emoji} ${crypto.name}</span>
+                                <div style="color:#ffd700; font-size:13px;">${formatMoney(currentPrice)}</div>
+                                <div style="color:#8e8e98; font-size:11px;">У вас: ${formatFullNumber(userCrypto.owned)} шт</div>
                             </div>
-                            <div class="crypto-actions">
-                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'buy')">Купить</button>
-                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'sell')">Продать</button>
+                            <div style="display:flex; gap:8px;">
+                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'buy'); closeModal();">Купить</button>
+                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'sell'); closeModal();">Продать</button>
                             </div>
                         </div>
-                    `;
-                }).join('')}
-            `;
+                    </div>
+                `;
+            });
+            
+            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
         }
         
         function renderBusiness(content) {
@@ -1568,8 +1775,7 @@
                     '<div style="color:#8e8e98; text-align:center; padding:30px;">У вас нет бизнесов</div>' : 
                     gameState.myBusinesses.map((b, i) => {
                         const t = businessTemplates[b.templateId];
-                        const upgrading = b.upgradeEnd && b.upgradeEnd > Date.now();
-                        const timeLeft = upgrading ? Math.ceil((b.upgradeEnd - Date.now()) / 1000) : 0;
+                        const managerBonus = b.manager ? b.manager.level * 10 : 0;
                         
                         return `
                             <div class="business-item" onclick="openBusinessModal(${i})">
@@ -1581,12 +1787,12 @@
                                     <span>💰 +${formatNumber(b.income)}/сек</span>
                                     <span>📈 улучшить: ${formatMoney(b.upgradeCost)}</span>
                                 </div>
-                                ${b.manager ? 
-                                    `<div class="manager-badge">👔 Менеджер</div>` : ''
-                                }
-                                ${upgrading ? 
-                                    `<div style="color:#ff9800; font-size:12px; margin-top:8px;">⏱️ Улучшение... ${timeLeft}с</div>` : ''
-                                }
+                                ${b.manager ? `
+                                    <div class="manager-info">
+                                        <span class="manager-level">👔 Менеджер ур.${b.manager.level}</span>
+                                        <span class="manager-bonus">+${managerBonus}%</span>
+                                    </div>
+                                ` : ''}
                             </div>
                         `;
                     }).join('')
@@ -1599,53 +1805,114 @@
         function renderItems(content) {
             content.innerHTML = `
                 <div class="section-title">
-                    <h3>🚗 Гараж</h3>
-                    <span style="color:#8e8e98;">${getGarageCount('cars')} шт</span>
+                    <h3>🏢 АВТОСАЛОН</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('cars')} шт в гараже</span>
                 </div>
                 
                 <div class="cards-row">
-                    <div class="card" onclick="showGarage('cars')">
-                        <div class="card-title">🚗 Машины</div>
-                        <div class="card-sub">${getGarageCount('cars')} шт</div>
-                        <button class="card-btn">Открыть</button>
-                    </div>
-                    <div class="card" onclick="showHangar('planes')">
-                        <div class="card-title">✈️ Самолеты</div>
-                        <div class="card-sub">${getGarageCount('planes')} шт</div>
-                        <button class="card-btn">Открыть</button>
-                    </div>
-                    <div class="card" onclick="showDock('ships')">
-                        <div class="card-title">🚢 Яхты</div>
-                        <div class="card-sub">${getGarageCount('ships')} шт</div>
-                        <button class="card-btn">Открыть</button>
-                    </div>
+                    ${salonItems.cars.slice(0, 3).map(item => `
+                        <div class="card">
+                            <div class="card-title">${item.emoji} ${item.name}</div>
+                            <div class="card-sub">${formatMoney(item.price)}</div>
+                            <button class="card-btn" onclick="buySalonItem('cars', ${item.id})">Купить</button>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin:16px 0;">
+                    <a href="#" style="color:#ffd700;" onclick="showSalon('cars')">Перейти в автосалон →</a>
+                </div>
+                
+                <div class="section-title">
+                    <h3>✈️ АВИАСАЛОН</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('planes')} шт в ангаре</span>
+                </div>
+                
+                <div class="cards-row">
+                    ${salonItems.planes.slice(0, 3).map(item => `
+                        <div class="card">
+                            <div class="card-title">${item.emoji} ${item.name}</div>
+                            <div class="card-sub">${formatMoney(item.price)}</div>
+                            <button class="card-btn" onclick="buySalonItem('planes', ${item.id})">Купить</button>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin:16px 0;">
+                    <a href="#" style="color:#ffd700;" onclick="showSalon('planes')">Перейти в авиасалон →</a>
+                </div>
+                
+                <div class="section-title">
+                    <h3>🚢 КОРАБЛЕСАЛОН</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('ships')} шт на причале</span>
+                </div>
+                
+                <div class="cards-row">
+                    ${salonItems.ships.slice(0, 3).map(item => `
+                        <div class="card">
+                            <div class="card-title">${item.emoji} ${item.name}</div>
+                            <div class="card-sub">${formatMoney(item.price)}</div>
+                            <button class="card-btn" onclick="buySalonItem('ships', ${item.id})">Купить</button>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin:16px 0;">
+                    <a href="#" style="color:#ffd700;" onclick="showSalon('ships')">Перейти в кораблесалон →</a>
                 </div>
                 
                 <div class="section-title" style="margin-top:20px;">
-                    <h3>🏠 Дома</h3>
-                    <span style="color:#8e8e98;">${gameState.collections.houses.filter(h => h.owned).length} / 10</span>
+                    <h3>🏠 МОИ ДОМА</h3>
+                    <span style="color:#8e8e98;">${gameState.houses.filter(h => h.owned).length} / 50</span>
                 </div>
                 
                 <div class="cards-row">
-                    ${collectionItems.houses.slice(0, 3).map(house => `
-                        <div class="card">
+                    ${gameState.houses.filter(h => h.owned).slice(0, 3).map(house => `
+                        <div class="card" onclick="openHouseModal(${house.id})">
                             <div class="card-title">${house.emoji} ${house.name}</div>
-                            <div class="card-sub">${formatMoney(house.price)}</div>
-                            ${house.owned ? 
-                                '<span style="color:#4caf50;">✓ В коллекции</span>' : 
-                                `<button class="card-btn" onclick="buyHouse(${house.id})">Купить</button>`
-                            }
+                            <div class="card-sub">Улучшений: ${Object.values(house.upgrades).reduce((a, b) => a + b, 0)}</div>
+                            <button class="card-btn">Улучшить</button>
                         </div>
                     `).join('')}
                 </div>
                 
                 <div style="margin-top:16px;">
-                    <a href="#" style="color:#ffd700; text-decoration:none;" onclick="showAllHouses()">Посмотреть все дома →</a>
+                    <a href="#" style="color:#ffd700;" onclick="showAllHouses()">Посмотреть все дома →</a>
+                </div>
+                
+                <div class="section-title" style="margin-top:20px;">
+                    <h3>🚗 ГАРАЖ</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('cars')} шт</span>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <a href="#" style="color:#ffd700;" onclick="showGarage('cars')">Открыть гараж →</a>
+                </div>
+                
+                <div class="section-title">
+                    <h3>✈️ АНГАР</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('planes')} шт</span>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <a href="#" style="color:#ffd700;" onclick="showGarage('planes')">Открыть ангар →</a>
+                </div>
+                
+                <div class="section-title">
+                    <h3>⚓ ПРИЧАЛ</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('ships')} шт</span>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <a href="#" style="color:#ffd700;" onclick="showGarage('ships')">Открыть причал →</a>
                 </div>
             `;
         }
         
         function renderProfile(content) {
+            const expNeeded = (gameState.level || 1) * 1000;
+            const expPercent = ((gameState.exp || 0) / expNeeded) * 100;
+            
             content.innerHTML = `
                 <div class="section-title">
                     <h3>Профиль</h3>
@@ -1661,6 +1928,10 @@
                     <div class="stat-value">${gameState.level}</div>
                 </div>
                 
+                <div class="level-progress">
+                    <div class="level-progress-bar" style="width: ${Math.min(expPercent, 100)}%"></div>
+                </div>
+                
                 <div class="stat-box" style="margin-bottom:12px;">
                     <div class="stat-label">Алмазы</div>
                     <div class="stat-value">💎 ${gameState.diamonds || 0}</div>
@@ -1668,7 +1939,7 @@
                 
                 <div class="stat-box" style="margin-bottom:12px;">
                     <div class="stat-label">Сила клика</div>
-                    <div class="stat-value">${formatNumber((gameState.clickPower || 1) * (1 + (gameState.clickPowerLevel || 0) * 0.5))}</div>
+                    <div class="stat-value">${formatNumber(BASE_CLICK_POWER * (gameState.clickPowerLevel + 1))}</div>
                 </div>
                 
                 <div class="stat-box" style="margin-bottom:12px;">
@@ -1679,6 +1950,17 @@
                 <div class="stat-box" style="margin-bottom:12px;">
                     <div class="stat-label">Заработано всего</div>
                     <div class="stat-value">${formatMoney(gameState.totalEarned || 0)}</div>
+                </div>
+                
+                <div class="battle-pass">
+                    <div class="pass-header">
+                        <span class="pass-level">Боевой пропуск: ур.${gameState.battlePass?.level || 1}/200</span>
+                        <span class="pass-exp">⚡ ${Math.floor(gameState.battlePass?.exp || 0)}/1000</span>
+                    </div>
+                    <div class="pass-progress">
+                        <div class="pass-progress-bar" style="width: ${((gameState.battlePass?.exp || 0) / 1000) * 100}%"></div>
+                    </div>
+                    <button class="card-btn" style="margin-top:12px;" onclick="showBattlePass()">ПОЛУЧИТЬ НАГРАДЫ</button>
                 </div>
                 
                 <button class="card-btn" onclick="showNicknameModal()">✏️ Изменить ник</button>
@@ -1692,86 +1974,101 @@
             `;
         }
         
+        function showBattlePass() {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            let html = '<div class="modal-title">🎫 БОЕВОЙ ПРОПУСК</div>';
+            html += `<div style="text-align:center; margin-bottom:16px;">Уровень ${gameState.battlePass.level}/200</div>`;
+            
+            // Показываем доступные награды
+            for (let i = 1; i <= Math.min(gameState.battlePass.level, 20); i++) {
+                const isClaimed = gameState.battlePass.claimed.includes(i);
+                html += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#0f1117; border-radius:12px; padding:12px; margin-bottom:8px;">
+                        <span>Уровень ${i}</span>
+                        <span>💎 ${i * 1000}</span>
+                        ${!isClaimed ? 
+                            `<button class="card-btn" style="width:auto;" onclick="claimBattlePassReward(${i}); closeModal();">Получить</button>` :
+                            '<span style="color:#4caf50;">✓ Получено</span>'
+                        }
+                    </div>
+                `;
+            }
+            
+            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        function showSalon(category) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const titles = {
+                cars: '🚗 АВТОСАЛОН',
+                planes: '✈️ АВИАСАЛОН',
+                ships: '🚢 КОРАБЛЕСАЛОН'
+            };
+            
+            let html = `<div class="modal-title">${titles[category]}</div>`;
+            
+            salonItems[category].forEach(item => {
+                html += `
+                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
+                        <div style="font-size:32px;">${item.emoji}</div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">${item.name}</div>
+                            <div style="color:#ffd700; font-size:14px;">${formatMoney(item.price)}</div>
+                        </div>
+                        <button class="card-btn" style="width:auto;" onclick="buySalonItem('${category}', ${item.id}); closeModal();">Купить</button>
+                    </div>
+                `;
+            });
+            
+            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
         function showGarage(category) {
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
             
-            const items = garageItems[category];
-            const owned = gameState.garages[category] || [];
+            const titles = {
+                cars: '🚗 ГАРАЖ',
+                planes: '✈️ АНГАР',
+                ships: '⚓ ПРИЧАЛ'
+            };
             
-            let html = `<div class="modal-title">🚗 ГАРАЖ (${owned.length} шт)</div>`;
+            const items = gameState.garages[category] || [];
             
-            items.forEach(item => {
-                const count = owned.filter(o => o.id === item.id).length;
-                html += `
-                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
-                        <div style="font-size:32px;">${item.emoji}</div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">${item.name}</div>
-                            <div style="color:#8e8e98; font-size:12px;">В гараже: ${count} шт</div>
+            let html = `<div class="modal-title">${titles[category]} (${items.length} шт)</div>`;
+            
+            if (items.length === 0) {
+                html += '<div style="text-align:center; padding:30px; color:#8e8e98;">Пока ничего нет</div>';
+            } else {
+                // Группируем по типу
+                const grouped = {};
+                items.forEach(item => {
+                    if (!grouped[item.id]) grouped[item.id] = { count: 0, name: item.name, emoji: item.emoji };
+                    grouped[item.id].count++;
+                });
+                
+                Object.values(grouped).forEach(group => {
+                    html += `
+                        <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
+                            <div style="font-size:32px;">${group.emoji}</div>
+                            <div style="flex:1;">
+                                <div style="font-weight:600;">${group.name}</div>
+                                <div style="color:#8e8e98;">Количество: ${group.count}</div>
+                            </div>
                         </div>
-                        <button class="card-btn" style="width:auto;" onclick="buyGarageItem('${category}', ${item.id}); closeModal();">Купить ${formatMoney(item.price)}</button>
-                    </div>
-                `;
-            });
-            
-            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function showHangar(category) {
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            const items = garageItems[category];
-            const owned = gameState.garages[category] || [];
-            
-            let html = `<div class="modal-title">✈️ АНГАР (${owned.length} шт)</div>`;
-            
-            items.forEach(item => {
-                const count = owned.filter(o => o.id === item.id).length;
-                html += `
-                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
-                        <div style="font-size:32px;">${item.emoji}</div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">${item.name}</div>
-                            <div style="color:#8e8e98; font-size:12px;">В ангаре: ${count} шт</div>
-                        </div>
-                        <button class="card-btn" style="width:auto;" onclick="buyGarageItem('${category}', ${item.id}); closeModal();">Купить ${formatMoney(item.price)}</button>
-                    </div>
-                `;
-            });
-            
-            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function showDock(category) {
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            const items = garageItems[category];
-            const owned = gameState.garages[category] || [];
-            
-            let html = `<div class="modal-title">🚢 ПРИЧАЛ (${owned.length} шт)</div>`;
-            
-            items.forEach(item => {
-                const count = owned.filter(o => o.id === item.id).length;
-                html += `
-                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
-                        <div style="font-size:32px;">${item.emoji}</div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">${item.name}</div>
-                            <div style="color:#8e8e98; font-size:12px;">На причале: ${count} шт</div>
-                        </div>
-                        <button class="card-btn" style="width:auto;" onclick="buyGarageItem('${category}', ${item.id}); closeModal();">Купить ${formatMoney(item.price)}</button>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
             
             html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
             
@@ -1785,23 +2082,80 @@
             
             let html = '<div class="modal-title">🏠 ВСЕ ДОМА</div>';
             
-            collectionItems.houses.forEach(house => {
+            gameState.houses.forEach(house => {
                 html += `
-                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
-                        <div style="font-size:32px;">${house.emoji}</div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">${house.name}</div>
-                            <div style="color:#8e8e98; font-size:12px;">${formatMoney(house.price)}</div>
+                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="font-size:32px;">${house.emoji}</div>
+                            <div style="flex:1;">
+                                <div style="font-weight:600;">${house.name}</div>
+                                <div style="color:#ffd700;">${formatMoney(house.price)}</div>
+                                ${house.owned ? 
+                                    `<div style="color:#4caf50;">✓ В коллекции</div>` : 
+                                    `<button class="card-btn" style="width:auto; margin-top:8px;" onclick="buyHouse(${house.id}); closeModal();">Купить</button>`
+                                }
+                            </div>
                         </div>
-                        ${house.owned ? 
-                            '<span style="color:#4caf50;">✓ В коллекции</span>' : 
-                            `<button class="card-btn" style="width:auto;" onclick="buyHouse(${house.id}); closeModal();">Купить</button>`
-                        }
                     </div>
                 `;
             });
             
             html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        function openHouseModal(houseId) {
+            const house = gameState.houses.find(h => h.id === houseId);
+            if (!house) return;
+            
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            let html = `
+                <div class="modal-title">${house.emoji} ${house.name}</div>
+                <div style="background:#0f1117; border-radius:16px; padding:16px;">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div>
+                            <div style="color:#8e8e98;">Интерьер</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.interior}</span>
+                                <button class="manager-btn" onclick="upgradeHouse(${house.id}, 'interior'); closeModal();">+ (50M)</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color:#8e8e98;">Кухня</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.kitchen}</span>
+                                <button class="manager-btn" onclick="upgradeHouse(${house.id}, 'kitchen'); closeModal();">+ (100M)</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color:#8e8e98;">Кровать</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.bed}</span>
+                                <button class="manager-btn" onclick="upgradeHouse(${house.id}, 'bed'); closeModal();">+ (150M)</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color:#8e8e98;">Антенна</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.antenna}</span>
+                                <button class="manager-btn" onclick="upgradeHouse(${house.id}, 'antenna'); closeModal();">+ (200M)</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color:#8e8e98;">Телевизор</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.tv}</span>
+                                <button class="manager-btn" onclick="upgradeHouse(${house.id}, 'tv'); closeModal();">+ (300M)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>
+            `;
             
             modalContent.innerHTML = html;
             modal.classList.add('active');
@@ -1858,6 +2212,7 @@
             }
             
             const sellPrice = Math.floor(totalSpent * 0.5);
+            const managerBonus = business.manager ? business.manager.level * 10 : 0;
             
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
@@ -1870,9 +2225,19 @@
                         <span style="color:#ffd700;">${business.level}/${t.maxLevel}</span>
                     </div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>Доход</span>
+                        <span>Базовая прибыль</span>
                         <span style="color:#4caf50;">+${formatNumber(business.income)}/сек</span>
                     </div>
+                    ${business.manager ? `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <span>Менеджер (ур.${business.manager.level})</span>
+                            <span style="color:#b39ddb;">+${managerBonus}%</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <span>Итого прибыль</span>
+                            <span style="color:#4caf50;">+${formatNumber(business.income * (1 + managerBonus/100))}/сек</span>
+                        </div>
+                    ` : ''}
                     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                         <span>Заработано</span>
                         <span style="color:#ffd700;">${formatMoney(business.totalEarned || 0)}</span>
@@ -1887,18 +2252,13 @@
                 `;
             }
             
-            if (!business.manager) {
-                content += `
-                    <button class="card-btn" style="margin-top:8px; background:#7b1fa2;" onclick="hireManager(${index}); closeModal();">
-                        👔 Нанять менеджера (1000💎)
-                    </button>
-                `;
-            }
-            
             content += `
-                    <button class="card-btn" style="margin-top:8px; background:#ff9800;" onclick="sellBusiness(${index}); closeModal();">
-                        Продать (${formatMoney(sellPrice)})
-                    </button>
+                <button class="card-btn" style="margin-top:8px; background:#7b1fa2;" onclick="hireManager(${index}); closeModal();">
+                    👔 Улучшить менеджера (50💎) ${business.manager ? `ур.${business.manager.level}/10` : ''}
+                </button>
+                <button class="card-btn" style="margin-top:8px; background:#ff9800;" onclick="sellBusiness(${index}); closeModal();">
+                    Продать (${formatMoney(sellPrice)})
+                </button>
                 </div>
                 <div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>
             `;
@@ -1920,6 +2280,8 @@
                 <div style="margin-bottom:16px;">
                     <button class="card-btn" style="background:#ff4444;" onclick="adminGiveMoney()">💰 ВЫДАТЬ ДЕНЬГИ</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminGiveDiamonds()">💎 ВЫДАТЬ АЛМАЗЫ</button>
+                    <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminGiveCrypto()">📈 ВЫДАТЬ КРИПТУ</button>
+                    <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminGiveBusiness()">💼 ВЫДАТЬ БИЗНЕС</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminResetMoney()">💰 ОБНУЛИТЬ ДЕНЬГИ</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminResetDiamonds()">💎 ОБНУЛИТЬ АЛМАЗЫ</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminResetLevel()">📊 ОБНУЛИТЬ УРОВЕНЬ</button>
@@ -1953,6 +2315,59 @@
             saveGame();
             updateUI();
             alert(`✅ Выдано ${amount}💎`);
+        }
+        
+        function adminGiveCrypto() {
+            const cryptoName = prompt('Введите название крипты (например, BITCOIN):').toUpperCase();
+            const amount = parseInt(prompt('Введите количество:'));
+            
+            if (isNaN(amount) || amount <= 0) return;
+            
+            const crypto = cryptoCurrencies.find(c => c.name === cryptoName);
+            if (!crypto) {
+                alert('❌ Крипта не найдена!');
+                return;
+            }
+            
+            const userCrypto = gameState.crypto.find(c => c.id === crypto.id);
+            userCrypto.owned += amount;
+            saveGame();
+            updateUI();
+            alert(`✅ Выдано ${amount} ${crypto.name}`);
+        }
+        
+        function adminGiveBusiness() {
+            const businessName = prompt('Введите название бизнеса (ТАКСОПАРК, РЕСТОРАН и т.д.):').toUpperCase();
+            
+            const t = businessTemplates.find(b => b.name.includes(businessName));
+            if (!t) {
+                alert('❌ Бизнес не найден!');
+                return;
+            }
+            
+            if (!gameState.myBusinesses) gameState.myBusinesses = [];
+            
+            if (gameState.myBusinesses.length >= MAX_BUSINESSES) {
+                alert(`❌ Уже максимум ${MAX_BUSINESSES} бизнесов!`);
+                return;
+            }
+            
+            gameState.myBusinesses.push({
+                id: Date.now() + Math.random(),
+                templateId: t.id,
+                name: t.name,
+                level: 1,
+                income: t.baseIncome,
+                upgradeCost: Math.floor(t.baseUpgradeCost * 2.5),
+                upgradeTime: t.upgradeTime,
+                upgradeEnd: 0,
+                manager: null,
+                totalEarned: 0
+            });
+            
+            saveGame();
+            updateUI();
+            alert(`✅ Выдан бизнес ${t.name}`);
         }
         
         function adminResetMoney() {
@@ -2068,27 +2483,24 @@
             
             if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
                 gameState.myBusinesses.forEach(b => {
-                    const inc = b.income || 0;
+                    let inc = b.income || 0;
+                    if (b.manager) {
+                        inc *= (1 + b.manager.level * 0.1);
+                    }
                     income += inc;
                     b.totalEarned = (b.totalEarned || 0) + inc;
-                });
-            }
-            
-            if (gameState.crypto && cryptoPrices) {
-                gameState.crypto.forEach(c => {
-                    if (c.owned > 0) {
-                        const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                        if (cryptoData) {
-                            const price = cryptoPrices[c.id] || cryptoData.basePrice;
-                            income += (price / 320000) * c.owned;
-                        }
-                    }
                 });
             }
             
             if (income > 0) {
                 gameState.balance = (gameState.balance || 0) + income;
                 gameState.totalEarned = (gameState.totalEarned || 0) + income;
+                
+                // Опыт пропуска
+                if (gameState.battlePass && gameState.battlePass.level < 200) {
+                    gameState.battlePass.exp += income / 10;
+                    checkBattlePassLevel();
+                }
             }
             
             updateUI();
@@ -2146,15 +2558,11 @@
                     playTime: 0,
                     lastOnlineTime: Date.now(),
                     myBusinesses: [],
-                    miningFarms: [],
                     battlePass: { level: 1, exp: 0, claimed: [] },
-                    dailyBusinesses: [],
-                    businessSlots: MAX_BUSINESSES,
-                    collections: JSON.parse(JSON.stringify(collectionItems)),
+                    houses: houses.map(h => ({ ...h })),
                     garages: { cars: [], planes: [], ships: [] },
                     crypto: cryptoCurrencies.map(c => ({ id: c.id, owned: 0 })),
-                    cryptoPrices: cryptoCurrencies.map(c => c.basePrice),
-                    specialItem: { owned: false }
+                    cryptoPrices: cryptoCurrencies.map(c => c.basePrice)
                 };
                 
                 cryptoPrices = gameState.cryptoPrices;
@@ -2166,22 +2574,26 @@
             }
             
             window.handleClick = handleClick;
-            window.buyGarageItem = buyGarageItem;
+            window.buySalonItem = buySalonItem;
             window.buyHouse = buyHouse;
+            window.upgradeHouse = upgradeHouse;
+            window.showSalon = showSalon;
             window.showGarage = showGarage;
-            window.showHangar = showHangar;
-            window.showDock = showDock;
             window.showAllHouses = showAllHouses;
+            window.openHouseModal = openHouseModal;
             window.buyBusiness = buyBusiness;
             window.upgradeBusiness = upgradeBusiness;
-            window.sellBusiness = sellBusiness;
             window.hireManager = hireManager;
+            window.sellBusiness = sellBusiness;
             window.showBuyBusinessModal = showBuyBusinessModal;
             window.openBusinessModal = openBusinessModal;
             window.openTradeModal = openTradeModal;
             window.setTradeAmount = setTradeAmount;
             window.executeTrade = executeTrade;
             window.showCryptoPortfolio = showCryptoPortfolio;
+            window.showAllCrypto = showAllCrypto;
+            window.showBattlePass = showBattlePass;
+            window.claimBattlePassReward = claimBattlePassReward;
             window.closeModal = closeModal;
             window.resetGame = resetGame;
             window.showNicknameModal = showNicknameModal;
@@ -2190,9 +2602,11 @@
             window.renderTab = renderTab;
             
             window.showAdminPanel = showAdminPanel;
-            window.closeAdminModal = closeAdminPanel;
+            window.closeAdminModal = closeAdminModal;
             window.adminGiveMoney = adminGiveMoney;
             window.adminGiveDiamonds = adminGiveDiamonds;
+            window.adminGiveCrypto = adminGiveCrypto;
+            window.adminGiveBusiness = adminGiveBusiness;
             window.adminResetMoney = adminResetMoney;
             window.adminResetDiamonds = adminResetDiamonds;
             window.adminResetLevel = adminResetLevel;
@@ -2200,4 +2614,4 @@
         };
     </script>
 </body>
-                </html>
+</html>
