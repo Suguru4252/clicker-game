@@ -464,6 +464,26 @@
             color: #8e8e98;
         }
         
+        .business-progress {
+            background: rgba(255,255,255,0.1);
+            height: 4px;
+            border-radius: 2px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+        
+        .business-progress-bar {
+            height: 100%;
+            background: #ffd700;
+            width: 0%;
+        }
+        
+        .upgrade-time {
+            color: #ff9800;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
         .manager-info {
             background: rgba(123, 31, 162, 0.1);
             border-radius: 12px;
@@ -795,7 +815,7 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '5.0.0';
+        const APP_VERSION = '5.1.0';
         const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter'];
         const MAX_BUSINESSES = 10;
         const BASE_CLICK_POWER = 3000; // 3к за клик на 1 уровне
@@ -896,7 +916,7 @@
             });
         }
         
-        // ========== ПРЕДМЕТЫ ДЛЯ САЛОНОВ ==========
+        // ========== ПРЕДМЕТЫ ДЛЯ САЛОНОВ (ПО 20 ШТУК) ==========
         const salonItems = {
             cars: [
                 { id: 0, name: "ЛАДА ГРАНТА", emoji: "🚗", price: 20000 },
@@ -908,7 +928,17 @@
                 { id: 6, name: "MERCEDES E-CLASS", emoji: "🚘", price: 500000 },
                 { id: 7, name: "BMW X5", emoji: "🚙", price: 800000 },
                 { id: 8, name: "AUDI R8", emoji: "🚗", price: 1500000 },
-                { id: 9, name: "PORSCHE 911", emoji: "🏎️", price: 3000000 }
+                { id: 9, name: "PORSCHE 911", emoji: "🏎️", price: 3000000 },
+                { id: 10, name: "LAMBORGHINI AVENTADOR", emoji: "🚀", price: 10000000 },
+                { id: 11, name: "FERRARI LA FERRARI", emoji: "🔥", price: 30000000 },
+                { id: 12, name: "BUGATTI VEYRON", emoji: "💨", price: 100000000 },
+                { id: 13, name: "KOENIGSEGG AGERA", emoji: "⚡", price: 300000000 },
+                { id: 14, name: "PAGANI ZONDA", emoji: "🌀", price: 500000000 },
+                { id: 15, name: "LYKAN HYPERSPORT", emoji: "👽", price: 1000000000 },
+                { id: 16, name: "DEVEL SIXTEEN", emoji: "💥", price: 3000000000 },
+                { id: 17, name: "THRUST SSC", emoji: "📏", price: 10000000000 },
+                { id: 18, name: "BLOODHOUND SSC", emoji: "🎯", price: 30000000000 },
+                { id: 19, name: "СВЕТОВОЙ МОТОЦИКЛ", emoji: "✨", price: 100000000000 }
             ],
             planes: [
                 { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 50000 },
@@ -920,7 +950,17 @@
                 { id: 6, name: "CONCORDE", emoji: "⚡", price: 10000000 },
                 { id: 7, name: "F-22 RAPTOR", emoji: "🎯", price: 30000000 },
                 { id: 8, name: "SR-71 BLACKBIRD", emoji: "🕶️", price: 50000000 },
-                { id: 9, name: "B-2 SPIRIT", emoji: "👻", price: 100000000 }
+                { id: 9, name: "B-2 SPIRIT", emoji: "👻", price: 100000000 },
+                { id: 10, name: "АН-225 МРИЯ", emoji: "🏆", price: 300000000 },
+                { id: 11, name: "КОСМИЧЕСКИЙ ШАТТЛ", emoji: "🚀", price: 1000000000 },
+                { id: 12, name: "STARSHIP", emoji: "⭐", price: 3000000000 },
+                { id: 13, name: "ЛУННЫЙ МОДУЛЬ", emoji: "🌕", price: 10000000000 },
+                { id: 14, name: "МАРСОХОД", emoji: "🔴", price: 30000000000 },
+                { id: 15, name: "ЗВЕЗДА СМЕРТИ", emoji: "💀", price: 100000000000 },
+                { id: 16, name: "ТЫСЯЧЕЛЕТНИЙ СОКОЛ", emoji: "🛸", price: 300000000000 },
+                { id: 17, name: "ЭНТЕРПРАЙЗ", emoji: "🖖", price: 1000000000000 },
+                { id: 18, name: "ТАРДИС", emoji: "📞", price: 3000000000000 },
+                { id: 19, name: "СВЕТОВОЙ КОРАБЛЬ", emoji: "✨", price: 10000000000000 }
             ],
             ships: [
                 { id: 0, name: "ЛОДКА", emoji: "🛶", price: 10000 },
@@ -932,29 +972,33 @@
                 { id: 6, name: "ТАНКЕР", emoji: "⛽", price: 10000000 },
                 { id: 7, name: "КОНТЕЙНЕРОВОЗ", emoji: "📦", price: 20000000 },
                 { id: 8, name: "ЛЕДОКОЛ", emoji: "❄️", price: 50000000 },
-                { id: 9, name: "АВИАНОСЕЦ", emoji: "🛩️", price: 100000000 }
+                { id: 9, name: "АВИАНОСЕЦ", emoji: "🛩️", price: 100000000 },
+                { id: 10, name: "ПОДВОДНАЯ ЛОДКА", emoji: "🐟", price: 200000000 },
+                { id: 11, name: "ТИТАНИК", emoji: "🧊", price: 500000000 },
+                { id: 12, name: "БИСМАРК", emoji: "⚔️", price: 1000000000 },
+                { id: 13, name: "ЯМАТО", emoji: "🗾", price: 2000000000 },
+                { id: 14, name: "МИССУРИ", emoji: "🇺🇸", price: 5000000000 },
+                { id: 15, name: "АДМИРАЛ КУЗНЕЦОВ", emoji: "🇷🇺", price: 10000000000 },
+                { id: 16, name: "ПИРАТСКИЙ КОРАБЛЬ", emoji: "🏴‍☠️", price: 20000000000 },
+                { id: 17, name: "ЛЕТУЧИЙ ГОЛЛАНДЕЦ", emoji: "👻", price: 50000000000 },
+                { id: 18, name: "КОВЧЕГ", emoji: "🌈", price: 100000000000 },
+                { id: 19, name: "ПОСЕЙДОН", emoji: "🌊", price: 200000000000 }
             ]
         };
         
-        // ========== БИЗНЕСЫ (10 ШТУК) ==========
+        // ========== БИЗНЕСЫ (10 ШТУК С ВРЕМЕНЕМ УЛУЧШЕНИЯ) ==========
         const businessTemplates = [
-            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1000, baseUpgradeCost: 5000000, upgradeTime: 30, maxLevel: 20 },
-            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2000, baseUpgradeCost: 25000000, upgradeTime: 60, maxLevel: 20 },
-            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5000, baseUpgradeCost: 125000000, upgradeTime: 120, maxLevel: 20 },
-            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10000, baseUpgradeCost: 500000000, upgradeTime: 180, maxLevel: 20 },
-            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20000, baseUpgradeCost: 2500000000, upgradeTime: 300, maxLevel: 20 },
-            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50000, baseUpgradeCost: 12500000000, upgradeTime: 600, maxLevel: 20 },
-            { id: 6, name: "🏦 БАНК", baseIncome: 100000, baseUpgradeCost: 50000000000, upgradeTime: 1200, maxLevel: 20 },
-            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200000, baseUpgradeCost: 250000000000, upgradeTime: 2400, maxLevel: 20 },
-            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500000, baseUpgradeCost: 1250000000000, upgradeTime: 4800, maxLevel: 20 },
-            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000000, baseUpgradeCost: 5000000000000, upgradeTime: 9600, maxLevel: 20 }
+            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 100, upgradeTime: 30, maxLevel: 20 },
+            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 500, upgradeTime: 60, maxLevel: 20 },
+            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5, baseUpgradeCost: 2500, upgradeTime: 120, maxLevel: 20 },
+            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10, baseUpgradeCost: 10000, upgradeTime: 180, maxLevel: 20 },
+            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20, baseUpgradeCost: 50000, upgradeTime: 300, maxLevel: 20 },
+            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50, baseUpgradeCost: 250000, upgradeTime: 600, maxLevel: 20 },
+            { id: 6, name: "🏦 БАНК", baseIncome: 100, baseUpgradeCost: 1000000, upgradeTime: 1200, maxLevel: 20 },
+            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200, baseUpgradeCost: 5000000, upgradeTime: 2400, maxLevel: 20 },
+            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500, baseUpgradeCost: 25000000, upgradeTime: 4800, maxLevel: 20 },
+            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000, baseUpgradeCost: 100000000, upgradeTime: 9600, maxLevel: 20 }
         ];
-        
-        const upgradePrices = {
-            clickPower: [1000, 5000, 25000, 125000, 625000],
-            autoClicker: [2000, 10000, 50000, 250000, 1250000],
-            crit: [5000, 25000, 125000, 625000, 3125000]
-        };
         
         function formatNumber(num) {
             if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
@@ -1209,6 +1253,39 @@
             alert(`✅ Куплен ${t.name}!`);
         }
         
+        function startUpgrade(index) {
+            const business = gameState.myBusinesses[index];
+            if (!business) return;
+            
+            const t = businessTemplates[business.templateId];
+            if (!t) return;
+            
+            if ((business.level || 1) >= t.maxLevel) {
+                alert('❌ МАКСИМАЛЬНЫЙ УРОВЕНЬ!');
+                return;
+            }
+            
+            if (business.upgradeEnd && business.upgradeEnd > Date.now()) {
+                alert('⏱️ УЛУЧШЕНИЕ УЖЕ ИДЕТ!');
+                return;
+            }
+            
+            if ((gameState.balance || 0) < (business.upgradeCost || 0)) {
+                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                return;
+            }
+            
+            gameState.balance -= (business.upgradeCost || 0);
+            
+            business.upgradeEnd = Date.now() + ((business.upgradeTime || t.upgradeTime) * 1000);
+            
+            saveGame();
+            updateUI();
+            renderCurrentTab();
+            
+            alert(`✅ Улучшение запущено на ${business.upgradeTime || t.upgradeTime} сек.`);
+        }
+        
         function upgradeBusiness(index) {
             const business = gameState.myBusinesses[index];
             if (!business) return;
@@ -1221,16 +1298,11 @@
                 return;
             }
             
-            if ((gameState.balance || 0) < (business.upgradeCost || 0)) {
-                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-                return;
-            }
-            
-            gameState.balance -= (business.upgradeCost || 0);
-            
             business.level++;
             business.income = t.baseIncome * business.level;
             business.upgradeCost = Math.floor((business.upgradeCost || t.baseUpgradeCost) * 2.5);
+            business.upgradeTime = Math.floor((business.upgradeTime || t.upgradeTime) * 1.3);
+            business.upgradeEnd = 0;
             
             saveGame();
             updateUI();
@@ -1525,18 +1597,25 @@
         function updateUI() {
             if (!gameState) return;
             
-            // Обновляем баланс
             document.getElementById('balance').textContent = formatMoney(gameState.balance || 0);
             
             const totalEarned = gameState.totalEarned || 0;
             const percentChange = totalEarned > 0 ? ((gameState.balance - totalEarned) / totalEarned * 100).toFixed(2) : 0;
             document.getElementById('balanceChange').innerHTML = `+ ${formatMoney(totalEarned)} (${percentChange}%) за все время`;
             
-            // Сила клика: 3к * уровень
             const clickPower = BASE_CLICK_POWER * (gameState.clickPowerLevel + 1);
             document.getElementById('clickPower').textContent = '$ ' + formatNumber(clickPower) + ' тыс.';
             
-            // Обновляем текущий таб, если он открыт
+            // Проверяем завершение улучшений
+            const now = Date.now();
+            if (gameState.myBusinesses) {
+                gameState.myBusinesses.forEach(business => {
+                    if (business.upgradeEnd && business.upgradeEnd <= now) {
+                        upgradeBusiness(gameState.myBusinesses.indexOf(business));
+                    }
+                });
+            }
+            
             renderCurrentTab();
         }
         
@@ -1584,7 +1663,6 @@
             gameState.totalEarned = (gameState.totalEarned || 0) + earned;
             gameState.exp = (gameState.exp || 0) + earned / 100;
             
-            // Опыт пропуска
             if (gameState.battlePass && gameState.battlePass.level < 200) {
                 gameState.battlePass.exp += 100;
                 checkBattlePassLevel();
@@ -1699,7 +1777,6 @@
                 </div>
             `;
             
-            // Показываем первые 10, остальные по запросу
             const showCrypto = cryptoCurrencies.slice(0, 10);
             showCrypto.forEach(crypto => {
                 const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
@@ -1776,6 +1853,9 @@
                     gameState.myBusinesses.map((b, i) => {
                         const t = businessTemplates[b.templateId];
                         const managerBonus = b.manager ? b.manager.level * 10 : 0;
+                        const upgrading = b.upgradeEnd && b.upgradeEnd > Date.now();
+                        const timeLeft = upgrading ? Math.ceil((b.upgradeEnd - Date.now()) / 1000) : 0;
+                        const progressPercent = upgrading ? ((Date.now() - (b.upgradeEnd - (b.upgradeTime * 1000))) / (b.upgradeTime * 1000)) * 100 : 0;
                         
                         return `
                             <div class="business-item" onclick="openBusinessModal(${i})">
@@ -1787,6 +1867,12 @@
                                     <span>💰 +${formatNumber(b.income)}/сек</span>
                                     <span>📈 улучшить: ${formatMoney(b.upgradeCost)}</span>
                                 </div>
+                                ${upgrading ? `
+                                    <div class="business-progress">
+                                        <div class="business-progress-bar" style="width: ${progressPercent}%"></div>
+                                    </div>
+                                    <div class="upgrade-time">⏱️ Улучшение... ${timeLeft}с</div>
+                                ` : ''}
                                 ${b.manager ? `
                                     <div class="manager-info">
                                         <span class="manager-level">👔 Менеджер ур.${b.manager.level}</span>
@@ -1820,7 +1906,7 @@
                 </div>
                 
                 <div style="margin:16px 0;">
-                    <a href="#" style="color:#ffd700;" onclick="showSalon('cars')">Перейти в автосалон →</a>
+                    <a href="#" style="color:#ffd700;" onclick="showSalon('cars')">Перейти в автосалон (20 машин) →</a>
                 </div>
                 
                 <div class="section-title">
@@ -1839,7 +1925,7 @@
                 </div>
                 
                 <div style="margin:16px 0;">
-                    <a href="#" style="color:#ffd700;" onclick="showSalon('planes')">Перейти в авиасалон →</a>
+                    <a href="#" style="color:#ffd700;" onclick="showSalon('planes')">Перейти в авиасалон (20 самолетов) →</a>
                 </div>
                 
                 <div class="section-title">
@@ -1858,7 +1944,7 @@
                 </div>
                 
                 <div style="margin:16px 0;">
-                    <a href="#" style="color:#ffd700;" onclick="showSalon('ships')">Перейти в кораблесалон →</a>
+                    <a href="#" style="color:#ffd700;" onclick="showSalon('ships')">Перейти в кораблесалон (20 кораблей) →</a>
                 </div>
                 
                 <div class="section-title" style="margin-top:20px;">
@@ -1981,7 +2067,6 @@
             let html = '<div class="modal-title">🎫 БОЕВОЙ ПРОПУСК</div>';
             html += `<div style="text-align:center; margin-bottom:16px;">Уровень ${gameState.battlePass.level}/200</div>`;
             
-            // Показываем доступные награды
             for (let i = 1; i <= Math.min(gameState.battlePass.level, 20); i++) {
                 const isClaimed = gameState.battlePass.claimed.includes(i);
                 html += `
@@ -2007,9 +2092,9 @@
             const modalContent = document.getElementById('modalContent');
             
             const titles = {
-                cars: '🚗 АВТОСАЛОН',
-                planes: '✈️ АВИАСАЛОН',
-                ships: '🚢 КОРАБЛЕСАЛОН'
+                cars: '🚗 АВТОСАЛОН (20 машин)',
+                planes: '✈️ АВИАСАЛОН (20 самолетов)',
+                ships: '🚢 КОРАБЛЕСАЛОН (20 кораблей)'
             };
             
             let html = `<div class="modal-title">${titles[category]}</div>`;
@@ -2050,7 +2135,6 @@
             if (items.length === 0) {
                 html += '<div style="text-align:center; padding:30px; color:#8e8e98;">Пока ничего нет</div>';
             } else {
-                // Группируем по типу
                 const grouped = {};
                 items.forEach(item => {
                     if (!grouped[item.id]) grouped[item.id] = { count: 0, name: item.name, emoji: item.emoji };
@@ -2080,7 +2164,7 @@
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
             
-            let html = '<div class="modal-title">🏠 ВСЕ ДОМА</div>';
+            let html = '<div class="modal-title">🏠 ВСЕ ДОМА (50+)</div>';
             
             gameState.houses.forEach(house => {
                 html += `
@@ -2245,11 +2329,20 @@
             `;
             
             if ((business.level || 1) < t.maxLevel) {
-                content += `
-                    <button class="card-btn" style="margin-top:12px;" onclick="upgradeBusiness(${index}); closeModal();">
-                        Улучшить (${formatMoney(business.upgradeCost || 0)})
-                    </button>
-                `;
+                if (business.upgradeEnd && business.upgradeEnd > Date.now()) {
+                    const timeLeft = Math.ceil((business.upgradeEnd - Date.now()) / 1000);
+                    content += `
+                        <div style="color:#ff9800; text-align:center; margin:12px 0;">
+                            ⏱️ Улучшение... ${timeLeft}с
+                        </div>
+                    `;
+                } else {
+                    content += `
+                        <button class="card-btn" style="margin-top:12px;" onclick="startUpgrade(${index}); closeModal();">
+                            🚀 Улучшить (${formatMoney(business.upgradeCost || 0)}) - ${business.upgradeTime || t.upgradeTime}с
+                        </button>
+                    `;
+                }
             }
             
             content += `
@@ -2403,9 +2496,11 @@
         }
         
         function resetGame() {
-            if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС?')) {
+            if (confirm('ТОЧНО СБРОСИТЬ ВЕСЬ ПРОГРЕСС? Это действие необратимо!')) {
+                // Полностью очищаем все сохранения
                 localStorage.removeItem('imperiaClickerSave_' + currentUserId);
                 localStorage.removeItem('deviceId');
+                // Перезагружаем страницу для новой игры
                 location.reload();
             }
         }
@@ -2496,7 +2591,6 @@
                 gameState.balance = (gameState.balance || 0) + income;
                 gameState.totalEarned = (gameState.totalEarned || 0) + income;
                 
-                // Опыт пропуска
                 if (gameState.battlePass && gameState.battlePass.level < 200) {
                     gameState.battlePass.exp += income / 10;
                     checkBattlePassLevel();
@@ -2505,7 +2599,14 @@
             
             updateUI();
             saveGame();
-        }, 1000);
+        }, 1000); // Доход раз в секунду
+        
+        // Обновление интерфейса каждые 0.1 секунды
+        setInterval(() => {
+            if (gameState) {
+                updateUI();
+            }
+        }, 100);
         
         setInterval(() => {
             if (gameState) {
@@ -2582,7 +2683,7 @@
             window.showAllHouses = showAllHouses;
             window.openHouseModal = openHouseModal;
             window.buyBusiness = buyBusiness;
-            window.upgradeBusiness = upgradeBusiness;
+            window.startUpgrade = startUpgrade;
             window.hireManager = hireManager;
             window.sellBusiness = sellBusiness;
             window.showBuyBusinessModal = showBuyBusinessModal;
