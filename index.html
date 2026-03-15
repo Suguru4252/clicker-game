@@ -332,6 +332,69 @@
             background: rgba(255, 68, 68, 0.1);
         }
         
+        .mining-farm {
+            background: rgba(0, 200, 83, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #00c853;
+        }
+        
+        .farm-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .farm-name {
+            font-weight: 600;
+            color: #00c853;
+            font-size: 16px;
+        }
+        
+        .farm-level {
+            color: #ffd700;
+            font-size: 14px;
+        }
+        
+        .farm-progress {
+            background: rgba(255,255,255,0.1);
+            height: 6px;
+            border-radius: 3px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+        
+        .farm-progress-bar {
+            height: 100%;
+            background: #00c853;
+            width: 0%;
+        }
+        
+        .farm-income {
+            color: #4caf50;
+            font-size: 13px;
+            margin: 4px 0;
+        }
+        
+        .farm-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .farm-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #00c853;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+        
         .business-item {
             background: #1a1c24;
             border-radius: 16px;
@@ -403,16 +466,6 @@
         
         .manager-bonus {
             color: #4caf50;
-        }
-        
-        .manager-btn {
-            background: #7b1fa2;
-            border: none;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            cursor: pointer;
         }
         
         .crypto-item {
@@ -863,6 +916,11 @@
             font-weight: bold;
             margin-left: 8px;
         }
+        
+        .top-player-highlight {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid gold;
+        }
     </style>
 </head>
 <body>
@@ -894,6 +952,7 @@
             <div class="nav-item active" data-tab="earn"><span>👆</span>Заработок</div>
             <div class="nav-item" data-tab="investments"><span>📈</span>Инвестиции</div>
             <div class="nav-item" data-tab="business"><span>💼</span>Бизнес</div>
+            <div class="nav-item" data-tab="mining"><span>⛏️</span>Майнинг</div>
             <div class="nav-item" data-tab="items"><span>📦</span>Предметы</div>
             <div class="nav-item" data-tab="profile"><span>👤</span>Профиль</div>
         </div>
@@ -935,14 +994,15 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '7.5.0';
+        const APP_VERSION = '8.1.0';
         const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter'];
         const ADMIN_PASSWORD = '2a3d4g5j';
         const MAX_BUSINESSES = 8;
+        const MAX_MINING_FARMS = 20;
+        const MAX_FARM_LEVEL = 500;
         const BASE_CLICK_POWER = 3000;
         const HOUSE_INCOME_MULTIPLIER = 4.44;
         
-        // Топ-100 богатейших людей Forbes (реальные имена)
         const forbesTop100 = [
             "Bernard Arnault", "Elon Musk", "Jeff Bezos", "Larry Ellison", "Warren Buffett",
             "Bill Gates", "Michael Bloomberg", "Carlos Slim Helu", "Mukesh Ambani", "Steve Ballmer",
@@ -991,7 +1051,7 @@
         
         currentUserId = getDeviceId();
         
-        // ========== 50+ КРИПТОВАЛЮТ (ВСЕ В ОДНУ СТРОЧКУ) ==========
+        // ========== 50+ КРИПТОВАЛЮТ ==========
         const cryptoCurrencies = [
             { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2, incomePerCoin: 0.5 },
             { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25, incomePerCoin: 0.3 },
@@ -1145,7 +1205,7 @@
             ]
         };
         
-        // ========== БИЗНЕСЫ (ЦЕНЫ КАК В ПРОШЛОМ КОДЕ) ==========
+        // ========== БИЗНЕСЫ ==========
         const businessTemplates = [
             { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 5000, baseUpgradeCost: 50000, upgradeTime: 30, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
             { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 50000, baseUpgradeCost: 500000, upgradeTime: 60, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
@@ -1155,6 +1215,13 @@
             { id: 5, name: "🎰 КАЗИНО", baseIncome: 100000000, baseUpgradeCost: 10000000000, upgradeTime: 600, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
             { id: 6, name: "🏦 БАНК", baseIncome: 1500000000, baseUpgradeCost: 40000000000, upgradeTime: 1200, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
             { id: 7, name: "🏛️ ИМПЕРИЯ", baseIncome: 5000000000, baseUpgradeCost: 100000000000, upgradeTime: 2400, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 }
+        ];
+        
+        // ========== КРИПТО-МАЙНИНГ ==========
+        const miningCryptos = [
+            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, incomePerLevel: 100 },
+            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, incomePerLevel: 50 },
+            { id: 2, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, incomePerLevel: 10 }
         ];
         
         let specialItem = {
@@ -1224,6 +1291,10 @@
                     
                     if (!gameState.myBusinesses) {
                         gameState.myBusinesses = [];
+                    }
+                    
+                    if (!gameState.miningFarms) {
+                        gameState.miningFarms = [];
                     }
                     
                     if (!gameState.battlePass) {
@@ -1321,6 +1392,12 @@
                 });
             }
             
+            if (gameState.miningFarms) {
+                gameState.miningFarms.forEach(farm => {
+                    income += (farm.crypto.basePrice * farm.level / 100) * seconds;
+                });
+            }
+            
             if (specialItem.owned) {
                 income += specialItem.income * seconds;
             }
@@ -1377,6 +1454,76 @@
                 }
             });
             return total;
+        }
+        
+        // ========== КРИПТО-МАЙНИНГ ==========
+        function buyMiningFarm() {
+            if (gameState.miningFarms.length >= MAX_MINING_FARMS) {
+                alert(`❌ МАКСИМУМ ${MAX_MINING_FARMS} ФЕРМ!`);
+                return;
+            }
+            
+            const cost = 1000000000; // 1 миллиард
+            if (gameState.balance < cost) {
+                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                return;
+            }
+            
+            gameState.balance -= cost;
+            
+            if (!gameState.miningFarms) gameState.miningFarms = [];
+            
+            gameState.miningFarms.push({
+                id: Date.now(),
+                level: 1,
+                crypto: miningCryptos[Math.floor(Math.random() * miningCryptos.length)],
+                progress: 0,
+                maxProgress: 100,
+                lastUpdate: Date.now()
+            });
+            
+            saveGame();
+            updateUI();
+            renderTab('mining');
+        }
+        
+        function upgradeMiningFarm(index) {
+            const farm = gameState.miningFarms[index];
+            if (!farm) return;
+            
+            if (farm.level >= MAX_FARM_LEVEL) {
+                alert(`❌ МАКСИМАЛЬНЫЙ УРОВЕНЬ ${MAX_FARM_LEVEL}!`);
+                return;
+            }
+            
+            const cost = farm.level * 5000000000; // +500% стоимости
+            if (gameState.balance < cost) {
+                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                return;
+            }
+            
+            gameState.balance -= cost;
+            farm.level++;
+            
+            saveGame();
+            updateUI();
+            renderTab('mining');
+        }
+        
+        function sellMiningFarm(index) {
+            const farm = gameState.miningFarms[index];
+            if (!farm) return;
+            
+            const sellPrice = farm.level * 500000000; // Цена продажи
+            
+            if (confirm(`Продать ферму за ${formatMoney(sellPrice)}💰?`)) {
+                gameState.miningFarms.splice(index, 1);
+                gameState.balance += sellPrice;
+                
+                saveGame();
+                updateUI();
+                renderTab('mining');
+            }
         }
         
         // ========== ПОКУПКА ПРЕДМЕТОВ ==========
@@ -2062,28 +2209,62 @@
         }
         
         // ========== ТОП-100 ==========
+        function getPlayerRank() {
+            // Создаем массив всех состояний (Forbes + игрок)
+            const allWealth = [];
+            
+            // Добавляем Forbes людей
+            for (let i = 0; i < forbesTop100.length; i++) {
+                allWealth.push({
+                    name: forbesTop100[i],
+                    money: (100 - i) * 1000000000000, // Условное состояние
+                    isPlayer: false
+                });
+            }
+            
+            // Добавляем игрока
+            const playerMoney = gameState.totalEarned || 0;
+            allWealth.push({
+                name: currentUser,
+                money: playerMoney,
+                isPlayer: true
+            });
+            
+            // Сортируем по убыванию денег
+            allWealth.sort((a, b) => b.money - a.money);
+            
+            // Находим место игрока
+            const playerIndex = allWealth.findIndex(item => item.isPlayer);
+            
+            return {
+                rank: playerIndex + 1,
+                list: allWealth.slice(0, 100) // Берем топ-100
+            };
+        }
+        
         function showTop100() {
             const modal = document.getElementById('topModal');
             const modalContent = document.getElementById('topModalContent');
             
-            let html = '<div class="modal-title">🏆 ТОП-100 БОГАТЕЙШИХ ЛЮДЕЙ FORBES</div>';
+            const { rank, list } = getPlayerRank();
             
-            for (let i = 0; i < 100; i++) {
+            let html = '<div class="modal-title">🏆 ТОП-100 БОГАТЕЙШИХ ЛЮДЕЙ</div>';
+            html += `<div style="text-align:center; margin-bottom:16px; color:#ffd700;">Ваше место: ${rank}</div>`;
+            
+            for (let i = 0; i < Math.min(100, list.length); i++) {
+                const item = list[i];
                 let rankClass = '';
                 if (i === 0) rankClass = 'top-rank-1';
                 else if (i === 1) rankClass = 'top-rank-2';
                 else if (i === 2) rankClass = 'top-rank-3';
                 
-                // Игрок где-то в списке (например, на 42 месте)
-                const isPlayer = (i === 41); // 42-е место (индекс 41)
-                const name = isPlayer ? currentUser : forbesTop100[i];
-                const money = (100 - i) * 1000000000000; // Условное состояние
+                const isPlayer = item.isPlayer;
                 
                 html += `
-                    <div class="top-item" style="${isPlayer ? 'background: rgba(255,215,0,0.2); border:1px solid gold;' : ''}">
+                    <div class="top-item ${isPlayer ? 'top-player-highlight' : ''}">
                         <div class="top-rank ${rankClass}">${i + 1}</div>
-                        <div class="top-name">${name} ${isPlayer ? '👑' : ''}</div>
-                        <div class="top-money">${formatMoney(money)}</div>
+                        <div class="top-name">${item.name} ${isPlayer ? '👑' : ''}</div>
+                        <div class="top-money">${formatMoney(item.money)}</div>
                     </div>
                 `;
             }
@@ -2116,6 +2297,21 @@
                 gameState.myBusinesses.forEach((business, index) => {
                     if (business.upgradeEnd && business.upgradeEnd <= now) {
                         completeUpgrade(index);
+                    }
+                });
+            }
+            
+            if (gameState.miningFarms) {
+                gameState.miningFarms.forEach(farm => {
+                    const timePassed = (now - (farm.lastUpdate || now)) / 1000;
+                    farm.progress += timePassed * farm.level;
+                    farm.lastUpdate = now;
+                    
+                    while (farm.progress >= farm.maxProgress) {
+                        farm.progress -= farm.maxProgress;
+                        const earned = Math.floor(farm.crypto.basePrice * farm.level);
+                        gameState.balance += earned;
+                        gameState.totalEarned += earned;
                     }
                 });
             }
@@ -2196,6 +2392,8 @@
                 renderInvestments(content);
             } else if (tab === 'business') {
                 renderBusiness(content);
+            } else if (tab === 'mining') {
+                renderMining(content);
             } else if (tab === 'items') {
                 renderItems(content);
             } else if (tab === 'profile') {
@@ -2222,6 +2420,13 @@
             
             let cryptoIncome = calculateTotalCryptoIncome();
             
+            let miningIncome = 0;
+            if (gameState.miningFarms) {
+                gameState.miningFarms.forEach(farm => {
+                    miningIncome += farm.crypto.basePrice * farm.level / 100;
+                });
+            }
+            
             let houseIncome = 0;
             if (gameState.houses) {
                 gameState.houses.forEach(h => {
@@ -2245,7 +2450,7 @@
             
             let specialIncome = specialItem.owned ? specialItem.income : 0;
             
-            let totalIncome = businessIncome + cryptoIncome + houseIncome + islandIncome + specialIncome + (gameState.autoClickerLevel || 0);
+            let totalIncome = businessIncome + cryptoIncome + miningIncome + houseIncome + islandIncome + specialIncome + (gameState.autoClickerLevel || 0);
             
             content.innerHTML = `
                 <div class="click-area" onclick="handleClick(event)">
@@ -2286,6 +2491,10 @@
                         <span style="color:#ffd700;">+${formatMoney(cryptoIncome)}/сек</span>
                     </div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>⛏️ Майнинг</span>
+                        <span style="color:#ffd700;">+${formatMoney(miningIncome)}/сек</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                         <span>🏠 Дома</span>
                         <span style="color:#ffd700;">+${formatMoney(houseIncome)}/сек</span>
                     </div>
@@ -2307,7 +2516,6 @@
             let totalPortfolio = calculateTotalCryptoPortfolio();
             let totalIncome = calculateTotalCryptoIncome();
             
-            // Секция домов вверху
             const ownedHouses = gameState.houses.filter(h => h.owned).length;
             const totalHouses = gameState.houses.length;
             
@@ -2379,70 +2587,41 @@
             });
         }
         
-        function showHousesModal() {
-            const modal = document.getElementById('housesModal');
-            const modalContent = document.getElementById('housesModalContent');
+        function renderMining(content) {
+            let html = '<div class="section-title"><h3>⛏️ КРИПТО-МАЙНИНГ</h3></div>';
+            html += `<div style="text-align:center; margin:10px 0; color:#8e8e98;">📊 ФЕРМ: ${gameState.miningFarms?.length || 0}/${MAX_MINING_FARMS}</div>`;
             
-            let html = '<div class="modal-title">🏠 УПРАВЛЕНИЕ ДОМАМИ</div>';
-            
-            html += '<h4 style="color:#ffd700; margin:16px 0 8px;">🏪 МАГАЗИН ДОМОВ</h4>';
-            
-            gameState.houses.forEach(house => {
-                if (!house.owned) {
-                    const houseIncome = house.baseIncome;
-                    
-                    html += `
-                        <div class="house-item">
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="font-size:32px;">${house.emoji}</div>
-                                <div style="flex:1;">
-                                    <div style="font-weight:600;">${house.name}</div>
-                                    <div style="color:#ffd700;">${formatMoney(house.price)}</div>
-                                    <div style="color:#4caf50; font-size:12px;">💰 +${formatMoney(houseIncome)}/сек</div>
-                                    <button class="card-btn" style="margin-top:8px;" onclick="buyHouse(${house.id}); closeHousesModal();">Купить</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-            
-            html += '<h4 style="color:#ffd700; margin:24px 0 8px;">🏠 МОИ ДОМА</h4>';
-            
-            const ownedHouses = gameState.houses.filter(h => h.owned);
-            if (ownedHouses.length === 0) {
-                html += '<div style="text-align:center; padding:20px; color:#8e8e98;">У вас пока нет домов</div>';
+            if (!gameState.miningFarms || gameState.miningFarms.length === 0) {
+                html += '<div style="text-align:center; padding:30px; color:#8e8e98;">У вас нет майнинг-ферм</div>';
             } else {
-                ownedHouses.forEach(house => {
-                    const houseIncome = house.baseIncome * (1 + Object.values(house.upgrades).reduce((a, b) => a + b, 0));
-                    const sellPrice = Math.floor(house.price * 0.5);
+                const now = Date.now();
+                gameState.miningFarms.forEach((farm, index) => {
+                    const progressPercent = (farm.progress / farm.maxProgress) * 100;
                     
                     html += `
-                        <div class="house-item">
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="font-size:32px;">${house.emoji}</div>
-                                <div style="flex:1;">
-                                    <div style="font-weight:600;">${house.name}</div>
-                                    <div style="color:#4caf50;">💰 +${formatMoney(houseIncome)}/сек</div>
-                                    <div style="display:flex; gap:8px; margin-top:8px;">
-                                        <button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="openHouseModal(${house.id}); closeHousesModal();">Улучшить</button>
-                                        <button class="sell-btn" onclick="sellHouse(${house.id}); closeHousesModal();">Продать за ${formatMoney(sellPrice)}</button>
-                                    </div>
-                                </div>
+                        <div class="mining-farm">
+                            <div class="farm-header">
+                                <span class="farm-name">${farm.crypto.emoji} ${farm.crypto.name}</span>
+                                <span class="farm-level">УРОВЕНЬ ${farm.level}/${MAX_FARM_LEVEL}</span>
+                            </div>
+                            <div class="farm-progress">
+                                <div class="farm-progress-bar" style="width: ${Math.min(progressPercent, 100)}%"></div>
+                            </div>
+                            <div class="farm-income">💰 ДОХОД: +${formatMoney(farm.crypto.basePrice * farm.level / 100)}/сек</div>
+                            <div class="farm-actions">
+                                <button class="farm-btn" onclick="upgradeMiningFarm(${index})">📈 Улучшить (${formatMoney(farm.level * 5000000000)})</button>
+                                <button class="farm-btn" style="background:#ff4444;" onclick="sellMiningFarm(${index})">💰 Продать</button>
                             </div>
                         </div>
                     `;
                 });
             }
             
-            html += '<div class="close-btn" onclick="closeHousesModal()">ЗАКРЫТЬ</div>';
+            if (gameState.miningFarms.length < MAX_MINING_FARMS) {
+                html += '<button class="card-btn" style="margin-top:16px;" onclick="buyMiningFarm()">+ КУПИТЬ ФЕРМУ (1.000.000.000💰)</button>';
+            }
             
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function closeHousesModal() {
-            document.getElementById('housesModal').classList.remove('active');
+            content.innerHTML = html;
         }
         
         function renderBusiness(content) {
@@ -2617,8 +2796,11 @@
                     cryptoTotal += cryptoData.basePrice * c.owned;
                 }
             });
+            let miningTotal = gameState.miningFarms?.reduce((sum, f) => sum + (f.level * f.crypto.basePrice), 0) || 0;
             let housesTotal = gameState.houses.filter(h => h.owned).reduce((sum, h) => sum + h.price, 0) || 0;
             let islandsTotal = gameState.islands.filter(i => i.owned).reduce((sum, i) => sum + i.price, 0) || 0;
+            
+            const { rank } = getPlayerRank();
             
             content.innerHTML = `
                 <div class="section-title">
@@ -2640,6 +2822,11 @@
                 </div>
                 <div style="text-align:center; font-size:12px; color:#8e8e98; margin-top:4px;">
                     ${formatFullNumber(gameState.exp || 0)} / ${formatFullNumber(expNeeded)} опыта
+                </div>
+                
+                <div class="stat-box" style="margin-bottom:12px;">
+                    <div class="stat-label">Место в топе</div>
+                    <div class="stat-value">#${rank}</div>
                 </div>
                 
                 <div class="stat-box" style="margin-bottom:12px;">
@@ -2670,6 +2857,11 @@
                 <div class="stat-box" style="margin-bottom:12px;">
                     <div class="stat-label">Заработано с крипты</div>
                     <div class="stat-value">${formatMoney(cryptoTotal)}</div>
+                </div>
+                
+                <div class="stat-box" style="margin-bottom:12px;">
+                    <div class="stat-label">Заработано с майнинга</div>
+                    <div class="stat-value">${formatMoney(miningTotal)}</div>
                 </div>
                 
                 <div class="stat-box" style="margin-bottom:12px;">
@@ -2791,6 +2983,72 @@
             
             modalContent.innerHTML = html;
             modal.classList.add('active');
+        }
+        
+        function showHousesModal() {
+            const modal = document.getElementById('housesModal');
+            const modalContent = document.getElementById('housesModalContent');
+            
+            let html = '<div class="modal-title">🏠 УПРАВЛЕНИЕ ДОМАМИ</div>';
+            
+            html += '<h4 style="color:#ffd700; margin:16px 0 8px;">🏪 МАГАЗИН ДОМОВ</h4>';
+            
+            gameState.houses.forEach(house => {
+                if (!house.owned) {
+                    const houseIncome = house.baseIncome;
+                    
+                    html += `
+                        <div class="house-item">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="font-size:32px;">${house.emoji}</div>
+                                <div style="flex:1;">
+                                    <div style="font-weight:600;">${house.name}</div>
+                                    <div style="color:#ffd700;">${formatMoney(house.price)}</div>
+                                    <div style="color:#4caf50; font-size:12px;">💰 +${formatMoney(houseIncome)}/сек</div>
+                                    <button class="card-btn" style="margin-top:8px;" onclick="buyHouse(${house.id}); closeHousesModal();">Купить</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            html += '<h4 style="color:#ffd700; margin:24px 0 8px;">🏠 МОИ ДОМА</h4>';
+            
+            const ownedHouses = gameState.houses.filter(h => h.owned);
+            if (ownedHouses.length === 0) {
+                html += '<div style="text-align:center; padding:20px; color:#8e8e98;">У вас пока нет домов</div>';
+            } else {
+                ownedHouses.forEach(house => {
+                    const houseIncome = house.baseIncome * (1 + Object.values(house.upgrades).reduce((a, b) => a + b, 0));
+                    const sellPrice = Math.floor(house.price * 0.5);
+                    
+                    html += `
+                        <div class="house-item">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="font-size:32px;">${house.emoji}</div>
+                                <div style="flex:1;">
+                                    <div style="font-weight:600;">${house.name}</div>
+                                    <div style="color:#4caf50;">💰 +${formatMoney(houseIncome)}/сек</div>
+                                    <div style="display:flex; gap:8px; margin-top:8px;">
+                                        <button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="openHouseModal(${house.id}); closeHousesModal();">Улучшить</button>
+                                        <button class="sell-btn" onclick="sellHouse(${house.id}); closeHousesModal();">Продать за ${formatMoney(sellPrice)}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += '<div class="close-btn" onclick="closeHousesModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        function closeHousesModal() {
+            document.getElementById('housesModal').classList.remove('active');
         }
         
         function openHouseModal(houseId) {
@@ -3022,6 +3280,7 @@
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminGiveDiamonds()">💎 ВЫДАТЬ АЛМАЗЫ</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminGiveCrypto()">📈 ВЫДАТЬ КРИПТУ</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminGiveBusiness()">💼 ВЫДАТЬ БИЗНЕС</button>
+                    <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminGiveFarm()">⛏️ ВЫДАТЬ ФЕРМУ</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminResetMoney()">💰 ОБНУЛИТЬ ДЕНЬГИ</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminResetDiamonds()">💎 ОБНУЛИТЬ АЛМАЗЫ</button>
                     <button class="card-btn" style="background:#ff4444; margin-top:8px;" onclick="adminResetLevel()">📊 ОБНУЛИТЬ УРОВЕНЬ</button>
@@ -3111,6 +3370,28 @@
             saveGame();
             updateUI();
             alert(`✅ Выдан бизнес ${t.name}`);
+        }
+        
+        function adminGiveFarm() {
+            if (gameState.miningFarms.length >= MAX_MINING_FARMS) {
+                alert(`❌ Уже максимум ${MAX_MINING_FARMS} ферм!`);
+                return;
+            }
+            
+            if (!gameState.miningFarms) gameState.miningFarms = [];
+            
+            gameState.miningFarms.push({
+                id: Date.now(),
+                level: 1,
+                crypto: miningCryptos[Math.floor(Math.random() * miningCryptos.length)],
+                progress: 0,
+                maxProgress: 100,
+                lastUpdate: Date.now()
+            });
+            
+            saveGame();
+            updateUI();
+            alert('✅ Выдана майнинг-ферма');
         }
         
         function adminResetMoney() {
@@ -3252,6 +3533,23 @@
                 });
             }
             
+            if (gameState.miningFarms) {
+                const now = Date.now();
+                gameState.miningFarms.forEach(farm => {
+                    const timePassed = (now - (farm.lastUpdate || now)) / 1000;
+                    farm.progress += timePassed * farm.level;
+                    farm.lastUpdate = now;
+                    
+                    while (farm.progress >= farm.maxProgress) {
+                        farm.progress -= farm.maxProgress;
+                        const earned = Math.floor(farm.crypto.basePrice * farm.level);
+                        gameState.balance += earned;
+                        gameState.totalEarned += earned;
+                        income += earned;
+                    }
+                });
+            }
+            
             if (gameState.houses) {
                 gameState.houses.forEach(h => {
                     if (h.owned) {
@@ -3345,6 +3643,7 @@
                     playTime: 0,
                     lastOnlineTime: Date.now(),
                     myBusinesses: [],
+                    miningFarms: [],
                     battlePass: { level: 1, exp: 0, claimed: [], lastReset: Date.now() },
                     businessSlots: MAX_BUSINESSES,
                     houses: houses.map(h => ({ ...h })),
@@ -3380,6 +3679,9 @@
             window.sellBusiness = sellBusiness;
             window.showBuyBusinessModal = showBuyBusinessModal;
             window.openBusinessModal = openBusinessModal;
+            window.buyMiningFarm = buyMiningFarm;
+            window.upgradeMiningFarm = upgradeMiningFarm;
+            window.sellMiningFarm = sellMiningFarm;
             window.openTradeModal = openTradeModal;
             window.setTradeAmount = setTradeAmount;
             window.quickBuyMaxMoney = quickBuyMaxMoney;
@@ -3408,6 +3710,7 @@
             window.adminGiveDiamonds = adminGiveDiamonds;
             window.adminGiveCrypto = adminGiveCrypto;
             window.adminGiveBusiness = adminGiveBusiness;
+            window.adminGiveFarm = adminGiveFarm;
             window.adminResetMoney = adminResetMoney;
             window.adminResetDiamonds = adminResetDiamonds;
             window.adminResetLevel = adminResetLevel;
@@ -3420,4 +3723,3 @@
     </script>
 </body>
 </html>
-
