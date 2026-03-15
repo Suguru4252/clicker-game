@@ -829,6 +829,40 @@
             margin-bottom: 12px;
             border: 1px solid #ffd700;
         }
+        
+        .top-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .top-rank {
+            width: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .top-rank-1 { color: #ffd700; }
+        .top-rank-2 { color: #c0c0c0; }
+        .top-rank-3 { color: #cd7f32; }
+        
+        .top-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .top-money {
+            font-size: 14px;
+            color: #ffd700;
+            font-weight: bold;
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -895,14 +929,42 @@
         <div class="modal-content" id="housesModalContent"></div>
     </div>
     
+    <div class="modal" id="topModal">
+        <div class="modal-content" id="topModalContent"></div>
+    </div>
+    
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '7.4.0';
+        const APP_VERSION = '7.5.0';
         const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter'];
         const ADMIN_PASSWORD = '2a3d4g5j';
         const MAX_BUSINESSES = 8;
         const BASE_CLICK_POWER = 3000;
-        const HOUSE_INCOME_MULTIPLIER = 4.44; // +444%
+        const HOUSE_INCOME_MULTIPLIER = 4.44;
+        
+        // Топ-100 богатейших людей Forbes (реальные имена)
+        const forbesTop100 = [
+            "Bernard Arnault", "Elon Musk", "Jeff Bezos", "Larry Ellison", "Warren Buffett",
+            "Bill Gates", "Michael Bloomberg", "Carlos Slim Helu", "Mukesh Ambani", "Steve Ballmer",
+            "Francoise Bettencourt Meyers", "Larry Page", "Sergey Brin", "Mark Zuckerberg", "Amancio Ortega",
+            "Rob Walton", "Jim Walton", "Alice Walton", "Julia Koch", "Miriam Adelson",
+            "Michael Dell", "MacKenzie Scott", "Jacqueline Mars", "John Mars", "Charles Koch",
+            "David Thomson", "Klaus-Michael Kuehne", "Reinhold Wuerth", "Leonardo Del Vecchio", "Dieter Schwarz",
+            "Phil Knight", "Travis Kalanick", "Jack Ma", "Ma Huateng", "Li Ka-shing",
+            "He Xiangjian", "Lee Shau Kee", "Hui Ka Yan", "Wang Jianlin", "Yang Huiyan",
+            "Liu Qiangdong", "Ding Lei", "Zhang Yiming", "Colin Huang", "Lei Jun",
+            "Robin Zeng", "Li Shufu", "Wang Chuanfu", "Xu Jiayin", "Sun Piaoyang",
+            "Zhong Shanshan", "Qin Yinglin", "Chen Bang", "Fan Hongwei", "Li Xiting",
+            "Gong Hongjia", "Wang Laichun", "Lu Xiangyang", "Wu Yajun", "Zhou Qunfei",
+            "Liu Yongxing", "Liu Yonghao", "Zhang Jindong", "Sun Guangxin", "Yan Zhi",
+            "Xu Shihui", "Gao Jifan", "Li Zhenguo", "Cao Renxian", "Wang Yusuo",
+            "Zhao Yan", "Li Ping", "Zhang Bo", "Wang Wei", "Yu Minhong",
+            "Zhang Bangxin", "Li Ge", "Wang Xing", "Cheng Wei", "Chen Xiaohua",
+            "Wu Guangming", "Li Dong", "Liu Chuanzhi", "Guo Taiming", "Terry Gou",
+            "Masayoshi Son", "Tadashi Yanai", "Lee Kun-hee", "Jay Y. Lee", "Kwon Hyuk-bin",
+            "Kim Beom-su", "Brian Kim", "Tan Yu", "Robert Ng", "Philip Ng",
+            "Kwek Leng Beng", "Quek Leng Chan", "Ananda Krishnan", "Robert Kuok", "Lee Shin Cheng"
+        ];
         
         let currentUser = "ИГРОК";
         let currentUserId = null;
@@ -929,7 +991,7 @@
         
         currentUserId = getDeviceId();
         
-        // ========== 50+ КРИПТОВАЛЮТ ==========
+        // ========== 50+ КРИПТОВАЛЮТ (ВСЕ В ОДНУ СТРОЧКУ) ==========
         const cryptoCurrencies = [
             { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2, incomePerCoin: 0.5 },
             { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25, incomePerCoin: 0.3 },
@@ -950,20 +1012,33 @@
             { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.003 },
             { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.002 },
             { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.001 },
-            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.0005 }
+            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.0005 },
+            { id: 20, name: "BITCOIN CASH", emoji: "BCH", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.04 },
+            { id: 21, name: "LINK", emoji: "🔗", basePrice: 15000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.03 },
+            { id: 22, name: "UNISWAP", emoji: "UNI", basePrice: 12000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.025 },
+            { id: 23, name: "AAVE", emoji: "AAVE", basePrice: 10000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.02 },
+            { id: 24, name: "MAKER", emoji: "MKR", basePrice: 8000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.018 },
+            { id: 25, name: "COMPOUND", emoji: "COMP", basePrice: 6000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.015 },
+            { id: 26, name: "YFI", emoji: "YFI", basePrice: 5000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.012 },
+            { id: 27, name: "SUSHI", emoji: "🍣", basePrice: 4000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.01 },
+            { id: 28, name: "CAKE", emoji: "🥞", basePrice: 3000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.008 },
+            { id: 29, name: "BAKE", emoji: "🥖", basePrice: 2000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.006 },
+            { id: 30, name: "XLM", emoji: "XLM", basePrice: 1500, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.005 },
+            { id: 31, name: "ALGO", emoji: "ALGO", basePrice: 1200, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.004 },
+            { id: 32, name: "VET", emoji: "VET", basePrice: 1000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.003 },
+            { id: 33, name: "THETA", emoji: "THETA", basePrice: 800, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.0025 },
+            { id: 34, name: "FILECOIN", emoji: "FIL", basePrice: 600, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.002 },
+            { id: 35, name: "ICP", emoji: "ICP", basePrice: 500, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.0015 },
+            { id: 36, name: "NEAR", emoji: "NEAR", basePrice: 400, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.001 },
+            { id: 37, name: "APTOS", emoji: "APT", basePrice: 300, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.0008 },
+            { id: 38, name: "SUI", emoji: "SUI", basePrice: 200, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.0005 },
+            { id: 39, name: "SEI", emoji: "SEI", basePrice: 150, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.0004 },
+            { id: 40, name: "TIA", emoji: "TIA", basePrice: 100, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.0003 },
+            { id: 41, name: "INJ", emoji: "INJ", basePrice: 80, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.00025 },
+            { id: 42, name: "ARB", emoji: "ARB", basePrice: 60, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.0002 },
+            { id: 43, name: "OP", emoji: "OP", basePrice: 50, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.00015 },
+            { id: 44, name: "STRK", emoji: "STRK", basePrice: 40, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.0001 }
         ];
-        
-        for (let i = 20; i < 50; i++) {
-            cryptoCurrencies.push({
-                id: i,
-                name: `CRYPTO-${i}`,
-                emoji: "🪙",
-                basePrice: 1000000 / (i - 15),
-                maxBuy: 5000000000,
-                volatility: 0.5,
-                incomePerCoin: 0.001 * (50 - i)
-            });
-        }
         
         let cryptoPrices = [];
         
@@ -994,8 +1069,8 @@
                 id: i,
                 name: `${['Тропический', 'Вулканический', 'Ледяной', 'Пустынный', 'Райский'][i % 5]} остров ${Math.floor(i/2) + 1}`,
                 emoji: ['🏝️', '🌋', '🏔️', '🏜️', '🌴'][i % 5],
-                price: 1000000000 * Math.pow(5, i), // 1B, 5B, 25B, 125B, 625B, 3.125T, 15.625T, 78.125T, 390.625T, 1.953Q
-                income: 5000000 * Math.pow(2, i), // 5M, 10M, 20M, 40M, 80M, 160M, 320M, 640M, 1.28B, 2.56B
+                price: 1000000000 * Math.pow(5, i),
+                income: 5000000 * Math.pow(2, i),
                 owned: false
             });
         }
@@ -1070,16 +1145,16 @@
             ]
         };
         
-        // ========== БИЗНЕСЫ С УМЕНЬШЕННЫМИ ЦЕНАМИ НА 300% ==========
+        // ========== БИЗНЕСЫ (ЦЕНЫ КАК В ПРОШЛОМ КОДЕ) ==========
         const businessTemplates = [
-            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 5000, baseUpgradeCost: 16667, upgradeTime: 30, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 50000, baseUpgradeCost: 166667, upgradeTime: 60, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 500000, baseUpgradeCost: 16666667, upgradeTime: 120, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 3, name: "🏭 ЗАВОД", baseIncome: 5000000, baseUpgradeCost: 33333333, upgradeTime: 180, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 50000000, baseUpgradeCost: 333333333, upgradeTime: 300, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 5, name: "🎰 КАЗИНО", baseIncome: 100000000, baseUpgradeCost: 3333333333, upgradeTime: 600, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 6, name: "🏦 БАНК", baseIncome: 1500000000, baseUpgradeCost: 13333333333, upgradeTime: 1200, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 7, name: "🏛️ ИМПЕРИЯ", baseIncome: 5000000000, baseUpgradeCost: 33333333333, upgradeTime: 2400, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 }
+            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 5000, baseUpgradeCost: 50000, upgradeTime: 30, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 50000, baseUpgradeCost: 500000, upgradeTime: 60, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 500000, baseUpgradeCost: 50000000, upgradeTime: 120, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 3, name: "🏭 ЗАВОД", baseIncome: 5000000, baseUpgradeCost: 100000000, upgradeTime: 180, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 50000000, baseUpgradeCost: 1000000000, upgradeTime: 300, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 5, name: "🎰 КАЗИНО", baseIncome: 100000000, baseUpgradeCost: 10000000000, upgradeTime: 600, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 6, name: "🏦 БАНК", baseIncome: 1500000000, baseUpgradeCost: 40000000000, upgradeTime: 1200, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 7, name: "🏛️ ИМПЕРИЯ", baseIncome: 5000000000, baseUpgradeCost: 100000000000, upgradeTime: 2400, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 }
         ];
         
         let specialItem = {
@@ -1986,6 +2061,43 @@
             showBattlePass();
         }
         
+        // ========== ТОП-100 ==========
+        function showTop100() {
+            const modal = document.getElementById('topModal');
+            const modalContent = document.getElementById('topModalContent');
+            
+            let html = '<div class="modal-title">🏆 ТОП-100 БОГАТЕЙШИХ ЛЮДЕЙ FORBES</div>';
+            
+            for (let i = 0; i < 100; i++) {
+                let rankClass = '';
+                if (i === 0) rankClass = 'top-rank-1';
+                else if (i === 1) rankClass = 'top-rank-2';
+                else if (i === 2) rankClass = 'top-rank-3';
+                
+                // Игрок где-то в списке (например, на 42 месте)
+                const isPlayer = (i === 41); // 42-е место (индекс 41)
+                const name = isPlayer ? currentUser : forbesTop100[i];
+                const money = (100 - i) * 1000000000000; // Условное состояние
+                
+                html += `
+                    <div class="top-item" style="${isPlayer ? 'background: rgba(255,215,0,0.2); border:1px solid gold;' : ''}">
+                        <div class="top-rank ${rankClass}">${i + 1}</div>
+                        <div class="top-name">${name} ${isPlayer ? '👑' : ''}</div>
+                        <div class="top-money">${formatMoney(money)}</div>
+                    </div>
+                `;
+            }
+            
+            html += '<div class="close-btn" onclick="closeTopModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        function closeTopModal() {
+            document.getElementById('topModal').classList.remove('active');
+        }
+        
         // ========== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ==========
         function updateUI() {
             if (!gameState) return;
@@ -2060,7 +2172,7 @@
             while (gameState.exp >= expNeeded) {
                 gameState.exp -= expNeeded;
                 gameState.level = (gameState.level || 1) + 1;
-                gameState.diamonds = (gameState.diamonds || 0) + 5; // +5 алмазов за уровень
+                gameState.diamonds = (gameState.diamonds || 0) + 5;
             }
             
             playClickSound();
@@ -2241,7 +2353,7 @@
                 `;
             }
             
-            cryptoCurrencies.slice(0, 5).forEach(crypto => {
+            cryptoCurrencies.forEach(crypto => {
                 const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
                 const currentPrice = cryptoPrices[crypto.id] || crypto.basePrice;
                 const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
@@ -2265,47 +2377,6 @@
                     </div>
                 `;
             });
-            
-            content.innerHTML += `
-                <div style="text-align:center; margin-top:16px;">
-                    <a href="#" class="garage-link" onclick="showAllCrypto()">Показать все 50+ криптовалют →</a>
-                </div>
-            `;
-        }
-        
-        function showAllCrypto() {
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            let html = '<div class="modal-title">📈 ВСЯ КРИПТОВАЛЮТА (50+)</div>';
-            
-            cryptoCurrencies.forEach(crypto => {
-                const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
-                const currentPrice = cryptoPrices[crypto.id] || crypto.basePrice;
-                const income = crypto.incomePerCoin * userCrypto.owned;
-                
-                html += `
-                    <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <span style="font-weight:600; color:#00c853;">${crypto.emoji} ${crypto.name}</span>
-                                <div style="color:#ffd700; font-size:13px;">${formatMoney(currentPrice)}</div>
-                                <div style="color:#8e8e98; font-size:11px;">У вас: ${formatFullNumber(userCrypto.owned)} шт</div>
-                                <div style="color:#4caf50; font-size:11px;">⏱️ +${formatMoney(income)}/сек</div>
-                            </div>
-                            <div style="display:flex; gap:8px;">
-                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'buy'); closeModal();">Купить</button>
-                                <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'sell'); closeModal();">Продать</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
         }
         
         function showHousesModal() {
@@ -2635,7 +2706,8 @@
                     </div>
                 </div>
                 
-                <button class="card-btn" onclick="showNicknameModal()">✏️ Изменить ник</button>
+                <button class="card-btn" onclick="showTop100()">🏆 ТОП-100 FORBES</button>
+                <button class="card-btn" style="margin-top:8px;" onclick="showNicknameModal()">✏️ Изменить ник</button>
                 <button class="card-btn" style="margin-top:8px; background:#ff4444;" onclick="resetGame()">🔄 Сбросить прогресс</button>
                 
                 ${isAdmin ? `
@@ -3320,6 +3392,8 @@
             window.claimBattlePassReward = claimBattlePassReward;
             window.changePassPage = changePassPage;
             window.closeModal = closeModal;
+            window.showTop100 = showTop100;
+            window.closeTopModal = closeTopModal;
             window.resetGame = resetGame;
             window.showNicknameModal = showNicknameModal;
             window.closeNicknameModal = closeNicknameModal;
@@ -3346,3 +3420,4 @@
     </script>
 </body>
 </html>
+
