@@ -752,6 +752,16 @@
         .settings-switch.active::after {
             left: 21px;
         }
+        
+        .sell-btn {
+            background: #ff4444;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -807,7 +817,7 @@
     
     <script>
         // ========== НАСТРОЙКИ ==========
-        const APP_VERSION = '7.1.0';
+        const APP_VERSION = '7.3.0';
         const ADMIN_SECRETS = ['2a3d4g5j', 'test', 'test2', 'test3', 'dexter'];
         const MAX_BUSINESSES = 8;
         const BASE_CLICK_POWER = 3000;
@@ -964,7 +974,7 @@
             ]
         };
         
-        // ========== БИЗНЕСЫ ==========
+        // ========== БИЗНЕСЫ С УМЕНЬШЕННЫМИ ЦЕНАМИ (убрали один ноль) ==========
         const businessTemplates = [
             { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 5000, baseUpgradeCost: 50000, upgradeTime: 30, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
             { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 50000, baseUpgradeCost: 500000, upgradeTime: 60, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
@@ -989,6 +999,7 @@
         };
         
         function formatNumber(num) {
+            if (num === undefined || num === null || isNaN(num)) return "0";
             if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
             if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
             if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
@@ -997,10 +1008,12 @@
         }
         
         function formatFullNumber(num) {
+            if (num === undefined || num === null || isNaN(num)) return "0";
             return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
         
         function formatMoney(num) {
+            if (num === undefined || num === null || isNaN(num)) return "$ 0";
             return '$ ' + formatFullNumber(num);
         }
         
@@ -1208,6 +1221,27 @@
             alert(`✅ Куплен ${item.name}!`);
         }
         
+        function sellGarageItem(category, itemId) {
+            const garage = gameState.garages[category];
+            if (!garage || garage.length === 0) return;
+            
+            const index = garage.findIndex(item => item.id === itemId);
+            if (index === -1) return;
+            
+            const item = garage[index];
+            const sellPrice = Math.floor(salonItems[category].find(i => i.id === itemId).price * 0.5);
+            
+            if (confirm(`Продать ${item.name} за ${formatMoney(sellPrice)}?`)) {
+                garage.splice(index, 1);
+                gameState.balance += sellPrice;
+                
+                saveGame();
+                updateUI();
+                renderCurrentTab();
+                alert(`✅ Продано! +${formatMoney(sellPrice)}`);
+            }
+        }
+        
         function buyHouse(houseId) {
             const house = gameState.houses.find(h => h.id === houseId);
             if (!house || house.owned) return;
@@ -1224,6 +1258,25 @@
             updateUI();
             renderCurrentTab();
             alert(`✅ Куплен дом ${house.name}!`);
+        }
+        
+        function sellHouse(houseId) {
+            const house = gameState.houses.find(h => h.id === houseId);
+            if (!house || !house.owned) return;
+            
+            const sellPrice = Math.floor(house.price * 0.5);
+            
+            if (confirm(`Продать дом ${house.name} за ${formatMoney(sellPrice)}?`)) {
+                house.owned = false;
+                // Сбрасываем улучшения при продаже
+                house.upgrades = { interior: 0, kitchen: 0, bed: 0, antenna: 0, tv: 0 };
+                gameState.balance += sellPrice;
+                
+                saveGame();
+                updateUI();
+                renderCurrentTab();
+                alert(`✅ Дом продан! +${formatMoney(sellPrice)}`);
+            }
         }
         
         function upgradeHouse(houseId, upgradeType) {
@@ -1857,8 +1910,7 @@
                 checkBattlePassLevel();
             }
             
-            // Прогрессия уровней - каждый уровень требует больше опыта
-            const expNeeded = gameState.level * 1500; // 1500, 3000, 4500, 6000 и т.д.
+            const expNeeded = gameState.level * 1500;
             while (gameState.exp >= expNeeded) {
                 gameState.exp -= expNeeded;
                 gameState.level = (gameState.level || 1) + 1;
@@ -1903,6 +1955,9 @@
             if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
                 gameState.myBusinesses.forEach(b => {
                     let inc = b.income || 0;
+                    if (b.manager) {
+                        inc *= (1 + b.manager.level * 0.1);
+                    }
                     businessIncome += inc;
                 });
             }
@@ -2059,6 +2114,11 @@
                         const timeLeft = upgrading ? Math.ceil((b.upgradeEnd - Date.now()) / 1000) : 0;
                         const progressPercent = upgrading ? ((Date.now() - (b.upgradeEnd - (b.upgradeTime * 1000))) / (b.upgradeTime * 1000)) * 100 : 0;
                         
+                        let totalIncome = b.income;
+                        if (b.manager) {
+                            totalIncome = Math.floor(b.income * (1 + b.manager.level * 0.1));
+                        }
+                        
                         return `
                             <div class="business-item" onclick="openBusinessModal(${i})">
                                 <div class="business-header">
@@ -2066,7 +2126,7 @@
                                     <span class="business-level">Ур. ${b.level}/${t.maxLevel}</span>
                                 </div>
                                 <div class="business-stats">
-                                    <span>💰 +${formatMoney(b.income)}/сек</span>
+                                    <span>💰 +${formatMoney(totalIncome)}/сек</span>
                                     <span>📈 улучшить: ${formatMoney(b.upgradeCost)}</span>
                                 </div>
                                 ${upgrading ? `
@@ -2198,7 +2258,7 @@
         }
         
         function renderProfile(content) {
-            const expNeeded = gameState.level * 1500; // Текущий уровень * 1500
+            const expNeeded = gameState.level * 1500;
             const expPercent = ((gameState.exp || 0) / expNeeded) * 100;
             
             let businessTotal = gameState.myBusinesses?.reduce((sum, b) => sum + (b.totalEarned || 0), 0) || 0;
@@ -2352,11 +2412,12 @@
             } else {
                 const grouped = {};
                 items.forEach(item => {
-                    if (!grouped[item.id]) grouped[item.id] = { count: 0, name: item.name, emoji: item.emoji };
+                    if (!grouped[item.id]) grouped[item.id] = { count: 0, name: item.name, emoji: item.emoji, price: salonItems[category].find(i => i.id === item.id)?.price || 0 };
                     grouped[item.id].count++;
                 });
                 
                 Object.values(grouped).forEach(group => {
+                    const sellPrice = Math.floor(group.price * 0.5);
                     html += `
                         <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:12px;">
                             <div style="font-size:32px;">${group.emoji}</div>
@@ -2364,6 +2425,7 @@
                                 <div style="font-weight:600;">${group.name}</div>
                                 <div style="color:#8e8e98;">Количество: ${group.count}</div>
                             </div>
+                            <button class="sell-btn" onclick="sellGarageItem('${category}', ${group.id}); closeModal();">Продать за ${formatMoney(sellPrice)}</button>
                         </div>
                     `;
                 });
@@ -2383,6 +2445,7 @@
             
             gameState.houses.forEach(house => {
                 const houseIncome = house.baseIncome * (1 + Object.values(house.upgrades).reduce((a, b) => a + b, 0));
+                const sellPrice = Math.floor(house.price * 0.5);
                 
                 html += `
                     <div style="background:#0f1117; border-radius:16px; padding:12px; margin-bottom:8px;">
@@ -2393,7 +2456,10 @@
                                 <div style="color:#ffd700;">${formatMoney(house.price)}</div>
                                 <div style="color:#4caf50; font-size:12px;">💰 +${formatMoney(houseIncome)}/сек</div>
                                 ${house.owned ? 
-                                    `<div style="color:#4caf50;">✓ В коллекции</div>` : 
+                                    `<div style="display:flex; gap:8px; margin-top:8px;">
+                                        <span style="color:#4caf50;">✓ В коллекции</span>
+                                        <button class="sell-btn" onclick="sellHouse(${house.id}); closeModal();">Продать за ${formatMoney(sellPrice)}</button>
+                                    </div>` : 
                                     `<button class="card-btn" style="width:auto; margin-top:8px;" onclick="buyHouse(${house.id}); closeModal();">Купить</button>`
                                 }
                             </div>
@@ -2546,7 +2612,7 @@
                         </div>
                         <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                             <span>Итого прибыль</span>
-                            <span style="color:#4caf50;">+${formatMoney(business.income * (1 + managerBonus/100))}/сек</span>
+                            <span style="color:#4caf50;">+${formatMoney(Math.floor(business.income * (1 + managerBonus/100)))}/сек</span>
                         </div>
                     ` : ''}
                     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
@@ -2948,7 +3014,9 @@
             
             window.handleClick = handleClick;
             window.buySalonItem = buySalonItem;
+            window.sellGarageItem = sellGarageItem;
             window.buyHouse = buyHouse;
+            window.sellHouse = sellHouse;
             window.upgradeHouse = upgradeHouse;
             window.showSalon = showSalon;
             window.showGarage = showGarage;
