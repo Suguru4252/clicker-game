@@ -502,8 +502,8 @@
         
         .space-rocket {
             position: absolute;
-            width: 60px;
-            height: 100px;
+            width: 80px;
+            height: 120px;
             left: 50%;
             transform: translateX(-50%);
             bottom: 20px;
@@ -518,8 +518,8 @@
         
         .space-rocket-body {
             position: relative;
-            width: 40px;
-            height: 80px;
+            width: 50px;
+            height: 100px;
             background: linear-gradient(135deg, #ffd700, #ff6b6b);
             border-radius: 50% 50% 30% 30%;
             margin: 0 auto;
@@ -528,12 +528,12 @@
         
         .space-rocket-window {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 15px;
+            height: 15px;
             background: #87CEEB;
             border-radius: 50%;
-            top: 20px;
-            left: 14px;
+            top: 25px;
+            left: 17px;
             animation: space-blink 2s infinite;
         }
         
@@ -545,10 +545,10 @@
         
         .space-rocket-fire {
             position: absolute;
-            width: 30px;
-            height: 40px;
+            width: 40px;
+            height: 50px;
             background: linear-gradient(to top, #ffd700, #ff4444);
-            bottom: -30px;
+            bottom: -40px;
             left: 5px;
             border-radius: 50%;
             animation: space-fire 0.2s infinite;
@@ -556,9 +556,9 @@
         }
         
         @keyframes space-fire {
-            0% { height: 40px; opacity: 1; }
-            50% { height: 60px; opacity: 0.8; }
-            100% { height: 40px; opacity: 1; }
+            0% { height: 50px; opacity: 1; }
+            50% { height: 70px; opacity: 0.8; }
+            100% { height: 50px; opacity: 1; }
         }
         
         .space-levels {
@@ -775,10 +775,10 @@
             background: #2a2c36;
             border: 1px solid #ffd700;
             color: white;
-            padding: 5px 10px;
+            padding: 5px 15px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
         }
         
         .pagination-btn.disabled {
@@ -788,7 +788,7 @@
         
         .pagination-info {
             color: #ffd700;
-            font-size: 12px;
+            font-size: 14px;
             display: flex;
             align-items: center;
         }
@@ -801,38 +801,68 @@
             margin-bottom: 10px;
         }
         
+        /* ТАКСИ - ИСПРАВЛЕНО */
         .car-model {
             position: relative;
             width: 100%;
             height: 100%;
-            animation: model-drive 3s infinite;
         }
         
         .car-body {
             position: absolute;
-            width: 60px;
-            height: 20px;
+            width: 70px;
+            height: 25px;
             background: linear-gradient(135deg, #ffd700, #ff6b6b);
-            border-radius: 10px;
+            border-radius: 12px;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
+            animation: car-drive 3s infinite;
+        }
+        
+        .car-roof {
+            position: absolute;
+            width: 35px;
+            height: 15px;
+            background: linear-gradient(135deg, #ffaa00, #ff4444);
+            border-radius: 8px 8px 0 0;
+            left: 50%;
+            top: 35%;
+            transform: translateX(-50%);
+            animation: car-drive 3s infinite;
         }
         
         .car-wheel {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: #333;
             border-radius: 50%;
-            border: 1px solid #ffd700;
-            bottom: -5px;
-            animation: model-spin 1s infinite;
+            border: 2px solid #ffd700;
+            bottom: 15px;
+            animation: wheel-spin 1s infinite linear;
         }
         
-        .car-wheel.left { left: 10px; }
-        .car-wheel.right { right: 10px; }
+        .car-wheel.left {
+            left: 20px;
+        }
         
+        .car-wheel.right {
+            right: 20px;
+        }
+        
+        @keyframes car-drive {
+            0% { transform: translate(-50%, -50%) translateX(-5px); }
+            50% { transform: translate(-50%, -50%) translateX(5px); }
+            100% { transform: translate(-50%, -50%) translateX(-5px); }
+        }
+        
+        @keyframes wheel-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* БИТКОИН */
         .bitcoin-model {
             position: relative;
             width: 100%;
@@ -841,20 +871,20 @@
         
         .bitcoin-coin {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             border-radius: 50%;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            animation: model-float 3s infinite, model-spin 5s infinite;
-            box-shadow: 0 0 20px #ffd700;
+            animation: bitcoin-float 3s infinite, bitcoin-spin 5s infinite linear;
+            box-shadow: 0 0 30px #ffd700;
         }
         
         .bitcoin-symbol {
             position: absolute;
-            font-size: 20px;
+            font-size: 25px;
             font-weight: bold;
             color: black;
             left: 50%;
@@ -862,40 +892,70 @@
             transform: translate(-50%, -50%);
         }
         
+        @keyframes bitcoin-float {
+            0% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-5px); }
+            100% { transform: translate(-50%, -50%) translateY(0); }
+        }
+        
+        @keyframes bitcoin-spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* МАЙНИНГ ФЕРМА */
         .mining-rig {
             position: absolute;
-            width: 60px;
-            height: 30px;
+            width: 70px;
+            height: 35px;
             background: linear-gradient(135deg, #00c853, #009624);
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 8px;
-            animation: model-pulse 2s infinite;
+            border-radius: 10px;
+            animation: rig-pulse 2s infinite;
         }
         
         .mining-fan {
             position: absolute;
-            width: 15px;
-            height: 15px;
+            width: 18px;
+            height: 18px;
             background: #666;
             border-radius: 50%;
-            right: 5px;
-            top: 7px;
-            animation: model-spin 1s infinite;
+            right: 8px;
+            top: 8px;
+            animation: fan-spin 1s infinite linear;
         }
         
         .mining-light {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
             background: #4caf50;
             border-radius: 50%;
-            left: 5px;
-            top: 12px;
-            animation: model-blink 0.5s infinite;
+            left: 8px;
+            top: 14px;
+            animation: blink 0.5s infinite;
         }
         
+        @keyframes fan-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes rig-pulse {
+            0% { box-shadow: 0 0 10px #00c853; }
+            50% { box-shadow: 0 0 30px #00c853; }
+            100% { box-shadow: 0 0 10px #00c853; }
+        }
+        
+        @keyframes blink {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        
+        /* ОСТРОВ */
         .island-model {
             position: relative;
             width: 100%;
@@ -904,69 +964,40 @@
         
         .island-base {
             position: absolute;
-            width: 60px;
-            height: 20px;
+            width: 70px;
+            height: 25px;
             background: linear-gradient(135deg, #4CAF50, #2E7D32);
             left: 50%;
-            bottom: 10px;
+            bottom: 15px;
             transform: translateX(-50%);
             border-radius: 50%;
         }
         
         .island-palm {
             position: absolute;
-            width: 4px;
-            height: 25px;
+            width: 5px;
+            height: 35px;
             background: #8B4513;
             left: 50%;
-            bottom: 25px;
+            bottom: 35px;
             transform: translateX(-50%);
         }
         
         .island-leaf {
             position: absolute;
-            width: 15px;
-            height: 15px;
+            width: 20px;
+            height: 20px;
             background: #4CAF50;
             border-radius: 50%;
             left: 50%;
-            bottom: 40px;
+            bottom: 55px;
             transform: translateX(-50%);
-            animation: model-wave 2s infinite;
+            animation: leaf-wave 2s infinite;
         }
         
-        @keyframes model-drive {
-            0% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            100% { transform: translateX(-5px); }
-        }
-        
-        @keyframes model-spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes model-float {
-            0% { transform: translate(-50%, -50%) translateY(0); }
-            50% { transform: translate(-50%, -50%) translateY(-5px); }
-            100% { transform: translate(-50%, -50%) translateY(0); }
-        }
-        
-        @keyframes model-pulse {
-            0% { box-shadow: 0 0 5px #00c853; }
-            50% { box-shadow: 0 0 15px #00c853; }
-            100% { box-shadow: 0 0 5px #00c853; }
-        }
-        
-        @keyframes model-blink {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
-        }
-        
-        @keyframes model-wave {
+        @keyframes leaf-wave {
             0% { transform: translateX(-50%) rotate(0deg); }
-            50% { transform: translateX(-50%) rotate(5deg); }
+            50% { transform: translateX(-50%) rotate(10deg); }
             100% { transform: translateX(-50%) rotate(0deg); }
         }
         
@@ -1580,6 +1611,7 @@
             100% { box-shadow: 0 0 10px #ffd700; }
         }
 
+        /* ========== НАЛОГИ ========== */
         .tax-item {
             background: #1a1c24;
             border-radius: 16px;
@@ -1594,10 +1626,6 @@
         
         .tax-overdue {
             border-left-color: #ff4444;
-        }
-        
-        .tax-soon {
-            border-left-color: #ff9800;
         }
         
         .tax-header {
@@ -1618,7 +1646,7 @@
             font-weight: 600;
         }
         
-        .tax-accrued {
+        .tax-price {
             color: #ff9800;
             font-size: 12px;
             margin-bottom: 4px;
@@ -1628,6 +1656,20 @@
             font-size: 12px;
             color: #8e8e98;
             margin-bottom: 8px;
+        }
+        
+        .tax-progress {
+            background: rgba(255,255,255,0.1);
+            height: 4px;
+            border-radius: 2px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+        
+        .tax-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff4444);
+            width: 0%;
         }
         
         .tax-paid-status {
@@ -1854,26 +1896,26 @@
         
         // ========== КРИПТОВАЛЮТЫ (50+) ==========
         const cryptoCurrencies = [
-            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2, incomePerCoin: 3.0 },
-            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25, incomePerCoin: 1.8 },
-            { id: 2, name: "BINANCE COIN", emoji: "BNB", basePrice: 250000, maxBuy: 5000000000, volatility: 0.3, incomePerCoin: 1.2 },
-            { id: 3, name: "SOLANA", emoji: "SOL", basePrice: 100000, maxBuy: 5000000000, volatility: 0.35, incomePerCoin: 0.9 },
-            { id: 4, name: "CARDANO", emoji: "ADA", basePrice: 50000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.6 },
-            { id: 5, name: "DOT", emoji: "DOT", basePrice: 25000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.48 },
-            { id: 6, name: "AVALANCHE", emoji: "AVAX", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.42 },
-            { id: 7, name: "CHAINLINK", emoji: "LINK", basePrice: 15000, maxBuy: 5000000000, volatility: 0.45, incomePerCoin: 0.36 },
-            { id: 8, name: "POLYGON", emoji: "MATIC", basePrice: 10000, maxBuy: 5000000000, volatility: 0.45, incomePerCoin: 0.3 },
-            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45, incomePerCoin: 0.24 },
-            { id: 10, name: "RIPPLE", emoji: "XRP", basePrice: 5000, maxBuy: 5000000000, volatility: 0.5, incomePerCoin: 0.18 },
-            { id: 11, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, maxBuy: 5000000000, volatility: 0.6, incomePerCoin: 0.12 },
-            { id: 12, name: "SHIBA INU", emoji: "🐕", basePrice: 500, maxBuy: 5000000000, volatility: 0.7, incomePerCoin: 0.09 },
-            { id: 13, name: "PEPE", emoji: "🐸", basePrice: 100, maxBuy: 5000000000, volatility: 0.8, incomePerCoin: 0.06 },
-            { id: 14, name: "WOJAK", emoji: "😩", basePrice: 50, maxBuy: 5000000000, volatility: 0.9, incomePerCoin: 0.048 },
-            { id: 15, name: "BONK", emoji: "🦴", basePrice: 25, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.03 },
-            { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.018 },
-            { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.012 },
-            { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.006 },
-            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.003 }
+            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2, incomePerCoin: 0.05 }, // В МИНУТУ
+            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25, incomePerCoin: 0.03 },
+            { id: 2, name: "BINANCE COIN", emoji: "BNB", basePrice: 250000, maxBuy: 5000000000, volatility: 0.3, incomePerCoin: 0.02 },
+            { id: 3, name: "SOLANA", emoji: "SOL", basePrice: 100000, maxBuy: 5000000000, volatility: 0.35, incomePerCoin: 0.015 },
+            { id: 4, name: "CARDANO", emoji: "ADA", basePrice: 50000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.01 },
+            { id: 5, name: "DOT", emoji: "DOT", basePrice: 25000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.008 },
+            { id: 6, name: "AVALANCHE", emoji: "AVAX", basePrice: 20000, maxBuy: 5000000000, volatility: 0.4, incomePerCoin: 0.007 },
+            { id: 7, name: "CHAINLINK", emoji: "LINK", basePrice: 15000, maxBuy: 5000000000, volatility: 0.45, incomePerCoin: 0.006 },
+            { id: 8, name: "POLYGON", emoji: "MATIC", basePrice: 10000, maxBuy: 5000000000, volatility: 0.45, incomePerCoin: 0.005 },
+            { id: 9, name: "LITECOIN", emoji: "Ł", basePrice: 8000, maxBuy: 5000000000, volatility: 0.45, incomePerCoin: 0.004 },
+            { id: 10, name: "RIPPLE", emoji: "XRP", basePrice: 5000, maxBuy: 5000000000, volatility: 0.5, incomePerCoin: 0.003 },
+            { id: 11, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, maxBuy: 5000000000, volatility: 0.6, incomePerCoin: 0.002 },
+            { id: 12, name: "SHIBA INU", emoji: "🐕", basePrice: 500, maxBuy: 5000000000, volatility: 0.7, incomePerCoin: 0.0015 },
+            { id: 13, name: "PEPE", emoji: "🐸", basePrice: 100, maxBuy: 5000000000, volatility: 0.8, incomePerCoin: 0.001 },
+            { id: 14, name: "WOJAK", emoji: "😩", basePrice: 50, maxBuy: 5000000000, volatility: 0.9, incomePerCoin: 0.0008 },
+            { id: 15, name: "BONK", emoji: "🦴", basePrice: 25, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.0005 },
+            { id: 16, name: "FLOKI", emoji: "🐕", basePrice: 10, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.0003 },
+            { id: 17, name: "SAMO", emoji: "🐶", basePrice: 5, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.0002 },
+            { id: 18, name: "MYRO", emoji: "🐕", basePrice: 2, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.0001 },
+            { id: 19, name: "SUGURU COIN", emoji: "🍬", basePrice: 1, maxBuy: 5000000000, volatility: 1.0, incomePerCoin: 0.00005 }
         ];
         
         let cryptoPrices = [];
@@ -1886,7 +1928,7 @@
                 name: `${['Квартира', 'Дом', 'Вилла', 'Особняк', 'Замок'][i % 5]} ${Math.floor(i/5) + 1}`,
                 emoji: ['🏢', '🏠', '🏡', '🏰', '🏯'][i % 5],
                 price: (50000000 + (i * 20000000)) * 3,
-                baseIncome: 1000 * (i + 1) * HOUSE_INCOME_MULTIPLIER,
+                baseIncome: 1000 * (i + 1) * HOUSE_INCOME_MULTIPLIER / 60, // В МИНУТУ
                 owned: false,
                 upgrades: { interior: 0, kitchen: 0, bed: 0, antenna: 0, tv: 0 }
             });
@@ -1900,7 +1942,7 @@
                 name: `${['Тропический', 'Вулканический', 'Ледяной', 'Пустынный', 'Райский'][i % 5]} остров ${Math.floor(i/2) + 1}`,
                 emoji: ['🏝️', '🌋', '🏔️', '🏜️', '🌴'][i % 5],
                 price: 1000000000 * Math.pow(5, i),
-                income: 5000000 * Math.pow(2, i),
+                income: 5000000 * Math.pow(2, i) / 60, // В МИНУТУ
                 owned: false
             });
         }
@@ -1977,21 +2019,21 @@
         
         // ========== БИЗНЕСЫ ==========
         const businessTemplates = [
-            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 2000, baseUpgradeCost: 50000, upgradeTime: 30, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 20000, baseUpgradeCost: 500000, upgradeTime: 60, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 200000, baseUpgradeCost: 50000000, upgradeTime: 120, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 3, name: "🏭 ЗАВОД", baseIncome: 2000000, baseUpgradeCost: 100000000, upgradeTime: 180, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20000000, baseUpgradeCost: 1000000000, upgradeTime: 300, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 5, name: "🎰 КАЗИНО", baseIncome: 40000000, baseUpgradeCost: 10000000000, upgradeTime: 600, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 6, name: "🏦 БАНК", baseIncome: 600000000, baseUpgradeCost: 40000000000, upgradeTime: 1200, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
-            { id: 7, name: "🏛️ ИМПЕРИЯ", baseIncome: 2000000000, baseUpgradeCost: 100000000000, upgradeTime: 2400, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 }
+            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 2000 / 60, baseUpgradeCost: 50000, upgradeTime: 30, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 20000 / 60, baseUpgradeCost: 500000, upgradeTime: 60, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 200000 / 60, baseUpgradeCost: 50000000, upgradeTime: 120, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 3, name: "🏭 ЗАВОД", baseIncome: 2000000 / 60, baseUpgradeCost: 100000000, upgradeTime: 180, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20000000 / 60, baseUpgradeCost: 1000000000, upgradeTime: 300, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 5, name: "🎰 КАЗИНО", baseIncome: 40000000 / 60, baseUpgradeCost: 10000000000, upgradeTime: 600, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 6, name: "🏦 БАНК", baseIncome: 600000000 / 60, baseUpgradeCost: 40000000000, upgradeTime: 1200, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 },
+            { id: 7, name: "🏛️ ИМПЕРИЯ", baseIncome: 2000000000 / 60, baseUpgradeCost: 100000000000, upgradeTime: 2400, maxLevel: 20, incomeMultiplier: 1.5, costMultiplier: 50 }
         ];
         
         // ========== КРИПТО-МАЙНИНГ ==========
         const miningCryptos = [
-            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, incomePerLevel: 100000 },
-            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, incomePerLevel: 50000 },
-            { id: 2, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, incomePerLevel: 10000 }
+            { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, incomePerLevel: 100000 / 60 },
+            { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, incomePerLevel: 50000 / 60 },
+            { id: 2, name: "DOGECOIN", emoji: "🐶", basePrice: 1000, incomePerLevel: 10000 / 60 }
         ];
         
         let specialItem = {
@@ -2001,31 +2043,10 @@
             emoji: "❓",
             hiddenEmoji: "💎",
             price: 777777777777777777,
-            income: 7777777,
+            income: 7777777 / 60,
             owned: false,
             revealed: false
         };
-        
-        function formatNumber(num) {
-            if (num === undefined || num === null || isNaN(num)) return "0";
-            if (num >= 1e18) return (num / 1e18).toFixed(2) + 'Qi';
-            if (num >= 1e15) return (num / 1e15).toFixed(2) + 'Q';
-            if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
-            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
-            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
-            if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
-            return Math.floor(num).toString();
-        }
-        
-        function formatFullNumber(num) {
-            if (num === undefined || num === null || isNaN(num)) return "0";
-            return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        
-        function formatMoney(num) {
-            if (num === undefined || num === null || isNaN(num)) return "$ 0";
-            return '$ ' + formatFullNumber(num);
-        }
         
         // ========== АЧИВКИ (30+) ==========
         const ACHIEVEMENTS = [
@@ -2108,6 +2129,35 @@
         }
         
         currentUserId = getDeviceId();
+        
+        function formatNumber(num) {
+            if (num === undefined || num === null || isNaN(num)) return "0";
+            if (num >= 1e18) return (num / 1e18).toFixed(2) + 'Qi';
+            if (num >= 1e15) return (num / 1e15).toFixed(2) + 'Q';
+            if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+            return Math.floor(num).toString();
+        }
+        
+        function formatFullNumber(num) {
+            if (num === undefined || num === null || isNaN(num)) return "0";
+            return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        
+        function formatMoney(num) {
+            if (num === undefined || num === null || isNaN(num)) return "$ 0";
+            return '$ ' + formatFullNumber(num);
+        }
+        
+        function formatTime(ms) {
+            if (ms < 0) return "00:00:00";
+            const hours = Math.floor(ms / (60 * 60 * 1000));
+            const minutes = Math.floor((ms % (60 * 60 * 1000)) / (60 * 1000));
+            const seconds = Math.floor((ms % (60 * 1000)) / 1000);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
         
         // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
         function loadGame() {
@@ -2243,26 +2293,23 @@
                     if (tax.accrued > tax.totalAmount) {
                         tax.accrued = tax.totalAmount;
                     }
-                    const now = Date.now();
-                    if (now > tax.dueDate && tax.accrued < tax.totalAmount) {
-                        tax.overdue = true;
-                    }
                 }
             });
         }
         
         function calculateOfflineEarnings(seconds) {
             let income = 0;
+            const minutes = seconds / 60;
             
             if (gameState.autoClickerLevel > 0) {
-                income += gameState.autoClickerLevel * seconds;
+                income += gameState.autoClickerLevel * minutes;
             }
             
             if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
                 gameState.myBusinesses.forEach(b => {
                     const taxItem = gameState.taxes.find(t => t.type === 'business' && t.id === b.id);
-                    if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
-                        let inc = (b.income || 0) * seconds;
+                    if (!taxItem || !taxItem.paid) {
+                        let inc = (b.income || 0) * minutes;
                         if (b.manager) {
                             inc *= (1 + b.manager.level * 0.1);
                         }
@@ -2278,10 +2325,10 @@
             if (gameState.crypto && cryptoPrices) {
                 gameState.crypto.forEach(c => {
                     const taxItem = gameState.taxes.find(t => t.type === 'crypto' && t.id === c.id);
-                    if ((!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) && c.owned > 0) {
+                    if ((!taxItem || !taxItem.paid) && c.owned > 0) {
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
                         if (cryptoData) {
-                            income += cryptoData.incomePerCoin * c.owned * seconds;
+                            income += cryptoData.incomePerCoin * c.owned * minutes;
                         }
                     }
                 });
@@ -2291,7 +2338,7 @@
                 const now = Date.now();
                 gameState.miningFarms.forEach(farm => {
                     const taxItem = gameState.taxes.find(t => t.type === 'mining' && t.id === farm.id);
-                    if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && now <= taxItem.dueDate)) {
+                    if (!taxItem || !taxItem.paid) {
                         const timePassed = (now - (farm.lastUpdate || now)) / 1000;
                         farm.progress += timePassed * farm.level;
                         farm.lastUpdate = now;
@@ -2311,11 +2358,11 @@
                 gameState.houses.forEach(h => {
                     if (h.owned) {
                         const taxItem = gameState.taxes.find(t => t.type === 'house' && t.id === h.id);
-                        if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
+                        if (!taxItem || !taxItem.paid) {
                             let houseIncome = h.baseIncome;
                             const upgradeCount = Object.values(h.upgrades).reduce((a, b) => a + b, 0);
                             houseIncome *= (1 + upgradeCount);
-                            income += houseIncome * seconds;
+                            income += houseIncome * minutes;
                         }
                     }
                 });
@@ -2325,15 +2372,15 @@
                 gameState.islands.forEach(i => {
                     if (i.owned) {
                         const taxItem = gameState.taxes.find(t => t.type === 'island' && t.id === i.id);
-                        if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
-                            income += i.income * seconds;
+                        if (!taxItem || !taxItem.paid) {
+                            income += i.income * minutes;
                         }
                     }
                 });
             }
             
             if (specialItem.owned) {
-                income += specialItem.income * seconds;
+                income += specialItem.income * minutes;
             }
             
             if (income > 0) {
@@ -2342,7 +2389,7 @@
                 gameState.totalEarned = (gameState.totalEarned || 0) + earned;
                 
                 if (gameState.battlePass && gameState.battlePass.level < 200) {
-                    gameState.battlePass.exp += 100 * seconds;
+                    gameState.battlePass.exp += 100 * minutes;
                     checkBattlePassLevel();
                 }
             }
@@ -2393,17 +2440,18 @@
             if (!gameState.taxes) gameState.taxes = [];
             
             const existing = gameState.taxes.find(t => t.type === type && t.id === id);
+            const totalAmount = Math.floor(value * TAX_RATE);
+            
             if (existing) {
-                existing.value += value;
-                existing.totalAmount = Math.floor(existing.value * TAX_RATE);
-                existing.hourlyRate = existing.totalAmount / 72;
+                existing.value = value;
+                existing.totalAmount = totalAmount;
+                existing.hourlyRate = totalAmount / 72;
                 existing.paid = false;
                 existing.accrued = 0;
                 existing.dueDate = Date.now() + TAX_PERIOD;
                 return;
             }
             
-            const totalAmount = Math.floor(value * TAX_RATE);
             gameState.taxes.push({
                 type: type,
                 id: id,
@@ -2412,23 +2460,22 @@
                 hourlyRate: totalAmount / 72,
                 accrued: 0,
                 dueDate: Date.now() + TAX_PERIOD,
-                paid: false,
-                overdue: false
+                paid: false
             });
         }
         
         function updateTaxes() {
             if (!gameState.taxes) return;
             const now = Date.now();
+            
             gameState.taxes.forEach(tax => {
                 if (!tax.paid) {
-                    tax.accrued += tax.hourlyRate;
+                    const timePassed = Math.min(60 * 60 * 1000, now - (tax.lastUpdate || now));
+                    tax.accrued += (tax.hourlyRate * timePassed) / (60 * 60 * 1000);
                     if (tax.accrued > tax.totalAmount) {
                         tax.accrued = tax.totalAmount;
                     }
-                    if (now > tax.dueDate && tax.accrued < tax.totalAmount) {
-                        tax.overdue = true;
-                    }
+                    tax.lastUpdate = now;
                 }
             });
         }
@@ -2450,9 +2497,12 @@
             }
             
             gameState.balance -= amountToPay;
+            
+            // Сбрасываем налог - таймер начинается заново
             taxItem.paid = true;
             taxItem.accrued = 0;
-            taxItem.overdue = false;
+            taxItem.dueDate = Date.now() + TAX_PERIOD;
+            taxItem.paid = false; // Снова неоплачен, но с новым таймером
             
             saveGame();
             updateUI();
@@ -2461,20 +2511,16 @@
             return true;
         }
         
-        function getTaxStatus(taxItem) {
-            if (!taxItem) return 'none';
-            if (taxItem.paid) return 'paid';
-            if (taxItem.overdue) return 'overdue';
-            const timeLeft = taxItem.dueDate - Date.now();
-            if (timeLeft < 12 * 60 * 60 * 1000) return 'soon';
-            return 'normal';
+        function getTaxProgress(taxItem) {
+            if (!taxItem) return 0;
+            return (taxItem.accrued / taxItem.totalAmount) * 100;
         }
         
-        function formatTimeLeft(ms) {
-            if (ms < 0) return 'ПРОСРОЧЕНО';
-            const hours = Math.floor(ms / (60 * 60 * 1000));
-            const minutes = Math.floor((ms % (60 * 60 * 1000)) / (60 * 1000));
-            return `${hours}ч ${minutes}м`;
+        function getTimeLeft(taxItem) {
+            if (!taxItem) return 0;
+            const timeLeft = taxItem.dueDate - Date.now();
+            if (timeLeft < 0) return 0;
+            return timeLeft;
         }
         
         // ========== КРИПТО-МАЙНИНГ ==========
@@ -2505,6 +2551,7 @@
             
             gameState.miningFarms.push(newFarm);
             
+            // ДОБАВЛЯЕМ В НАЛОГИ
             addTaxItem('mining', newFarm.id, cost);
             
             saveGame();
@@ -2631,6 +2678,7 @@
             gameState.balance -= house.price;
             house.owned = true;
             
+            // ДОБАВЛЯЕМ В НАЛОГИ
             addTaxItem('house', house.id, house.price);
             
             saveGame();
@@ -2718,6 +2766,7 @@
             gameState.balance -= island.price;
             island.owned = true;
             
+            // ДОБАВЛЯЕМ В НАЛОГИ
             addTaxItem('island', island.id, island.price);
             
             saveGame();
@@ -2769,6 +2818,7 @@
             
             gameState.myBusinesses.push(newBusiness);
             
+            // ДОБАВЛЯЕМ В НАЛОГИ
             addTaxItem('business', newBusiness.id, t.baseUpgradeCost);
             
             saveGame();
@@ -3130,7 +3180,7 @@
                 <div style="background:rgba(123,31,162,0.2); border-radius:16px; padding:16px; margin-bottom:20px; text-align:center;">
                     <div style="color:#b39ddb; font-size:14px; margin-bottom:4px;">💰 ОБЩАЯ СТОИМОСТЬ</div>
                     <div style="font-size:24px; font-weight:600; color:#ffd700;">${formatMoney(totalPortfolio)}</div>
-                    <div style="color:#4caf50; font-size:14px; margin-top:8px;">⏱️ Доход/сек: +${formatMoney(totalIncome)}</div>
+                    <div style="color:#4caf50; font-size:14px; margin-top:8px;">⏱️ Доход/мин: +${formatMoney(totalIncome)}</div>
                 </div>
             `;
             
@@ -3155,7 +3205,7 @@
                                     <span style="color:#ffd700;">${formatMoney(value)}</span>
                                 </div>
                                 <div style="display:flex; justify-content:space-between; margin-top:2px; font-size:12px;">
-                                    <span style="color:#8e8e98;">Доход/сек:</span>
+                                    <span style="color:#8e8e98;">Доход/мин:</span>
                                     <span style="color:#4caf50;">+${formatMoney(income)}</span>
                                 </div>
                             </div>
@@ -3190,7 +3240,7 @@
                 return;
             }
             
-            if (confirm(`Купить Suguru Coin за ${formatMoney(specialItem.price)}?\n\nДоход: +${formatMoney(specialItem.income)}/сек`)) {
+            if (confirm(`Купить Suguru Coin за ${formatMoney(specialItem.price)}?\n\nДоход: +${formatMoney(specialItem.income)}/мин`)) {
                 gameState.balance -= specialItem.price;
                 specialItem.owned = true;
                 specialItem.revealed = true;
@@ -3414,7 +3464,7 @@
                     html += `
                         <div class="island-item">
                             <div class="island-name">${island.emoji} ${island.name}</div>
-                            <div class="island-income">💰 Доход: +${formatMoney(island.income)}/сек</div>
+                            <div class="island-income">💰 Доход: +${formatMoney(island.income)}/мин</div>
                         </div>
                     `;
                 });
@@ -3951,27 +4001,15 @@
             
             if (pagination) {
                 let paginationHtml = '';
-                if (achievementsPage > 1) {
-                    paginationHtml += `<button class="pagination-btn" onclick="changeAchievementsPage(-1)">◀</button>`;
-                } else {
-                    paginationHtml += `<button class="pagination-btn disabled">◀</button>`;
-                }
-                
+                paginationHtml += `<button class="pagination-btn" onclick="changeAchievementsPage(-1)" ${achievementsPage <= 1 ? 'disabled' : ''}>◀</button>`;
                 paginationHtml += `<span class="pagination-info">${achievementsPage}/${totalPages}</span>`;
-                
-                if (achievementsPage < totalPages) {
-                    paginationHtml += `<button class="pagination-btn" onclick="changeAchievementsPage(1)">▶</button>`;
-                } else {
-                    paginationHtml += `<button class="pagination-btn disabled">▶</button>`;
-                }
-                
+                paginationHtml += `<button class="pagination-btn" onclick="changeAchievementsPage(1)" ${achievementsPage >= totalPages ? 'disabled' : ''}>▶</button>`;
                 pagination.innerHTML = paginationHtml;
             }
         }
         
         function changeAchievementsPage(direction) {
             achievementsPage += direction;
-            
             const category = document.querySelector('.achievements-category.active')?.dataset.cat || 'all';
             renderAchievementsGrid(category);
         }
@@ -4056,13 +4094,8 @@
         // ========== РЕНДЕР НАЛОГОВ ==========
         function renderTax(content) {
             let totalTaxDue = 0;
-            let overdueCount = 0;
-            let soonCount = 0;
             
             gameState.taxes.forEach(tax => {
-                const status = getTaxStatus(tax);
-                if (status === 'overdue') overdueCount++;
-                else if (status === 'soon') soonCount++;
                 if (!tax.paid && tax.accrued > 0) totalTaxDue += tax.accrued;
             });
             
@@ -4070,16 +4103,13 @@
                 <div class="tax-summary">
                     <div class="tax-summary-title">💰 НАЛОГОВ К ОПЛАТЕ СЕЙЧАС</div>
                     <div class="tax-summary-value">${formatMoney(Math.floor(totalTaxDue))}</div>
-                    <div class="tax-summary-sub">
-                        ⚠️ Просрочено: ${overdueCount} | ⏳ Скоро: ${soonCount}
-                    </div>
                 </div>
             `;
             
             if (gameState.taxes.length === 0) {
                 html += '<div style="text-align:center; padding:30px; color:#8e8e98;">У вас нет активных налогов</div>';
             } else {
-                // Группируем налоги по типу
+                // БИЗНЕСЫ
                 const businessTaxes = gameState.taxes.filter(t => t.type === 'business');
                 if (businessTaxes.length > 0) {
                     html += '<h4 style="color:#ffd700; margin:16px 0 8px;">💼 БИЗНЕСЫ</h4>';
@@ -4087,34 +4117,29 @@
                         const business = gameState.myBusinesses.find(b => b.id === tax.id);
                         if (!business) return;
                         
-                        const status = getTaxStatus(tax);
-                        let statusClass = '';
-                        if (status === 'paid') statusClass = 'tax-paid';
-                        else if (status === 'overdue') statusClass = 'tax-overdue';
-                        else if (status === 'soon') statusClass = 'tax-soon';
-                        
-                        const timeLeft = tax.dueDate - Date.now();
-                        const percentComplete = ((tax.accrued / tax.totalAmount) * 100).toFixed(1);
+                        const progress = getTaxProgress(tax);
+                        const timeLeft = getTimeLeft(tax);
                         
                         html += `
-                            <div class="tax-item ${statusClass}">
+                            <div class="tax-item">
                                 <div class="tax-header">
                                     <span class="tax-name">${business.name}</span>
                                     <span class="tax-amount">${formatMoney(Math.floor(tax.accrued))} / ${formatMoney(tax.totalAmount)}</span>
                                 </div>
-                                <div class="tax-accrued">📊 Начислено: ${percentComplete}%</div>
-                                <div class="tax-timer">
-                                    ${status === 'paid' ? '✅ Налог оплачен' : `⏱️ Срок: ${formatTimeLeft(timeLeft)}`}
+                                <div class="tax-price">💰 Цена: ${formatMoney(tax.value)}</div>
+                                <div class="tax-progress">
+                                    <div class="tax-progress-bar" style="width: ${progress}%"></div>
                                 </div>
-                                ${!tax.paid && tax.accrued > 0 ? 
-                                    `<button class="tax-btn" onclick="payTax('business', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` :
-                                    tax.paid ? `<div class="tax-paid-status">✓ Оплачено</div>` : ''
+                                <div class="tax-timer">⏱️ До сброса: ${formatTime(timeLeft)}</div>
+                                ${tax.accrued > 0 ? 
+                                    `<button class="tax-btn" onclick="payTax('business', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` : ''
                                 }
                             </div>
                         `;
                     });
                 }
                 
+                // ДОМА
                 const houseTaxes = gameState.taxes.filter(t => t.type === 'house');
                 if (houseTaxes.length > 0) {
                     html += '<h4 style="color:#ffd700; margin:16px 0 8px;">🏠 ДОМА</h4>';
@@ -4122,34 +4147,29 @@
                         const house = gameState.houses.find(h => h.id === tax.id);
                         if (!house) return;
                         
-                        const status = getTaxStatus(tax);
-                        let statusClass = '';
-                        if (status === 'paid') statusClass = 'tax-paid';
-                        else if (status === 'overdue') statusClass = 'tax-overdue';
-                        else if (status === 'soon') statusClass = 'tax-soon';
-                        
-                        const timeLeft = tax.dueDate - Date.now();
-                        const percentComplete = ((tax.accrued / tax.totalAmount) * 100).toFixed(1);
+                        const progress = getTaxProgress(tax);
+                        const timeLeft = getTimeLeft(tax);
                         
                         html += `
-                            <div class="tax-item ${statusClass}">
+                            <div class="tax-item">
                                 <div class="tax-header">
                                     <span class="tax-name">${house.emoji} ${house.name}</span>
                                     <span class="tax-amount">${formatMoney(Math.floor(tax.accrued))} / ${formatMoney(tax.totalAmount)}</span>
                                 </div>
-                                <div class="tax-accrued">📊 Начислено: ${percentComplete}%</div>
-                                <div class="tax-timer">
-                                    ${status === 'paid' ? '✅ Налог оплачен' : `⏱️ Срок: ${formatTimeLeft(timeLeft)}`}
+                                <div class="tax-price">💰 Цена: ${formatMoney(tax.value)}</div>
+                                <div class="tax-progress">
+                                    <div class="tax-progress-bar" style="width: ${progress}%"></div>
                                 </div>
-                                ${!tax.paid && tax.accrued > 0 ? 
-                                    `<button class="tax-btn" onclick="payTax('house', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` :
-                                    tax.paid ? `<div class="tax-paid-status">✓ Оплачено</div>` : ''
+                                <div class="tax-timer">⏱️ До сброса: ${formatTime(timeLeft)}</div>
+                                ${tax.accrued > 0 ? 
+                                    `<button class="tax-btn" onclick="payTax('house', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` : ''
                                 }
                             </div>
                         `;
                     });
                 }
                 
+                // КРИПТА
                 const cryptoTaxes = gameState.taxes.filter(t => t.type === 'crypto');
                 if (cryptoTaxes.length > 0) {
                     html += '<h4 style="color:#ffd700; margin:16px 0 8px;">📈 КРИПТА</h4>';
@@ -4160,37 +4180,29 @@
                         const userCrypto = gameState.crypto.find(c => c.id === tax.id);
                         if (!userCrypto || userCrypto.owned === 0) return;
                         
-                        const status = getTaxStatus(tax);
-                        let statusClass = '';
-                        if (status === 'paid') statusClass = 'tax-paid';
-                        else if (status === 'overdue') statusClass = 'tax-overdue';
-                        else if (status === 'soon') statusClass = 'tax-soon';
-                        
-                        const timeLeft = tax.dueDate - Date.now();
-                        const percentComplete = ((tax.accrued / tax.totalAmount) * 100).toFixed(1);
+                        const progress = getTaxProgress(tax);
+                        const timeLeft = getTimeLeft(tax);
                         
                         html += `
-                            <div class="tax-item ${statusClass}">
+                            <div class="tax-item">
                                 <div class="tax-header">
                                     <span class="tax-name">${crypto.emoji} ${crypto.name}</span>
                                     <span class="tax-amount">${formatMoney(Math.floor(tax.accrued))} / ${formatMoney(tax.totalAmount)}</span>
                                 </div>
-                                <div class="tax-accrued">📊 Начислено: ${percentComplete}%</div>
-                                <div class="tax-timer">
-                                    ${status === 'paid' ? '✅ Налог оплачен' : `⏱️ Срок: ${formatTimeLeft(timeLeft)}`}
+                                <div class="tax-price">💰 Инвестиции: ${formatMoney(tax.value)}</div>
+                                <div class="tax-progress">
+                                    <div class="tax-progress-bar" style="width: ${progress}%"></div>
                                 </div>
-                                <div style="font-size:11px; color:#8e8e98; margin-bottom:4px;">
-                                    Владею: ${formatFullNumber(userCrypto.owned)} шт
-                                </div>
-                                ${!tax.paid && tax.accrued > 0 ? 
-                                    `<button class="tax-btn" onclick="payTax('crypto', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` :
-                                    tax.paid ? `<div class="tax-paid-status">✓ Оплачено</div>` : ''
+                                <div class="tax-timer">⏱️ До сброса: ${formatTime(timeLeft)}</div>
+                                ${tax.accrued > 0 ? 
+                                    `<button class="tax-btn" onclick="payTax('crypto', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` : ''
                                 }
                             </div>
                         `;
                     });
                 }
                 
+                // МАЙНИНГ
                 const miningTaxes = gameState.taxes.filter(t => t.type === 'mining');
                 if (miningTaxes.length > 0) {
                     html += '<h4 style="color:#ffd700; margin:16px 0 8px;">⛏️ МАЙНИНГ</h4>';
@@ -4198,34 +4210,29 @@
                         const farm = gameState.miningFarms.find(f => f.id === tax.id);
                         if (!farm) return;
                         
-                        const status = getTaxStatus(tax);
-                        let statusClass = '';
-                        if (status === 'paid') statusClass = 'tax-paid';
-                        else if (status === 'overdue') statusClass = 'tax-overdue';
-                        else if (status === 'soon') statusClass = 'tax-soon';
-                        
-                        const timeLeft = tax.dueDate - Date.now();
-                        const percentComplete = ((tax.accrued / tax.totalAmount) * 100).toFixed(1);
+                        const progress = getTaxProgress(tax);
+                        const timeLeft = getTimeLeft(tax);
                         
                         html += `
-                            <div class="tax-item ${statusClass}">
+                            <div class="tax-item">
                                 <div class="tax-header">
                                     <span class="tax-name">${farm.crypto.emoji} ${farm.crypto.name} (ур.${farm.level})</span>
                                     <span class="tax-amount">${formatMoney(Math.floor(tax.accrued))} / ${formatMoney(tax.totalAmount)}</span>
                                 </div>
-                                <div class="tax-accrued">📊 Начислено: ${percentComplete}%</div>
-                                <div class="tax-timer">
-                                    ${status === 'paid' ? '✅ Налог оплачен' : `⏱️ Срок: ${formatTimeLeft(timeLeft)}`}
+                                <div class="tax-price">💰 Цена: ${formatMoney(tax.value)}</div>
+                                <div class="tax-progress">
+                                    <div class="tax-progress-bar" style="width: ${progress}%"></div>
                                 </div>
-                                ${!tax.paid && tax.accrued > 0 ? 
-                                    `<button class="tax-btn" onclick="payTax('mining', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` :
-                                    tax.paid ? `<div class="tax-paid-status">✓ Оплачено</div>` : ''
+                                <div class="tax-timer">⏱️ До сброса: ${formatTime(timeLeft)}</div>
+                                ${tax.accrued > 0 ? 
+                                    `<button class="tax-btn" onclick="payTax('mining', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` : ''
                                 }
                             </div>
                         `;
                     });
                 }
                 
+                // ОСТРОВА
                 const islandTaxes = gameState.taxes.filter(t => t.type === 'island');
                 if (islandTaxes.length > 0) {
                     html += '<h4 style="color:#ffd700; margin:16px 0 8px;">🏝️ ОСТРОВА</h4>';
@@ -4233,28 +4240,22 @@
                         const island = gameState.islands.find(i => i.id === tax.id);
                         if (!island) return;
                         
-                        const status = getTaxStatus(tax);
-                        let statusClass = '';
-                        if (status === 'paid') statusClass = 'tax-paid';
-                        else if (status === 'overdue') statusClass = 'tax-overdue';
-                        else if (status === 'soon') statusClass = 'tax-soon';
-                        
-                        const timeLeft = tax.dueDate - Date.now();
-                        const percentComplete = ((tax.accrued / tax.totalAmount) * 100).toFixed(1);
+                        const progress = getTaxProgress(tax);
+                        const timeLeft = getTimeLeft(tax);
                         
                         html += `
-                            <div class="tax-item ${statusClass}">
+                            <div class="tax-item">
                                 <div class="tax-header">
                                     <span class="tax-name">${island.emoji} ${island.name}</span>
                                     <span class="tax-amount">${formatMoney(Math.floor(tax.accrued))} / ${formatMoney(tax.totalAmount)}</span>
                                 </div>
-                                <div class="tax-accrued">📊 Начислено: ${percentComplete}%</div>
-                                <div class="tax-timer">
-                                    ${status === 'paid' ? '✅ Налог оплачен' : `⏱️ Срок: ${formatTimeLeft(timeLeft)}`}
+                                <div class="tax-price">💰 Цена: ${formatMoney(tax.value)}</div>
+                                <div class="tax-progress">
+                                    <div class="tax-progress-bar" style="width: ${progress}%"></div>
                                 </div>
-                                ${!tax.paid && tax.accrued > 0 ? 
-                                    `<button class="tax-btn" onclick="payTax('island', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` :
-                                    tax.paid ? `<div class="tax-paid-status">✓ Оплачено</div>` : ''
+                                <div class="tax-timer">⏱️ До сброса: ${formatTime(timeLeft)}</div>
+                                ${tax.accrued > 0 ? 
+                                    `<button class="tax-btn" onclick="payTax('island', ${tax.id})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` : ''
                                 }
                             </div>
                         `;
@@ -4265,479 +4266,7 @@
             content.innerHTML = html;
         }
         
-        // ========== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ==========
-        function updateUI() {
-            if (!gameState) return;
-            
-            document.getElementById('balance').textContent = formatMoney(gameState.balance || 0);
-            
-            const totalEarned = gameState.totalEarned || 0;
-            const percentChange = totalEarned > 0 ? ((gameState.balance - totalEarned) / totalEarned * 100).toFixed(2) : 0;
-            document.getElementById('balanceChange').innerHTML = `+ ${formatMoney(totalEarned)} (${percentChange}%) за все время`;
-            
-            const clickPower = BASE_CLICK_POWER * gameState.level;
-            document.getElementById('clickPower').textContent = '$ ' + formatNumber(clickPower) + ' тыс.';
-            
-            const now = Date.now();
-            if (gameState.myBusinesses) {
-                gameState.myBusinesses.forEach((business, index) => {
-                    if (business.upgradeEnd && business.upgradeEnd <= now) {
-                        completeUpgrade(index);
-                    }
-                });
-            }
-            
-            if (gameState.miningFarms) {
-                gameState.miningFarms.forEach(farm => {
-                    const timePassed = (now - (farm.lastUpdate || now)) / 1000;
-                    farm.progress += timePassed * farm.level;
-                    farm.lastUpdate = now;
-                    
-                    const taxItem = gameState.taxes.find(t => t.type === 'mining' && t.id === farm.id);
-                    if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && now <= taxItem.dueDate)) {
-                        while (farm.progress >= farm.maxProgress) {
-                            farm.progress -= farm.maxProgress;
-                            const earned = Math.floor(farm.crypto.basePrice * farm.level * 1000);
-                            gameState.balance += earned;
-                            gameState.totalEarned += earned;
-                        }
-                    }
-                });
-            }
-            
-            const daysPassed = Math.floor((now - calendarStartDate) / (24 * 60 * 60 * 1000));
-            const currentDay = Math.min(daysPassed, CALENDAR_DAYS);
-            if (gameState.calendar && gameState.calendar.currentDay < currentDay) {
-                gameState.calendar.currentDay = currentDay;
-            }
-            
-            checkAchievements();
-            updateTaxes();
-            
-            renderCurrentTab();
-        }
-        
-        function playClickSound() {
-            if (!settings.soundEnabled) return;
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                
-                oscillator.type = 'sine';
-                oscillator.frequency.value = 523.25;
-                gainNode.gain.value = 0.1;
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.05);
-            } catch(e) {}
-        }
-        
-        function createFloatingEffect(x, y, text) {
-            if (!settings.effectsEnabled) return;
-            const el = document.createElement('div');
-            el.className = 'floating-effect';
-            el.textContent = text;
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 800);
-        }
-        
-        function handleClick(event) {
-            if (!gameState) return;
-            
-            const clickPower = BASE_CLICK_POWER * gameState.level;
-            
-            const earned = Math.floor(clickPower);
-            gameState.balance = (gameState.balance || 0) + earned;
-            gameState.totalClicks = (gameState.totalClicks || 0) + 1;
-            gameState.totalEarned = (gameState.totalEarned || 0) + earned;
-            gameState.exp = (gameState.exp || 0) + earned / 100;
-            
-            if (gameState.battlePass && gameState.battlePass.level < 200) {
-                gameState.battlePass.exp += 100;
-                checkBattlePassLevel();
-            }
-            
-            const expNeeded = gameState.level * 1500;
-            while (gameState.exp >= expNeeded && gameState.level < MAX_PLAYER_LEVEL) {
-                gameState.exp -= expNeeded;
-                gameState.level = (gameState.level || 1) + 1;
-                gameState.diamonds = (gameState.diamonds || 0) + 5;
-            }
-            
-            if (gameState.level >= MAX_PLAYER_LEVEL) {
-                gameState.exp = 0;
-            }
-            
-            playClickSound();
-            if (event) {
-                createFloatingEffect(event.clientX, event.clientY, `+${formatNumber(earned)}💰`);
-            }
-            
-            checkAchievements();
-            
-            updateUI();
-            saveGame();
-        }
-        
-        // ========== РЕНДЕР ==========
-        function renderTab(tab) {
-            if (!gameState) return;
-            
-            const content = document.getElementById('content');
-            
-            if (tab === 'earn') {
-                renderEarn(content);
-            } else if (tab === 'calendar') {
-                renderCalendar(content);
-            } else if (tab === 'space') {
-                renderSpace(content);
-            } else if (tab === 'achievements') {
-                renderAchievements(content);
-            } else if (tab === 'investments') {
-                renderInvestments(content);
-            } else if (tab === 'business') {
-                renderBusiness(content);
-            } else if (tab === 'mining') {
-                renderMining(content);
-            } else if (tab === 'tax') {
-                renderTax(content);
-            } else if (tab === 'items') {
-                renderItems(content);
-            } else if (tab === 'profile') {
-                renderProfile(content);
-            }
-        }
-        
-        function renderCurrentTab() {
-            const active = document.querySelector('.nav-item.active');
-            if (active) renderTab(active.dataset.tab);
-        }
-        
-        function renderEarn(content) {
-            let businessIncome = 0;
-            if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
-                gameState.myBusinesses.forEach(b => {
-                    const taxItem = gameState.taxes.find(t => t.type === 'business' && t.id === b.id);
-                    if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
-                        let inc = b.income || 0;
-                        if (b.manager) {
-                            inc *= (1 + b.manager.level * 0.1);
-                        }
-                        if (gameState.businessPassUpgraded) {
-                            inc *= 1.5;
-                        }
-                        businessIncome += inc;
-                    }
-                });
-            }
-            
-            let cryptoIncome = 0;
-            gameState.crypto.forEach(c => {
-                const taxItem = gameState.taxes.find(t => t.type === 'crypto' && t.id === c.id);
-                if ((!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) && c.owned > 0) {
-                    const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                    if (cryptoData) {
-                        cryptoIncome += cryptoData.incomePerCoin * c.owned;
-                    }
-                }
-            });
-            
-            let miningIncome = 0;
-            if (gameState.miningFarms) {
-                gameState.miningFarms.forEach(farm => {
-                    const taxItem = gameState.taxes.find(t => t.type === 'mining' && t.id === farm.id);
-                    if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
-                        miningIncome += farm.crypto.basePrice * farm.level * 10;
-                    }
-                });
-            }
-            
-            let houseIncome = 0;
-            if (gameState.houses) {
-                gameState.houses.forEach(h => {
-                    if (h.owned) {
-                        const taxItem = gameState.taxes.find(t => t.type === 'house' && t.id === h.id);
-                        if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
-                            let inc = h.baseIncome;
-                            const upgradeCount = Object.values(h.upgrades).reduce((a, b) => a + b, 0);
-                            inc *= (1 + upgradeCount);
-                            houseIncome += inc;
-                        }
-                    }
-                });
-            }
-            
-            let islandIncome = 0;
-            if (gameState.islands) {
-                gameState.islands.forEach(i => {
-                    if (i.owned) {
-                        const taxItem = gameState.taxes.find(t => t.type === 'island' && t.id === i.id);
-                        if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
-                            islandIncome += i.income;
-                        }
-                    }
-                });
-            }
-            
-            let specialIncome = specialItem.owned ? specialItem.income : 0;
-            let spaceBonus = 0;
-            if (gameState.space) {
-                spaceBonus = SPACE_LEVELS.slice(0, gameState.space.level).reduce((sum, l) => sum + l.bonus, 0);
-            }
-            
-            let totalIncome = (businessIncome + cryptoIncome + miningIncome + houseIncome + islandIncome + specialIncome + (gameState.autoClickerLevel || 0)) * (1 + spaceBonus / 100);
-            
-            content.innerHTML = `
-                <div class="click-area" onclick="handleClick(event)">
-                    <p>Кликайте в этой области, чтобы зарабатывать деньги</p>
-                    <h2>💰 ${formatNumber(BASE_CLICK_POWER * gameState.level)} тыс. за клик</h2>
-                </div>
-                
-                <div class="offline-earnings" onclick="renderTab('profile')">
-                    ⏱️ ОФФЛАЙН ДОХОД РАБОТАЕТ
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-label">Доход/сек</div>
-                        <div class="stat-value">+${formatMoney(Math.floor(totalIncome))}</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Всего кликов</div>
-                        <div class="stat-value">${formatFullNumber(gameState.totalClicks || 0)}</div>
-                    </div>
-                </div>
-                
-                <div class="section-title">
-                    <h3>Откуда доход</h3>
-                </div>
-                
-                <div style="background:#1a1c24; border-radius:16px; padding:16px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>👆 Клики</span>
-                        <span style="color:#ffd700;">+${formatNumber(BASE_CLICK_POWER * gameState.level)}/сек</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>💼 Бизнесы</span>
-                        <span style="color:#ffd700;">+${formatMoney(businessIncome)}/сек</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>📈 Крипта</span>
-                        <span style="color:#ffd700;">+${formatMoney(cryptoIncome)}/сек</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>⛏️ Майнинг</span>
-                        <span style="color:#ffd700;">+${formatMoney(miningIncome)}/сек</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>🏠 Дома</span>
-                        <span style="color:#ffd700;">+${formatMoney(houseIncome)}/сек</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>🏝️ Острова</span>
-                        <span style="color:#ffd700;">+${formatMoney(islandIncome)}/сек</span>
-                    </div>
-                    ${specialItem.owned ? `
-                        <div style="display:flex; justify-content:space-between;">
-                            <span>💎 Suguru Coin</span>
-                            <span style="color:#ffd700;">+${formatMoney(specialItem.income)}/сек</span>
-                        </div>
-                    ` : ''}
-                    ${spaceBonus > 0 ? `
-                        <div style="display:flex; justify-content:space-between;">
-                            <span>🚀 Космос</span>
-                            <span style="color:#ffd700;">+${spaceBonus}%</span>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-        }
-        
-        function renderInvestments(content) {
-            let totalPortfolio = calculateTotalCryptoPortfolio();
-            let totalIncome = calculateTotalCryptoIncome();
-            
-            const ownedHouses = gameState.houses.filter(h => h.owned).length;
-            const totalHouses = gameState.houses.length;
-            
-            content.innerHTML = `
-                <div class="houses-section" onclick="showAllHouses()">
-                    <div class="houses-section-header">
-                        <span class="houses-section-title">🏠 Дома</span>
-                        <span class="houses-section-count">${ownedHouses}/${totalHouses}</span>
-                    </div>
-                    <div style="color:#8e8e98; font-size:13px; margin-top:8px;">
-                        Нажмите для управления домами
-                    </div>
-                </div>
-                
-                <div class="portfolio-mini" onclick="showAllCrypto()">
-                    <span class="portfolio-mini-label">📊 КРИПТОПОРТФЕЛЬ</span>
-                    <span class="portfolio-mini-value">${formatMoney(totalPortfolio)}</span>
-                </div>
-            `;
-            
-            if (!specialItem.owned) {
-                content.innerHTML += `
-                    <div style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1)); border:2px solid #ff00ff; border-radius:16px; padding:16px; margin-bottom:20px; text-align:center; cursor:pointer;" onclick="buySpecialItem()">
-                        <div style="font-size:48px; margin-bottom:8px;">❓</div>
-                        <div style="font-size:20px; font-weight:bold; color:#ff00ff; margin-bottom:8px;">SUGURU COIN</div>
-                        <div style="font-size:16px; color:#ffd700; margin-bottom:8px;">${formatMoney(specialItem.price)}</div>
-                        <div style="font-size:14px; color:#4caf50; margin-bottom:12px;">⏱️ +${formatMoney(specialItem.income)}/сек</div>
-                        <button class="card-btn">КУПИТЬ</button>
-                    </div>
-                `;
-            } else {
-                content.innerHTML += `
-                    <div style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1)); border:2px solid #ff00ff; border-radius:16px; padding:16px; margin-bottom:20px; text-align:center;">
-                        <div style="font-size:48px; margin-bottom:8px;">💎</div>
-                        <div style="font-size:20px; font-weight:bold; color:#ff00ff; margin-bottom:8px;">SUGURU COIN</div>
-                        <div style="font-size:14px; color:#4caf50; margin-bottom:12px;">⏱️ +${formatMoney(specialItem.income)}/сек</div>
-                        <div style="color:#4caf50;">ВЛАДЕЮ</div>
-                    </div>
-                `;
-            }
-        }
-        
-        function showAllCrypto() {
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            let html = '<div class="modal-title">📈 ВСЕ КРИПТОВАЛЮТЫ (50+)</div>';
-            html += '<div class="all-items-list">';
-            
-            cryptoCurrencies.forEach(crypto => {
-                const userCrypto = gameState.crypto.find(c => c.id === crypto.id) || { owned: 0 };
-                const currentPrice = cryptoPrices[crypto.id] || crypto.basePrice;
-                const priceChange = ((currentPrice - crypto.basePrice) / crypto.basePrice * 100).toFixed(1);
-                const changeColor = priceChange >= 0 ? '#4caf50' : '#ff4444';
-                const income = crypto.incomePerCoin * userCrypto.owned;
-                
-                html += `
-                    <div class="crypto-item" style="margin-bottom:8px; padding:12px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <span style="font-weight:600; color:#00c853;">${crypto.emoji} ${crypto.name}</span>
-                                <div style="font-size:11px;">${formatMoney(currentPrice)} <span style="color:${changeColor};">(${priceChange}%)</span></div>
-                            </div>
-                            <div>
-                                <span style="color:#ffd700;">${formatFullNumber(userCrypto.owned)} шт</span>
-                            </div>
-                        </div>
-                        <div style="display:flex; gap:8px; margin-top:8px;">
-                            <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'buy'); closeModal();">Купить</button>
-                            <button class="crypto-btn" onclick="openTradeModal(${crypto.id}, 'sell'); closeModal();">Продать</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '</div><div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function showAllHouses() {
-            const modal = document.getElementById('housesModal');
-            const modalContent = document.getElementById('housesModalContent');
-            
-            let html = '<div class="modal-title">🏠 ВСЕ ДОМА</div>';
-            html += '<div class="all-items-list">';
-            
-            gameState.houses.forEach(house => {
-                const isOwned = house.owned;
-                const taxItem = gameState.taxes.find(t => t.type === 'house' && t.id === house.id);
-                const taxStatus = taxItem && !taxItem.paid && taxItem.accrued > 0 ? '⚠️' : '';
-                
-                const totalUpgrades = Object.values(house.upgrades).reduce((a, b) => a + b, 0);
-                const houseIncome = house.baseIncome * (1 + totalUpgrades);
-                const sellPrice = Math.floor(house.price * 0.5);
-                
-                if (isOwned) {
-                    html += `
-                        <div class="house-item">
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="font-size:32px;">${house.emoji}</div>
-                                <div style="flex:1;">
-                                    <div style="font-weight:600;">${house.name} ${taxStatus}</div>
-                                    <div style="color:#4caf50;">💰 +${formatMoney(houseIncome)}/сек</div>
-                                    <div style="color:#8e8e98; font-size:12px;">Улучшений: ${totalUpgrades}/${MAX_HOUSE_UPGRADES}</div>
-                                    <div style="display:flex; gap:8px; margin-top:8px;">
-                                        <button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="openHouseModal(${house.id}); closeHousesModal();">Улучшить</button>
-                                        <button class="sell-btn" onclick="sellHouse(${house.id}); closeHousesModal();">Продать за ${formatMoney(sellPrice)}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    html += `
-                        <div class="house-item">
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="font-size:32px;">${house.emoji}</div>
-                                <div style="flex:1;">
-                                    <div style="font-weight:600;">${house.name}</div>
-                                    <div style="color:#ffd700;">${formatMoney(house.price)}</div>
-                                    <div style="color:#4caf50; font-size:12px;">💰 +${formatMoney(house.baseIncome)}/сек</div>
-                                    <button class="card-btn" style="margin-top:8px;" onclick="buyHouse(${house.id}); closeHousesModal();">Купить</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-            
-            html += '</div><div class="close-btn" onclick="closeHousesModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function renderMining(content) {
-            let html = '<div class="section-title"><h3>⛏️ КРИПТО-МАЙНИНГ</h3></div>';
-            html += `<div style="text-align:center; margin:10px 0; color:#8e8e98;">📊 ФЕРМ: ${gameState.miningFarms?.length || 0}/${MAX_MINING_FARMS}</div>`;
-            
-            if (!gameState.miningFarms || gameState.miningFarms.length === 0) {
-                html += '<div style="text-align:center; padding:30px; color:#8e8e98;">У вас нет майнинг-ферм</div>';
-            } else {
-                const now = Date.now();
-                gameState.miningFarms.forEach((farm, index) => {
-                    const taxItem = gameState.taxes.find(t => t.type === 'mining' && t.id === farm.id);
-                    const taxStatus = taxItem && !taxItem.paid && taxItem.accrued > 0 ? '⚠️' : '';
-                    const progressPercent = (farm.progress / farm.maxProgress) * 100;
-                    
-                    html += `
-                        <div class="mining-farm">
-                            <div class="farm-header">
-                                <span class="farm-name">${farm.crypto.emoji} ${farm.crypto.name} ${taxStatus}</span>
-                                <span class="farm-level">УРОВЕНЬ ${farm.level}/${MAX_FARM_LEVEL}</span>
-                            </div>
-                            <div class="farm-progress">
-                                <div class="farm-progress-bar" style="width: ${Math.min(progressPercent, 100)}%"></div>
-                            </div>
-                            <div class="farm-income">💰 ДОХОД: +${formatMoney(farm.crypto.basePrice * farm.level * 1000 / 100)}/сек</div>
-                            <div class="farm-actions">
-                                <button class="farm-btn" onclick="upgradeMiningFarm(${index})">📈 Улучшить (${formatMoney(2000000000 * farm.level)})</button>
-                                <button class="farm-btn" style="background:#ff4444;" onclick="sellMiningFarm(${index})">💰 Продать</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            
-            if (gameState.miningFarms.length < MAX_MINING_FARMS) {
-                html += '<button class="card-btn" style="margin-top:16px;" onclick="buyMiningFarm()">+ КУПИТЬ ФЕРМУ (1.000.000.000💰)</button>';
-            }
-            
-            content.innerHTML = html;
-        }
-        
+        // ========== РЕНДЕР БИЗНЕСОВ ==========
         function renderBusiness(content) {
             const businessLimit = gameState.businessSlots || MAX_BUSINESSES;
             
@@ -4786,16 +4315,9 @@
                             <div class="model-3d">
                                 <div class="car-model">
                                     <div class="car-body"></div>
+                                    <div class="car-roof"></div>
                                     <div class="car-wheel left"></div>
                                     <div class="car-wheel right"></div>
-                                </div>
-                            </div>
-                        `;
-                    } else if (b.templateId === 1) { // Ресторан
-                        modelHtml = `
-                            <div class="model-3d">
-                                <div style="position:relative; height:100%;">
-                                    <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:40px; height:40px; background:linear-gradient(135deg,#ffd700,#ffaa00); border-radius:50%;"></div>
                                 </div>
                             </div>
                         `;
@@ -4803,7 +4325,7 @@
                         modelHtml = `
                             <div class="model-3d">
                                 <div style="position:relative; height:100%;">
-                                    <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:40px; height:40px; background:linear-gradient(135deg,#ffd700,#ff4444); border-radius:10px; animation:model-pulse 2s infinite;"></div>
+                                    <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:40px; height:40px; background:linear-gradient(135deg,#ffd700,#ff4444); border-radius:10px; animation:rig-pulse 2s infinite;"></div>
                                 </div>
                             </div>
                         `;
@@ -4817,7 +4339,7 @@
                                 <span class="business-level">Ур. ${b.level}/${t.maxLevel}</span>
                             </div>
                             <div class="business-stats">
-                                <span>💰 +${formatMoney(totalIncome)}/сек</span>
+                                <span>💰 +${formatMoney(totalIncome)}/мин</span>
                                 <span>📈 улучшить: ${formatMoney(b.upgradeCost)}</span>
                             </div>
                             ${upgrading ? `
@@ -4848,138 +4370,372 @@
             content.innerHTML = html;
         }
         
-        function renderItems(content) {
-            const ownedIslands = gameState.islands.filter(i => i.owned).length;
+        function showBuyBusinessModal() {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
             
-            content.innerHTML = `
-                <div class="section-title">
-                    <h3>🏝️ ОСТРОВА</h3>
-                    <span style="color:#8e8e98;">${ownedIslands} / 10</span>
-                </div>
-                
-                <div style="margin-bottom:20px;">
-                    <a href="#" class="garage-link" onclick="showAllIslands()">🏝️ ВСЕ ОСТРОВА →</a>
-                </div>
-                
-                <div class="section-title" style="margin-top:20px;">
-                    <h3>🏢 АВТОСАЛОН</h3>
-                    <span style="color:#8e8e98;">${getGarageCount('cars')} шт в гараже</span>
-                </div>
-                
-                <div class="cards-row">
-                    ${salonItems.cars.slice(0, 3).map(item => `
-                        <div class="card">
-                            <div class="card-title">${item.emoji} ${item.name}</div>
-                            <div class="card-sub">${formatMoney(item.price)}</div>
-                            <button class="card-btn" onclick="buySalonItem('cars', ${item.id})">Купить</button>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div style="margin:16px 0;">
-                    <a href="#" class="garage-link" onclick="showSalon('cars')">Перейти в автосалон (20 машин) →</a>
-                </div>
-                
-                <div class="section-title">
-                    <h3>✈️ АВИАСАЛОН</h3>
-                    <span style="color:#8e8e98;">${getGarageCount('planes')} шт в ангаре</span>
-                </div>
-                
-                <div class="cards-row">
-                    ${salonItems.planes.slice(0, 3).map(item => `
-                        <div class="card">
-                            <div class="card-title">${item.emoji} ${item.name}</div>
-                            <div class="card-sub">${formatMoney(item.price)}</div>
-                            <button class="card-btn" onclick="buySalonItem('planes', ${item.id})">Купить</button>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div style="margin:16px 0;">
-                    <a href="#" class="garage-link" onclick="showSalon('planes')">Перейти в авиасалон (20 самолетов) →</a>
-                </div>
-                
-                <div class="section-title">
-                    <h3>🚢 КОРАБЛЕСАЛОН</h3>
-                    <span style="color:#8e8e98;">${getGarageCount('ships')} шт на причале</span>
-                </div>
-                
-                <div class="cards-row">
-                    ${salonItems.ships.slice(0, 3).map(item => `
-                        <div class="card">
-                            <div class="card-title">${item.emoji} ${item.name}</div>
-                            <div class="card-sub">${formatMoney(item.price)}</div>
-                            <button class="card-btn" onclick="buySalonItem('ships', ${item.id})">Купить</button>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div style="margin:16px 0;">
-                    <a href="#" class="garage-link" onclick="showSalon('ships')">Перейти в кораблесалон (20 кораблей) →</a>
-                </div>
-                
-                <div class="section-title" style="margin-top:20px;">
-                    <h3>🚗 ГАРАЖ</h3>
-                    <span style="color:#8e8e98;">${getGarageCount('cars')} шт</span>
-                </div>
-                
-                <div style="margin-bottom:20px;">
-                    <a href="#" class="garage-link" onclick="showGarage('cars')">Открыть гараж →</a>
-                </div>
-                
-                <div class="section-title">
-                    <h3>✈️ АНГАР</h3>
-                    <span style="color:#8e8e98;">${getGarageCount('planes')} шт</span>
-                </div>
-                
-                <div style="margin-bottom:20px;">
-                    <a href="#" class="garage-link" onclick="showGarage('planes')">Открыть ангар →</a>
-                </div>
-                
-                <div class="section-title">
-                    <h3>⚓ ПРИЧАЛ</h3>
-                    <span style="color:#8e8e98;">${getGarageCount('ships')} шт</span>
-                </div>
-                
-                <div style="margin-bottom:20px;">
-                    <a href="#" class="garage-link" onclick="showGarage('ships')">Открыть причал →</a>
-                </div>
-            `;
-        }
-        
-        function showAllIslands() {
-            const modal = document.getElementById('islandsModal');
-            const modalContent = document.getElementById('islandsModalContent');
+            const totalBusinesses = gameState.myBusinesses ? gameState.myBusinesses.length : 0;
+            const businessLimit = gameState.businessSlots || MAX_BUSINESSES;
             
-            let html = '<div class="modal-title">🏝️ ВСЕ ОСТРОВА</div>';
-            html += '<div class="all-items-list">';
+            let html = '<div class="modal-title">🏪 КУПИТЬ БИЗНЕС</div>';
             
-            gameState.islands.forEach(island => {
-                if (!island.owned) {
-                    html += `
-                        <div class="island-item">
-                            <div class="island-name">${island.emoji} ${island.name}</div>
-                            <div class="island-income">💰 +${formatMoney(island.income)}/сек</div>
-                            <div class="island-price">${formatMoney(island.price)}</div>
-                            <button class="card-btn" onclick="buyIsland(${island.id}); closeIslandsModal();">Купить остров</button>
+            if (totalBusinesses >= businessLimit) {
+                html += `
+                    <div style="background:rgba(255,68,68,0.1); border:1px solid #ff4444; border-radius:16px; padding:16px; margin-bottom:16px; text-align:center;">
+                        <span style="color:#ff4444;">⚠️ МАКСИМУМ ${businessLimit} БИЗНЕСОВ!</span>
+                    </div>
+                `;
+            }
+            
+            businessTemplates.forEach(t => {
+                html += `
+                    <div style="background:#0f1117; border-radius:16px; padding:16px; margin-bottom:8px; cursor:${totalBusinesses >= businessLimit ? 'not-allowed' : 'pointer'}; opacity:${totalBusinesses >= businessLimit ? '0.5' : '1'};"
+                         onclick="${totalBusinesses >= businessLimit ? '' : 'buyBusiness(' + t.id + '); closeModal();'}">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="font-weight:600;">${t.name}</span>
+                            <span style="color:#4caf50;">${formatMoney(t.baseUpgradeCost)}</span>
                         </div>
-                    `;
-                } else {
-                    html += `
-                        <div class="island-item">
-                            <div class="island-name">${island.emoji} ${island.name}</div>
-                            <div class="island-income">💰 Доход: +${formatMoney(island.income)}/сек</div>
+                        <div style="font-size:13px; color:#8e8e98; margin-top:4px;">
+                            💰 +${formatMoney(t.baseIncome * 60)}/мин | ⏱️ ${t.upgradeTime}с
                         </div>
-                    `;
-                }
+                    </div>
+                `;
             });
             
-            html += '</div><div class="close-btn" onclick="closeIslandsModal()">ЗАКРЫТЬ</div>';
+            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
             
             modalContent.innerHTML = html;
             modal.classList.add('active');
         }
         
+        function openBusinessModal(index) {
+            const business = gameState.myBusinesses[index];
+            if (!business) return;
+            
+            const t = businessTemplates[business.templateId];
+            const taxItem = gameState.taxes.find(tax => tax.type === 'business' && tax.id === business.id);
+            
+            let totalSpent = taxItem ? taxItem.value : t.baseUpgradeCost;
+            
+            const sellPrice = Math.floor(totalSpent * 0.5);
+            const diamondsReturn = Math.floor((business.diamondsSpent || 0) * 0.5);
+            const managerBonus = business.manager ? business.manager.level * 10 : 0;
+            const passBonus = gameState.businessPassUpgraded ? 50 : 0;
+            const totalBonus = managerBonus + passBonus;
+            
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            let content = `
+                <div class="modal-title">${business.name}</div>
+                <div style="background:#0f1117; border-radius:16px; padding:16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>Уровень</span>
+                        <span style="color:#ffd700;">${business.level}/${t.maxLevel}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>Базовая прибыль</span>
+                        <span style="color:#4caf50;">+${formatMoney(business.income)}/мин</span>
+                    </div>
+                    ${business.manager ? `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <span>Менеджер (ур.${business.manager.level})</span>
+                            <span style="color:#b39ddb;">+${managerBonus}%</span>
+                        </div>
+                    ` : ''}
+                    ${passBonus > 0 ? `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <span>Бонус пропуска</span>
+                            <span style="color:#ffd700;">+${passBonus}%</span>
+                        </div>
+                    ` : ''}
+                    ${totalBonus > 0 ? `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <span>Итого прибыль</span>
+                            <span style="color:#4caf50;">+${formatMoney(Math.floor(business.income * (1 + totalBonus/100)))}/мин</span>
+                        </div>
+                    ` : ''}
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>Заработано</span>
+                        <span style="color:#ffd700;">${formatMoney(business.totalEarned || 0)}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>Потрачено алмазов</span>
+                        <span style="color:#ffd700;">💎 ${business.diamondsSpent || 0}</span>
+                    </div>
+                    ${taxItem ? `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <span>Налог накоплен</span>
+                            <span style="color:${taxItem.paid ? '#4caf50' : '#ff4444'};">
+                                ${formatMoney(Math.floor(taxItem.accrued))} / ${formatMoney(taxItem.totalAmount)}
+                            </span>
+                        </div>
+                    ` : ''}
+            `;
+            
+            if ((business.level || 1) < t.maxLevel) {
+                if (business.upgradeEnd && business.upgradeEnd > Date.now()) {
+                    const timeLeft = Math.ceil((business.upgradeEnd - Date.now()) / 1000);
+                    content += `
+                        <div style="color:#ff9800; text-align:center; margin:12px 0;">
+                            ⏱️ Улучшение... ${timeLeft}с
+                        </div>
+                    `;
+                } else {
+                    content += `
+                        <button class="card-btn" style="margin-top:12px;" onclick="startUpgrade(${index}); closeModal();">
+                            🚀 Улучшить (${formatMoney(business.upgradeCost || 0)}) - ${business.upgradeTime || t.upgradeTime}с
+                        </button>
+                    `;
+                }
+            }
+            
+            content += `
+                <button class="card-btn" style="margin-top:8px; background:#7b1fa2;" onclick="hireManager(${index}); closeModal();">
+                    👔 Улучшить менеджера (50💎) ${business.manager ? `ур.${business.manager.level}/10` : ''}
+                </button>
+                <button class="card-btn" style="margin-top:8px; background:#ff9800;" onclick="sellBusiness(${index}); closeModal();">
+                    Продать (${formatMoney(sellPrice)} + ${diamondsReturn}💎)
+                </button>
+                </div>
+                <div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>
+            `;
+            
+            modalContent.innerHTML = content;
+            modal.classList.add('active');
+        }
+        
+        // ========== РЕНДЕР МАЙНИНГА ==========
+        function renderMining(content) {
+            let html = '<div class="section-title"><h3>⛏️ КРИПТО-МАЙНИНГ</h3></div>';
+            html += `<div style="text-align:center; margin:10px 0; color:#8e8e98;">📊 ФЕРМ: ${gameState.miningFarms?.length || 0}/${MAX_MINING_FARMS}</div>`;
+            
+            if (!gameState.miningFarms || gameState.miningFarms.length === 0) {
+                html += '<div style="text-align:center; padding:30px; color:#8e8e98;">У вас нет майнинг-ферм</div>';
+            } else {
+                const now = Date.now();
+                gameState.miningFarms.forEach((farm, index) => {
+                    const taxItem = gameState.taxes.find(t => t.type === 'mining' && t.id === farm.id);
+                    const taxStatus = taxItem && !taxItem.paid && taxItem.accrued > 0 ? '⚠️' : '';
+                    const progressPercent = (farm.progress / farm.maxProgress) * 100;
+                    
+                    html += `
+                        <div class="mining-farm">
+                            <div class="farm-header">
+                                <span class="farm-name">${farm.crypto.emoji} ${farm.crypto.name} ${taxStatus}</span>
+                                <span class="farm-level">УРОВЕНЬ ${farm.level}/${MAX_FARM_LEVEL}</span>
+                            </div>
+                            <div class="farm-progress">
+                                <div class="farm-progress-bar" style="width: ${Math.min(progressPercent, 100)}%"></div>
+                            </div>
+                            <div class="farm-income">💰 ДОХОД: +${formatMoney(farm.crypto.basePrice * farm.level * 1000 / 60)}/мин</div>
+                            <div class="farm-actions">
+                                <button class="farm-btn" onclick="upgradeMiningFarm(${index})">📈 Улучшить (${formatMoney(2000000000 * farm.level)})</button>
+                                <button class="farm-btn" style="background:#ff4444;" onclick="sellMiningFarm(${index})">💰 Продать</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (gameState.miningFarms.length < MAX_MINING_FARMS) {
+                html += '<button class="card-btn" style="margin-top:16px;" onclick="buyMiningFarm()">+ КУПИТЬ ФЕРМУ (1.000.000.000💰)</button>';
+            }
+            
+            content.innerHTML = html;
+        }
+        
+        // ========== РЕНДЕР ИНВЕСТИЦИЙ ==========
+        function renderInvestments(content) {
+            let totalPortfolio = calculateTotalCryptoPortfolio();
+            let totalIncome = calculateTotalCryptoIncome();
+            
+            const ownedHouses = gameState.houses.filter(h => h.owned).length;
+            const totalHouses = gameState.houses.length;
+            
+            content.innerHTML = `
+                <div class="houses-section" onclick="showAllHouses()">
+                    <div class="houses-section-header">
+                        <span class="houses-section-title">🏠 Дома</span>
+                        <span class="houses-section-count">${ownedHouses}/${totalHouses}</span>
+                    </div>
+                    <div style="color:#8e8e98; font-size:13px; margin-top:8px;">
+                        Нажмите для управления домами
+                    </div>
+                </div>
+                
+                <div class="portfolio-mini" onclick="showCryptoPortfolio()">
+                    <span class="portfolio-mini-label">📊 КРИПТОПОРТФЕЛЬ</span>
+                    <span class="portfolio-mini-value">${formatMoney(totalPortfolio)}</span>
+                </div>
+            `;
+            
+            if (!specialItem.owned) {
+                content.innerHTML += `
+                    <div style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1)); border:2px solid #ff00ff; border-radius:16px; padding:16px; margin-bottom:20px; text-align:center; cursor:pointer;" onclick="buySpecialItem()">
+                        <div style="font-size:48px; margin-bottom:8px;">❓</div>
+                        <div style="font-size:20px; font-weight:bold; color:#ff00ff; margin-bottom:8px;">SUGURU COIN</div>
+                        <div style="font-size:16px; color:#ffd700; margin-bottom:8px;">${formatMoney(specialItem.price)}</div>
+                        <div style="font-size:14px; color:#4caf50; margin-bottom:12px;">⏱️ +${formatMoney(specialItem.income)}/мин</div>
+                        <button class="card-btn">КУПИТЬ</button>
+                    </div>
+                `;
+            } else {
+                content.innerHTML += `
+                    <div style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1)); border:2px solid #ff00ff; border-radius:16px; padding:16px; margin-bottom:20px; text-align:center;">
+                        <div style="font-size:48px; margin-bottom:8px;">💎</div>
+                        <div style="font-size:20px; font-weight:bold; color:#ff00ff; margin-bottom:8px;">SUGURU COIN</div>
+                        <div style="font-size:14px; color:#4caf50; margin-bottom:12px;">⏱️ +${formatMoney(specialItem.income)}/мин</div>
+                        <div style="color:#4caf50;">ВЛАДЕЮ</div>
+                    </div>
+                `;
+            }
+        }
+        
+        function showAllHouses() {
+            const modal = document.getElementById('housesModal');
+            const modalContent = document.getElementById('housesModalContent');
+            
+            let html = '<div class="modal-title">🏠 ВСЕ ДОМА</div>';
+            html += '<div class="all-items-list">';
+            
+            gameState.houses.forEach(house => {
+                const isOwned = house.owned;
+                const taxItem = gameState.taxes.find(t => t.type === 'house' && t.id === house.id);
+                const taxStatus = taxItem && !taxItem.paid && taxItem.accrued > 0 ? '⚠️' : '';
+                
+                const totalUpgrades = Object.values(house.upgrades).reduce((a, b) => a + b, 0);
+                const houseIncome = house.baseIncome * (1 + totalUpgrades);
+                const sellPrice = Math.floor(house.price * 0.5);
+                
+                if (isOwned) {
+                    html += `
+                        <div class="house-item">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="font-size:32px;">${house.emoji}</div>
+                                <div style="flex:1;">
+                                    <div style="font-weight:600;">${house.name} ${taxStatus}</div>
+                                    <div style="color:#4caf50;">💰 +${formatMoney(houseIncome)}/мин</div>
+                                    <div style="color:#8e8e98; font-size:12px;">Улучшений: ${totalUpgrades}/${MAX_HOUSE_UPGRADES}</div>
+                                    <div style="display:flex; gap:8px; margin-top:8px;">
+                                        <button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="openHouseModal(${house.id}); closeHousesModal();">Улучшить</button>
+                                        <button class="sell-btn" onclick="sellHouse(${house.id}); closeHousesModal();">Продать за ${formatMoney(sellPrice)}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="house-item">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="font-size:32px;">${house.emoji}</div>
+                                <div style="flex:1;">
+                                    <div style="font-weight:600;">${house.name}</div>
+                                    <div style="color:#ffd700;">${formatMoney(house.price)}</div>
+                                    <div style="color:#4caf50; font-size:12px;">💰 +${formatMoney(house.baseIncome)}/мин</div>
+                                    <button class="card-btn" style="margin-top:8px;" onclick="buyHouse(${house.id}); closeHousesModal();">Купить</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            html += '</div><div class="close-btn" onclick="closeHousesModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        function closeHousesModal() {
+            document.getElementById('housesModal').classList.remove('active');
+        }
+        
+        function openHouseModal(houseId) {
+            const house = gameState.houses.find(h => h.id === houseId);
+            if (!house) return;
+            
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const totalUpgrades = Object.values(house.upgrades).reduce((a, b) => a + b, 0);
+            const houseIncome = house.baseIncome * (1 + totalUpgrades);
+            
+            let html = `
+                <div class="modal-title">${house.emoji} ${house.name}</div>
+                <div style="background:#0f1117; border-radius:16px; padding:16px; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                        <span>Текущий доход</span>
+                        <span style="color:#4caf50;">+${formatMoney(houseIncome)}/мин</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>Доступно улучшений</span>
+                        <span style="color:#ffd700;">${MAX_HOUSE_UPGRADES - totalUpgrades}</span>
+                    </div>
+                </div>
+                <div style="background:#0f1117; border-radius:16px; padding:16px;">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div>
+                            <div style="color:#8e8e98;">Интерьер</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.interior}</span>
+                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
+                                    `<button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="upgradeHouse(${house.id}, 'interior'); closeModal();">+ (${formatMoney(50000000 * Math.pow(2, house.upgrades.interior))})</button>` :
+                                    '<span style="color:#ff4444;">Макс</span>'
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color:#8e8e98;">Кухня</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.kitchen}</span>
+                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
+                                    `<button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="upgradeHouse(${house.id}, 'kitchen'); closeModal();">+ (${formatMoney(100000000 * Math.pow(2, house.upgrades.kitchen))})</button>` :
+                                    '<span style="color:#ff4444;">Макс</span>'
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color:#8e8e98;">Кровать</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.bed}</span>
+                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
+                                    `<button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="upgradeHouse(${house.id}, 'bed'); closeModal();">+ (${formatMoney(150000000 * Math.pow(2, house.upgrades.bed))})</button>` :
+                                    '<span style="color:#ff4444;">Макс</span>'
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color:#8e8e98;">Антенна</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.antenna}</span>
+                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
+                                    `<button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="upgradeHouse(${house.id}, 'antenna'); closeModal();">+ (${formatMoney(200000000 * Math.pow(2, house.upgrades.antenna))})</button>` :
+                                    '<span style="color:#ff4444;">Макс</span>'
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color:#8e8e98;">Телевизор</div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>Ур. ${house.upgrades.tv}</span>
+                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
+                                    `<button class="card-btn" style="width:auto; background:#7b1fa2;" onclick="upgradeHouse(${house.id}, 'tv'); closeModal();">+ (${formatMoney(300000000 * Math.pow(2, house.upgrades.tv))})</button>` :
+                                    '<span style="color:#ff4444;">Макс</span>'
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>
+            `;
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        // ========== РЕНДЕР ПРОФИЛЯ ==========
         function renderProfile(content) {
             const expNeeded = gameState.level * 1500;
             const expPercent = ((gameState.exp || 0) / expNeeded) * 100;
@@ -5000,7 +4756,7 @@
             const { rank } = getPlayerRank();
             
             let taxSummary = '';
-            const overdueCount = gameState.taxes.filter(t => !t.paid && t.overdue).length;
+            const overdueCount = gameState.taxes.filter(t => !t.paid && t.accrued >= t.totalAmount).length;
             const dueCount = gameState.taxes.filter(t => !t.paid && t.accrued > 0).length;
             if (overdueCount > 0) {
                 taxSummary = `<span style="color:#ff4444; font-size:12px; margin-left:8px;">⚠️ Просрочено: ${overdueCount}</span>`;
@@ -5121,6 +4877,143 @@
             `;
         }
         
+        // ========== РЕНДЕР ITEMS ==========
+        function renderItems(content) {
+            const ownedIslands = gameState.islands.filter(i => i.owned).length;
+            
+            content.innerHTML = `
+                <div class="section-title">
+                    <h3>🏝️ ОСТРОВА</h3>
+                    <span style="color:#8e8e98;">${ownedIslands} / 10</span>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <a href="#" class="garage-link" onclick="showAllIslands()">🏝️ ВСЕ ОСТРОВА →</a>
+                </div>
+                
+                <div class="section-title" style="margin-top:20px;">
+                    <h3>🏢 АВТОСАЛОН</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('cars')} шт в гараже</span>
+                </div>
+                
+                <div class="cards-row">
+                    ${salonItems.cars.slice(0, 3).map(item => `
+                        <div class="card">
+                            <div class="card-title">${item.emoji} ${item.name}</div>
+                            <div class="card-sub">${formatMoney(item.price)}</div>
+                            <button class="card-btn" onclick="buySalonItem('cars', ${item.id})">Купить</button>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin:16px 0;">
+                    <a href="#" class="garage-link" onclick="showSalon('cars')">Перейти в автосалон (20 машин) →</a>
+                </div>
+                
+                <div class="section-title">
+                    <h3>✈️ АВИАСАЛОН</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('planes')} шт в ангаре</span>
+                </div>
+                
+                <div class="cards-row">
+                    ${salonItems.planes.slice(0, 3).map(item => `
+                        <div class="card">
+                            <div class="card-title">${item.emoji} ${item.name}</div>
+                            <div class="card-sub">${formatMoney(item.price)}</div>
+                            <button class="card-btn" onclick="buySalonItem('planes', ${item.id})">Купить</button>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin:16px 0;">
+                    <a href="#" class="garage-link" onclick="showSalon('planes')">Перейти в авиасалон (20 самолетов) →</a>
+                </div>
+                
+                <div class="section-title">
+                    <h3>🚢 КОРАБЛЕСАЛОН</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('ships')} шт на причале</span>
+                </div>
+                
+                <div class="cards-row">
+                    ${salonItems.ships.slice(0, 3).map(item => `
+                        <div class="card">
+                            <div class="card-title">${item.emoji} ${item.name}</div>
+                            <div class="card-sub">${formatMoney(item.price)}</div>
+                            <button class="card-btn" onclick="buySalonItem('ships', ${item.id})">Купить</button>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin:16px 0;">
+                    <a href="#" class="garage-link" onclick="showSalon('ships')">Перейти в кораблесалон (20 кораблей) →</a>
+                </div>
+                
+                <div class="section-title" style="margin-top:20px;">
+                    <h3>🚗 ГАРАЖ</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('cars')} шт</span>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <a href="#" class="garage-link" onclick="showGarage('cars')">Открыть гараж →</a>
+                </div>
+                
+                <div class="section-title">
+                    <h3>✈️ АНГАР</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('planes')} шт</span>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <a href="#" class="garage-link" onclick="showGarage('planes')">Открыть ангар →</a>
+                </div>
+                
+                <div class="section-title">
+                    <h3>⚓ ПРИЧАЛ</h3>
+                    <span style="color:#8e8e98;">${getGarageCount('ships')} шт</span>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <a href="#" class="garage-link" onclick="showGarage('ships')">Открыть причал →</a>
+                </div>
+            `;
+        }
+        
+        function showAllIslands() {
+            const modal = document.getElementById('islandsModal');
+            const modalContent = document.getElementById('islandsModalContent');
+            
+            let html = '<div class="modal-title">🏝️ ВСЕ ОСТРОВА</div>';
+            html += '<div class="all-items-list">';
+            
+            gameState.islands.forEach(island => {
+                if (!island.owned) {
+                    html += `
+                        <div class="island-item">
+                            <div class="island-name">${island.emoji} ${island.name}</div>
+                            <div class="island-income">💰 +${formatMoney(island.income)}/мин</div>
+                            <div class="island-price">${formatMoney(island.price)}</div>
+                            <button class="card-btn" onclick="buyIsland(${island.id}); closeIslandsModal();">Купить остров</button>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="island-item">
+                            <div class="island-name">${island.emoji} ${island.name}</div>
+                            <div class="island-income">💰 Доход: +${formatMoney(island.income)}/мин</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            html += '</div><div class="close-btn" onclick="closeIslandsModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        function closeIslandsModal() {
+            document.getElementById('islandsModal').classList.remove('active');
+        }
+        
         function showSalon(category) {
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
@@ -5193,228 +5086,6 @@
             html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
             
             modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function closeHousesModal() {
-            document.getElementById('housesModal').classList.remove('active');
-        }
-        
-        function openHouseModal(houseId) {
-            const house = gameState.houses.find(h => h.id === houseId);
-            if (!house) return;
-            
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            const totalUpgrades = Object.values(house.upgrades).reduce((a, b) => a + b, 0);
-            const houseIncome = house.baseIncome * (1 + totalUpgrades);
-            
-            let html = `
-                <div class="modal-title">${house.emoji} ${house.name}</div>
-                <div style="background:#0f1117; border-radius:16px; padding:16px; margin-bottom:16px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                        <span>Текущий доход</span>
-                        <span style="color:#4caf50;">+${formatMoney(houseIncome)}/сек</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between;">
-                        <span>Доступно улучшений</span>
-                        <span style="color:#ffd700;">${MAX_HOUSE_UPGRADES - totalUpgrades}</span>
-                    </div>
-                </div>
-                <div style="background:#0f1117; border-radius:16px; padding:16px;">
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                        <div>
-                            <div style="color:#8e8e98;">Интерьер</div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>Ур. ${house.upgrades.interior}</span>
-                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
-                                    `<button class="manager-btn" onclick="upgradeHouse(${house.id}, 'interior'); closeModal();">+ (${formatMoney(50000000 * Math.pow(2, house.upgrades.interior))})</button>` :
-                                    '<span style="color:#ff4444;">Макс</span>'
-                                }
-                            </div>
-                        </div>
-                        <div>
-                            <div style="color:#8e8e98;">Кухня</div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>Ур. ${house.upgrades.kitchen}</span>
-                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
-                                    `<button class="manager-btn" onclick="upgradeHouse(${house.id}, 'kitchen'); closeModal();">+ (${formatMoney(100000000 * Math.pow(2, house.upgrades.kitchen))})</button>` :
-                                    '<span style="color:#ff4444;">Макс</span>'
-                                }
-                            </div>
-                        </div>
-                        <div>
-                            <div style="color:#8e8e98;">Кровать</div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>Ур. ${house.upgrades.bed}</span>
-                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
-                                    `<button class="manager-btn" onclick="upgradeHouse(${house.id}, 'bed'); closeModal();">+ (${formatMoney(150000000 * Math.pow(2, house.upgrades.bed))})</button>` :
-                                    '<span style="color:#ff4444;">Макс</span>'
-                                }
-                            </div>
-                        </div>
-                        <div>
-                            <div style="color:#8e8e98;">Антенна</div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>Ур. ${house.upgrades.antenna}</span>
-                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
-                                    `<button class="manager-btn" onclick="upgradeHouse(${house.id}, 'antenna'); closeModal();">+ (${formatMoney(200000000 * Math.pow(2, house.upgrades.antenna))})</button>` :
-                                    '<span style="color:#ff4444;">Макс</span>'
-                                }
-                            </div>
-                        </div>
-                        <div>
-                            <div style="color:#8e8e98;">Телевизор</div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>Ур. ${house.upgrades.tv}</span>
-                                ${totalUpgrades < MAX_HOUSE_UPGRADES ? 
-                                    `<button class="manager-btn" onclick="upgradeHouse(${house.id}, 'tv'); closeModal();">+ (${formatMoney(300000000 * Math.pow(2, house.upgrades.tv))})</button>` :
-                                    '<span style="color:#ff4444;">Макс</span>'
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>
-            `;
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function showBuyBusinessModal() {
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            const totalBusinesses = gameState.myBusinesses ? gameState.myBusinesses.length : 0;
-            const businessLimit = gameState.businessSlots || MAX_BUSINESSES;
-            
-            let html = '<div class="modal-title">🏪 КУПИТЬ БИЗНЕС</div>';
-            
-            if (totalBusinesses >= businessLimit) {
-                html += `
-                    <div style="background:rgba(255,68,68,0.1); border:1px solid #ff4444; border-radius:16px; padding:16px; margin-bottom:16px; text-align:center;">
-                        <span style="color:#ff4444;">⚠️ МАКСИМУМ ${businessLimit} БИЗНЕСОВ!</span>
-                    </div>
-                `;
-            }
-            
-            businessTemplates.forEach(t => {
-                html += `
-                    <div style="background:#0f1117; border-radius:16px; padding:16px; margin-bottom:8px; cursor:${totalBusinesses >= businessLimit ? 'not-allowed' : 'pointer'}; opacity:${totalBusinesses >= businessLimit ? '0.5' : '1'};"
-                         onclick="${totalBusinesses >= businessLimit ? '' : 'buyBusiness(' + t.id + '); closeModal();'}">
-                        <div style="display:flex; justify-content:space-between;">
-                            <span style="font-weight:600;">${t.name}</span>
-                            <span style="color:#4caf50;">${formatMoney(t.baseUpgradeCost)}</span>
-                        </div>
-                        <div style="font-size:13px; color:#8e8e98; margin-top:4px;">
-                            💰 +${formatMoney(t.baseIncome)}/сек | ⏱️ ${t.upgradeTime}с
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '<div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>';
-            
-            modalContent.innerHTML = html;
-            modal.classList.add('active');
-        }
-        
-        function openBusinessModal(index) {
-            const business = gameState.myBusinesses[index];
-            if (!business) return;
-            
-            const t = businessTemplates[business.templateId];
-            const taxItem = gameState.taxes.find(tax => tax.type === 'business' && tax.id === business.id);
-            
-            let totalSpent = taxItem ? taxItem.value : t.baseUpgradeCost;
-            
-            const sellPrice = Math.floor(totalSpent * 0.5);
-            const diamondsReturn = Math.floor((business.diamondsSpent || 0) * 0.5);
-            const managerBonus = business.manager ? business.manager.level * 10 : 0;
-            const passBonus = gameState.businessPassUpgraded ? 50 : 0;
-            const totalBonus = managerBonus + passBonus;
-            
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modalContent');
-            
-            let content = `
-                <div class="modal-title">${business.name}</div>
-                <div style="background:#0f1117; border-radius:16px; padding:16px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>Уровень</span>
-                        <span style="color:#ffd700;">${business.level}/${t.maxLevel}</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>Базовая прибыль</span>
-                        <span style="color:#4caf50;">+${formatMoney(business.income)}/сек</span>
-                    </div>
-                    ${business.manager ? `
-                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                            <span>Менеджер (ур.${business.manager.level})</span>
-                            <span style="color:#b39ddb;">+${managerBonus}%</span>
-                        </div>
-                    ` : ''}
-                    ${passBonus > 0 ? `
-                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                            <span>Бонус пропуска</span>
-                            <span style="color:#ffd700;">+${passBonus}%</span>
-                        </div>
-                    ` : ''}
-                    ${totalBonus > 0 ? `
-                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                            <span>Итого прибыль</span>
-                            <span style="color:#4caf50;">+${formatMoney(Math.floor(business.income * (1 + totalBonus/100)))}/сек</span>
-                        </div>
-                    ` : ''}
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>Заработано</span>
-                        <span style="color:#ffd700;">${formatMoney(business.totalEarned || 0)}</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                        <span>Потрачено алмазов</span>
-                        <span style="color:#ffd700;">💎 ${business.diamondsSpent || 0}</span>
-                    </div>
-                    ${taxItem ? `
-                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                            <span>Налог накоплен</span>
-                            <span style="color:${taxItem.paid ? '#4caf50' : '#ff4444'};">
-                                ${formatMoney(Math.floor(taxItem.accrued))} / ${formatMoney(taxItem.totalAmount)}
-                            </span>
-                        </div>
-                    ` : ''}
-            `;
-            
-            if ((business.level || 1) < t.maxLevel) {
-                if (business.upgradeEnd && business.upgradeEnd > Date.now()) {
-                    const timeLeft = Math.ceil((business.upgradeEnd - Date.now()) / 1000);
-                    content += `
-                        <div style="color:#ff9800; text-align:center; margin:12px 0;">
-                            ⏱️ Улучшение... ${timeLeft}с
-                        </div>
-                    `;
-                } else {
-                    content += `
-                        <button class="card-btn" style="margin-top:12px;" onclick="startUpgrade(${index}); closeModal();">
-                            🚀 Улучшить (${formatMoney(business.upgradeCost || 0)}) - ${business.upgradeTime || t.upgradeTime}с
-                        </button>
-                    `;
-                }
-            }
-            
-            content += `
-                <button class="card-btn" style="margin-top:8px; background:#7b1fa2;" onclick="hireManager(${index}); closeModal();">
-                    👔 Улучшить менеджера (50💎) ${business.manager ? `ур.${business.manager.level}/10` : ''}
-                </button>
-                <button class="card-btn" style="margin-top:8px; background:#ff9800;" onclick="sellBusiness(${index}); closeModal();">
-                    Продать (${formatMoney(sellPrice)} + ${diamondsReturn}💎)
-                </button>
-                </div>
-                <div class="close-btn" onclick="closeModal()">ЗАКРЫТЬ</div>
-            `;
-            
-            modalContent.innerHTML = content;
             modal.classList.add('active');
         }
         
@@ -5767,101 +5438,78 @@
             document.querySelector('.bottom-nav').classList.remove('admin-nav');
         }
         
-        // ========== АВТОМАТИЧЕСКИЙ ДОХОД ==========
+        // ========== АВТОМАТИЧЕСКИЙ ДОХОД (КАЖДУЮ МИНУТУ) ==========
         setInterval(() => {
             if (!gameState) return;
             
             let income = 0;
             
-            if (gameState.autoClickerLevel > 0) {
-                income += gameState.autoClickerLevel;
-            }
-            
-            if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
+            // Бизнесы
+            if (gameState.myBusinesses) {
                 gameState.myBusinesses.forEach(b => {
                     const taxItem = gameState.taxes.find(t => t.type === 'business' && t.id === b.id);
-                    if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
+                    if (!taxItem || !taxItem.paid) {
                         let inc = b.income || 0;
-                        if (b.manager) {
-                            inc *= (1 + b.manager.level * 0.1);
-                        }
-                        if (gameState.businessPassUpgraded) {
-                            inc *= 1.5;
-                        }
+                        if (b.manager) inc *= (1 + b.manager.level * 0.1);
+                        if (gameState.businessPassUpgraded) inc *= 1.5;
                         income += inc;
                         b.totalEarned = (b.totalEarned || 0) + inc;
                     }
-                    
-                    if (gameState.battlePass && gameState.battlePass.level < 200) {
-                        gameState.battlePass.exp += 100;
-                    }
                 });
             }
             
-            if (gameState.crypto && cryptoPrices) {
+            // Крипта
+            if (gameState.crypto) {
                 gameState.crypto.forEach(c => {
                     const taxItem = gameState.taxes.find(t => t.type === 'crypto' && t.id === c.id);
-                    if ((!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) && c.owned > 0) {
+                    if ((!taxItem || !taxItem.paid) && c.owned > 0) {
                         const cryptoData = cryptoCurrencies.find(cr => cr.id === c.id);
-                        if (cryptoData) {
-                            income += cryptoData.incomePerCoin * c.owned;
-                        }
+                        if (cryptoData) income += cryptoData.incomePerCoin * c.owned;
                     }
                 });
             }
             
+            // Майнинг
             if (gameState.miningFarms) {
-                const now = Date.now();
                 gameState.miningFarms.forEach(farm => {
                     const taxItem = gameState.taxes.find(t => t.type === 'mining' && t.id === farm.id);
-                    if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && now <= taxItem.dueDate)) {
-                        const timePassed = (now - (farm.lastUpdate || now)) / 1000;
-                        farm.progress += timePassed * farm.level;
-                        farm.lastUpdate = now;
-                        
-                        while (farm.progress >= farm.maxProgress) {
-                            farm.progress -= farm.maxProgress;
-                            const earned = Math.floor(farm.crypto.basePrice * farm.level * 1000);
-                            gameState.balance += earned;
-                            gameState.totalEarned += earned;
-                            income += earned;
-                        }
+                    if (!taxItem || !taxItem.paid) {
+                        income += farm.crypto.basePrice * farm.level * 10 / 60;
                     }
                 });
             }
             
+            // Дома
             if (gameState.houses) {
                 gameState.houses.forEach(h => {
                     if (h.owned) {
                         const taxItem = gameState.taxes.find(t => t.type === 'house' && t.id === h.id);
-                        if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
-                            let houseIncome = h.baseIncome;
+                        if (!taxItem || !taxItem.paid) {
+                            let inc = h.baseIncome;
                             const upgradeCount = Object.values(h.upgrades).reduce((a, b) => a + b, 0);
-                            houseIncome *= (1 + upgradeCount);
-                            income += houseIncome;
+                            inc *= (1 + upgradeCount);
+                            income += inc;
                         }
                     }
                 });
             }
             
+            // Острова
             if (gameState.islands) {
                 gameState.islands.forEach(i => {
                     if (i.owned) {
                         const taxItem = gameState.taxes.find(t => t.type === 'island' && t.id === i.id);
-                        if (!taxItem || (taxItem.paid && taxItem.accrued < taxItem.totalAmount) || (!taxItem.paid && taxItem.accrued < taxItem.totalAmount && Date.now() <= taxItem.dueDate)) {
-                            income += i.income;
-                        }
+                        if (!taxItem || !taxItem.paid) income += i.income;
                     }
                 });
             }
             
-            if (specialItem.owned) {
-                income += specialItem.income;
-            }
+            // Специальный предмет
+            if (specialItem.owned) income += specialItem.income;
             
-            let spaceBonus = 0;
+            // Космический бонус
             if (gameState.space) {
-                spaceBonus = SPACE_LEVELS.slice(0, gameState.space.level).reduce((sum, l) => sum + l.bonus, 0);
+                const spaceBonus = SPACE_LEVELS.slice(0, gameState.space.level).reduce((sum, l) => sum + l.bonus, 0);
                 income *= (1 + spaceBonus / 100);
             }
             
@@ -5871,17 +5519,14 @@
             }
             
             updateTaxes();
-            checkBattlePassLevel();
-            
+            checkAchievements();
             updateUI();
             saveGame();
-        }, 1000);
+        }, 60000); // КАЖДУЮ МИНУТУ
         
         setInterval(() => {
-            if (gameState) {
-                updateUI();
-            }
-        }, 100);
+            if (gameState) updateUI();
+        }, 1000);
         
         setInterval(() => {
             if (gameState) {
@@ -6047,4 +5692,4 @@
         };
     </script>
 </body>
-</html>
+    </html>
