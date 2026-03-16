@@ -2,34 +2,27 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>IMPERIA CLICKER 2026</title>
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/modals.css">
-    
-    <!-- Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modals.css">
 </head>
 <body>
-    <div class="app-container" id="appContainer">
-        <!-- Header -->
+    <div class="app-container">
         <div class="header" id="header">
             <div class="username-row">
-                <div class="username" id="username" onclick="window.UI.showNicknameModal()">
+                <div class="username" id="username" onclick="showNicknameModal()">
                     👑 ИГРОК
                     <span class="warning-badge" id="warningBadge">⚠️ ЛОКАЛЬНО</span>
                 </div>
-                <div class="settings-icon" onclick="window.UI.switchTab('profile')">⚙️</div>
+                <div class="settings-icon" onclick="switchTab('profile')">⚙️</div>
             </div>
             
             <div class="balance-container">
                 <div class="balance-label">БАЛАНС</div>
                 <div class="balance-value" id="balance">$ 0</div>
-                <div class="balance-sub" id="balanceChange">+ $ 0 за все время</div>
+                <div class="balance-sub" id="balanceChange">+ $ 0 (0%) за все время</div>
             </div>
             
             <div class="per-click">
@@ -38,25 +31,22 @@
             </div>
         </div>
         
-        <!-- Content -->
         <div class="content" id="content"></div>
         
-        <!-- Bottom Navigation -->
         <div class="bottom-nav" id="bottomNav">
-            <div class="nav-item active" data-tab="earn"><span>👆</span>Заработок</div>
-            <div class="nav-item" data-tab="calendar"><span>📅</span>Календарь</div>
-            <div class="nav-item" data-tab="space"><span>🚀</span>Космос</div>
-            <div class="nav-item" data-tab="achievements"><span>🏆</span>Ачивки</div>
-            <div class="nav-item" data-tab="investments"><span>📈</span>Инвестиции</div>
-            <div class="nav-item" data-tab="business"><span>💼</span>Бизнес</div>
-            <div class="nav-item" data-tab="mining"><span>⛏️</span>Майнинг</div>
-            <div class="nav-item" data-tab="tax"><span>🏛️</span>Налоги</div>
-            <div class="nav-item" data-tab="items"><span>📦</span>Предметы</div>
-            <div class="nav-item" data-tab="profile"><span>👤</span>Профиль</div>
+            <div class="nav-item active" onclick="switchTab('earn')"><span>👆</span>Заработок</div>
+            <div class="nav-item" onclick="switchTab('calendar')"><span>📅</span>Календарь</div>
+            <div class="nav-item" onclick="switchTab('space')"><span>🚀</span>Космос</div>
+            <div class="nav-item" onclick="switchTab('achievements')"><span>🏆</span>Ачивки</div>
+            <div class="nav-item" onclick="switchTab('investments')"><span>📈</span>Инвестиции</div>
+            <div class="nav-item" onclick="switchTab('business')"><span>💼</span>Бизнес</div>
+            <div class="nav-item" onclick="switchTab('mining')"><span>⛏️</span>Майнинг</div>
+            <div class="nav-item" onclick="switchTab('tax')"><span>🏛️</span>Налоги</div>
+            <div class="nav-item" onclick="switchTab('items')"><span>📦</span>Предметы</div>
+            <div class="nav-item" onclick="switchTab('profile')"><span>👤</span>Профиль</div>
         </div>
     </div>
     
-    <!-- Modals -->
     <div class="modal" id="modal">
         <div class="modal-content" id="modalContent"></div>
     </div>
@@ -65,8 +55,8 @@
         <div class="modal-content">
             <div class="modal-title">🔐 АДМИН ДОСТУП</div>
             <input type="password" class="input-field" id="adminPasswordInput" placeholder="Введите пароль">
-            <div class="card-btn" style="background:#ffd700; color:black;" onclick="window.Admin.checkPassword()">ВОЙТИ</div>
-            <div class="close-btn" onclick="window.UI.closeModal('adminPasswordModal')">ОТМЕНА</div>
+            <div class="card-btn" style="background:#ffd700; color:black; margin-bottom:8px;" onclick="checkAdminPassword()">ВОЙТИ</div>
+            <div class="close-btn" onclick="closeAdminPasswordModal()">ОТМЕНА</div>
         </div>
     </div>
     
@@ -74,41 +64,26 @@
         <div class="modal-content">
             <div class="modal-title">✏️ ИЗМЕНИТЬ НИК</div>
             <input type="text" class="input-field" id="nicknameInput" placeholder="Введите новый ник" maxlength="20">
-            <div class="close-btn" style="background:#ffd700; color:black;" onclick="window.UI.saveNickname()">СОХРАНИТЬ</div>
-            <div class="close-btn" onclick="window.UI.closeModal('nicknameModal')">ОТМЕНА</div>
+            <div class="close-btn" style="background:#ffd700; color:black;" onclick="saveNickname()">СОХРАНИТЬ</div>
+            <div class="close-btn" onclick="closeNicknameModal()">ОТМЕНА</div>
         </div>
     </div>
     
-    <!-- Scripts -->
-    <script src="js/data/constants.js"></script>
-    <script src="js/data/businessTemplates.js"></script>
-    <script src="js/data/cryptoData.js"></script>
-    <script src="js/data/spaceLevels.js"></script>
-    <script src="js/data/achievements.js"></script>
+    <div class="modal" id="adminModal">
+        <div class="modal-content" id="adminModalContent"></div>
+    </div>
     
-    <script src="js/core/utils.js"></script>
-    <script src="js/core/storage.js"></script>
-    <script src="js/core/gameState.js"></script>
-    <script src="js/core/config.js"></script>
+    <div class="modal" id="housesModal">
+        <div class="modal-content" id="housesModalContent"></div>
+    </div>
     
-    <script src="js/modules/taxes.js"></script>
-    <script src="js/modules/businesses.js"></script>
-    <script src="js/modules/crypto.js"></script>
-    <script src="js/modules/mining.js"></script>
-    <script src="js/modules/houses.js"></script>
-    <script src="js/modules/islands.js"></script>
-    <script src="js/modules/calendar.js"></script>
-    <script src="js/modules/space.js"></script>
-    <script src="js/modules/achievements.js"></script>
-    <script src="js/modules/battlePass.js"></script>
-    <script src="js/modules/shop.js"></script>
-    <script src="js/modules/admin.js"></script>
-    <script src="js/modules/clicker.js"></script>
+    <div class="modal" id="topModal">
+        <div class="modal-content" id="topModalContent"></div>
+    </div>
     
-    <script src="js/ui/renderer.js"></script>
-    <script src="js/ui/tabs.js"></script>
-    <script src="js/ui/modals.js"></script>
-    <script src="js/ui/updates.js"></script>
+    <div class="modal" id="islandsModal">
+        <div class="modal-content" id="islandsModalContent"></div>
+    </div>
     
     <script src="js/main.js"></script>
 </body>
