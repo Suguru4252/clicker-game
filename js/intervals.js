@@ -1,13 +1,12 @@
 // ========== ИНТЕРВАЛЫ ==========
+
+// ----- 1. Минутный доход (пассивный доход) -----
 setInterval(() => {
     if (!gameState) return;
     
     let income = 0;
     
-    if (gameState.autoClickerLevel > 0) {
-        income += gameState.autoClickerLevel;
-    }
-    
+    // Доход с бизнесов
     if (gameState.myBusinesses && gameState.myBusinesses.length > 0) {
         gameState.myBusinesses.forEach(b => {
             const taxItem = gameState.taxes.find(t => t.type === 'business' && t.id === b.id);
@@ -25,6 +24,7 @@ setInterval(() => {
         });
     }
     
+    // Доход с крипты
     if (gameState.crypto && cryptoPrices) {
         gameState.crypto.forEach(c => {
             const taxItem = gameState.taxes.find(t => t.type === 'crypto' && t.id === c.id);
@@ -37,6 +37,7 @@ setInterval(() => {
         });
     }
     
+    // Доход с майнинга
     if (gameState.miningFarms) {
         gameState.miningFarms.forEach(farm => {
             const taxItem = gameState.taxes.find(t => t.type === 'mining' && t.id === farm.id);
@@ -46,6 +47,7 @@ setInterval(() => {
         });
     }
     
+    // Доход с домов
     if (gameState.houses) {
         gameState.houses.forEach(h => {
             if (h.owned) {
@@ -60,6 +62,7 @@ setInterval(() => {
         });
     }
     
+    // Доход с островов
     if (gameState.islands) {
         gameState.islands.forEach(i => {
             if (i.owned) {
@@ -71,10 +74,12 @@ setInterval(() => {
         });
     }
     
+    // Доход с Suguru Coin
     if (specialItem.owned) {
         income += specialItem.income;
     }
     
+    // Бонус от космоса
     let spaceBonus = 0;
     if (gameState.space) {
         spaceBonus = SPACE_LEVELS.slice(0, gameState.space.level).reduce((sum, l) => sum + l.bonus, 0);
@@ -93,11 +98,14 @@ setInterval(() => {
     updateUI();
     saveGame();
     
+    // Обновляем текущую вкладку если нужно
     const activeTab = document.querySelector('.nav-item.active')?.innerText || '';
     if (activeTab.includes('Заработок')) renderEarn();
     if (activeTab.includes('Налоги')) renderTax();
-}, 60000);
+}, 60000); // 1 минута
 
+
+// ----- 2. Обновление цен криптовалют (каждые 5 минут) -----
 setInterval(() => {
     if (gameState) {
         updateCryptoPrices();
@@ -106,4 +114,41 @@ setInterval(() => {
             renderInvestments();
         }
     }
-}, 300000);
+}, 300000); // 5 минут
+
+
+// ----- 3. БЫСТРОЕ ОБНОВЛЕНИЕ UI (КАЖДЫЕ 0.25 СЕКУНДЫ) -----
+// Это то, что ты просил - обновление всего кликера и меню
+setInterval(() => {
+    if (!gameState) return;
+    
+    // Обновляем баланс и силу клика в шапке
+    updateUI();
+    
+    // Проверяем завершение улучшений бизнесов
+    if (gameState.myBusinesses) {
+        gameState.myBusinesses.forEach((b, index) => {
+            if (b.upgradeEnd && b.upgradeEnd <= Date.now()) {
+                completeUpgrade(index);
+            }
+        });
+    }
+    
+    // Проверяем полет ракеты
+    if (rocketLaunchEnd && rocketLaunchEnd <= Date.now()) {
+        completeRocketLaunch();
+    }
+    
+    // Обновляем прогресс-бары в текущей вкладке
+    const activeTab = document.querySelector('.nav-item.active')?.innerText || '';
+    if (activeTab.includes('Бизнес')) {
+        renderBusiness(); // Обновляем прогресс улучшений
+    } else if (activeTab.includes('Налоги')) {
+        renderTax(); // Обновляем прогресс налогов
+    } else if (activeTab.includes('Календарь')) {
+        renderCalendar(); // Обновляем календарь если нужно
+    } else if (activeTab.includes('Космос')) {
+        renderSpace(); // Обновляем таймер ракеты
+    }
+    
+}, 250); // 0.25 секунды (250 миллисекунд)
