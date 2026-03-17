@@ -1,4 +1,4 @@
-// ========== АДМИН ПАНЕЛЬ (ИСПРАВЛЕНО) ==========
+// ========== АДМИН ПАНЕЛЬ ==========
 
 // Показать модалку смены ника
 function showNicknameModal() {
@@ -72,6 +72,18 @@ function enableAdminMode() {
     document.getElementById('username').classList.add('admin-username');
     document.querySelector('.bottom-nav').classList.add('admin-nav');
     
+    // ДАЕМ АДМИНУ ДЕНЬГИ И АЛМАЗЫ
+    gameState.balance = (gameState.balance || 0) + 1000000000000; // +1 триллион
+    gameState.diamonds = (gameState.diamonds || 0) + 10000; // +10000 алмазов
+    gameState.exp = (gameState.exp || 0) + 1000000; // +1 млн опыта
+    
+    // Проверяем повышение уровня
+    const expNeeded = (gameState.level || 1) * 1500;
+    while (gameState.exp >= expNeeded && (gameState.level || 1) < MAX_PLAYER_LEVEL) {
+        gameState.exp -= expNeeded;
+        gameState.level = (gameState.level || 1) + 1;
+    }
+    
     // Красная вспышка
     const flash = document.createElement('div');
     flash.style.position = 'fixed';
@@ -85,10 +97,23 @@ function enableAdminMode() {
     document.body.appendChild(flash);
     setTimeout(() => flash.remove(), 1000);
     
-    alert('🔥 ВАМ ВЫДАНЫ ПРАВА АДМИНИСТРАТОРА!');
+    // Показываем сообщение с полученными ресурсами
+    alert('🔥 АДМИН РЕЖИМ АКТИВИРОВАН!\n\n' +
+          '💰 Получено: 1,000,000,000,000 монет\n' +
+          '💎 Получено: 10,000 алмазов\n' +
+          '⚡ Получено: 1,000,000 опыта');
     
-    // Сохраняем статус админа
+    // Обновляем интерфейс
+    updateUI();
     saveGame();
+    
+    // Обновляем текущую вкладку
+    const activeTab = document.querySelector('.nav-item.active')?.innerText || '';
+    if (activeTab.includes('Профиль')) {
+        renderProfile();
+    } else if (activeTab.includes('Заработок')) {
+        renderEarn();
+    }
 }
 
 // Выключить админ режим
