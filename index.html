@@ -1609,7 +1609,7 @@
             { name: "🌀 ВСЕЛЕННАЯ", bonus: 500, price: 1e18, desc: "Властелин космоса" }
         ];
 
-        // ========== 50 КРИПТОВАЛЮТ ==========
+        // ========== 50 КРИПТОВАЛЮТ (ПОЛНЫЙ СПИСОК) ==========
         const cryptoCurrencies = [
             { id: 0, name: "BITCOIN", emoji: "₿", basePrice: 1000000, maxBuy: 5000000000, volatility: 0.2, incomePerCoin: 0.05 },
             { id: 1, name: "ETHEREUM", emoji: "Ξ", basePrice: 500000, maxBuy: 5000000000, volatility: 0.25, incomePerCoin: 0.03 },
@@ -1688,7 +1688,26 @@
             { id: 2, name: "КЛИКЕР", desc: "1,000 кликов", icon: "👆", category: 'clicks', difficulty: 'easy', target: 1000, type: 'clicks', reward: 20 },
             { id: 3, name: "КЛИКЕР-МАНЬЯК", desc: "10,000 кликов", icon: "👆", category: 'clicks', difficulty: 'medium', target: 10000, type: 'clicks', reward: 50 },
             { id: 4, name: "КЛИКЕР-БОГ", desc: "100,000 кликов", icon: "👆", category: 'clicks', difficulty: 'hard', target: 100000, type: 'clicks', reward: 200 },
-            { id: 5, name: "КЛИКЕР-БЕССМЕРТНЫЙ", desc: "1,000,000 кликов", icon: "👑", category: 'clicks', difficulty: 'epic', target: 1000000, type: 'clicks', reward: 1000 }
+            { id: 5, name: "КЛИКЕР-БЕССМЕРТНЫЙ", desc: "1,000,000 кликов", icon: "👑", category: 'clicks', difficulty: 'epic', target: 1000000, type: 'clicks', reward: 1000 },
+            { id: 6, name: "ПЕРВЫЙ МИЛЛИОН", desc: "Заработать 1M", icon: "💰", category: 'money', difficulty: 'easy', target: 1e6, type: 'money', reward: 15 },
+            { id: 7, name: "МИЛЛИАРДЕР", desc: "Заработать 1B", icon: "💰", category: 'money', difficulty: 'medium', target: 1e9, type: 'money', reward: 50 },
+            { id: 8, name: "ТРИЛЛИОНЕР", desc: "Заработать 1T", icon: "💰", category: 'money', difficulty: 'hard', target: 1e12, type: 'money', reward: 200 },
+            { id: 9, name: "КВАДРИЛЛИОНЕР", desc: "Заработать 1Q", icon: "💰", category: 'money', difficulty: 'epic', target: 1e15, type: 'money', reward: 1000 },
+            { id: 10, name: "ПРЕДПРИНИМАТЕЛЬ", desc: "Купить 1 бизнес", icon: "💼", category: 'business', difficulty: 'easy', target: 1, type: 'businessCount', reward: 10 },
+            { id: 11, name: "МАГНАТ", desc: "Купить 5 бизнесов", icon: "💼", category: 'business', difficulty: 'medium', target: 5, type: 'businessCount', reward: 50 },
+            { id: 12, name: "ИМПЕРИЯ", desc: "Купить 8 бизнесов", icon: "💼", category: 'business', difficulty: 'hard', target: 8, type: 'businessCount', reward: 200 },
+            { id: 13, name: "КРИПТО-ИНВЕСТОР", desc: "Купить 1000 крипты", icon: "📈", category: 'crypto', difficulty: 'easy', target: 1000, type: 'cryptoAmount', reward: 10 },
+            { id: 14, name: "КРИПТО-КИТ", desc: "Купить 100k крипты", icon: "📈", category: 'crypto', difficulty: 'hard', target: 100000, type: 'cryptoAmount', reward: 200 },
+            { id: 15, name: "МАЙНЕР", desc: "Купить 1 ферму", icon: "⛏️", category: 'mining', difficulty: 'easy', target: 1, type: 'farmCount', reward: 10 },
+            { id: 16, name: "МАЙНИНГ-МАГНАТ", desc: "Купить 10 ферм", icon: "⛏️", category: 'mining', difficulty: 'hard', target: 10, type: 'farmCount', reward: 200 },
+            { id: 17, name: "ДОМОВЛАДЕЛЕЦ", desc: "Купить 1 дом", icon: "🏠", category: 'houses', difficulty: 'easy', target: 1, type: 'houseCount', reward: 10 },
+            { id: 18, name: "МАГНАТ НЕДВИЖИМОСТИ", desc: "Купить 10 домов", icon: "🏠", category: 'houses', difficulty: 'medium', target: 10, type: 'houseCount', reward: 50 },
+            { id: 19, name: "ВЛАСТЕЛИН НЕДВИЖИМОСТИ", desc: "Купить 25 домов", icon: "🏠", category: 'houses', difficulty: 'hard', target: 25, type: 'houseCount', reward: 200 },
+            { id: 20, name: "ОСТРОВИТЯНИН", desc: "Купить 1 остров", icon: "🏝️", category: 'islands', difficulty: 'medium', target: 1, type: 'islandCount', reward: 50 },
+            { id: 21, name: "АРХИПЕЛАГ", desc: "Купить 5 островов", icon: "🏝️", category: 'islands', difficulty: 'hard', target: 5, type: 'islandCount', reward: 500 },
+            { id: 22, name: "КАЛЕНДАРНЫЙ МАРАФОН", desc: "Забрать 30 дней календаря", icon: "📅", category: 'calendar', difficulty: 'medium', target: 30, type: 'calendarClaims', reward: 100 },
+            { id: 23, name: "ВЕРНЫЙ ИГРОК", desc: "Забрать 100 дней календаря", icon: "📅", category: 'calendar', difficulty: 'hard', target: 100, type: 'calendarClaims', reward: 500 },
+            { id: 24, name: "ЛЕГЕНДА КАЛЕНДАРЯ", desc: "Забрать 365 дней", icon: "👑", category: 'calendar', difficulty: 'epic', target: 365, type: 'calendarClaims', reward: 5000 }
         ];
 
         // ========== ТОП-100 ==========
@@ -2021,7 +2040,7 @@
             }
         }
 
-        // ========== НАЛОГИ ==========
+        // ========== НАЛОГИ (ИСПРАВЛЕНО) ==========
         function addTaxItem(type, id, value) {
             if (!gameState.taxes) gameState.taxes = [];
             
@@ -2101,6 +2120,7 @@
             
             gameState.balance -= amountToPay;
             
+            // Сбрасываем налог, но не удаляем
             tax.paid = true;
             tax.accrued = 0;
             tax.dueDate = Date.now() + TAX_PERIOD;
@@ -3077,7 +3097,13 @@
                     case 'clicks': current = gameState.totalClicks || 0; break;
                     case 'money': current = gameState.totalEarned || 0; break;
                     case 'businessCount': current = gameState.myBusinesses?.length || 0; break;
-                    default: current = 0;
+                    case 'cryptoAmount': current = gameState.crypto.reduce((sum, c) => sum + c.owned, 0); break;
+                    case 'farmCount': current = gameState.miningFarms?.length || 0; break;
+                    case 'houseCount': current = gameState.houses.filter(h => h.owned).length; break;
+                    case 'islandCount': current = gameState.islands.filter(i => i.owned).length; break;
+                    case 'calendarClaims': current = gameState.calendar?.claimedDays?.length || 0; break;
+                    case 'spaceLevel': current = gameState.space?.level || 0; break;
+                    case 'achievementCount': current = gameState.claimedAchievements?.length || 0; break;
                 }
                 
                 const progress = Math.min(100, (current / ach.target) * 100);
@@ -3141,8 +3167,28 @@
                     case 'businessCount':
                         completed = (gameState.myBusinesses?.length || 0) >= ach.target;
                         break;
-                    default:
-                        completed = false;
+                    case 'cryptoAmount':
+                        const total = gameState.crypto.reduce((sum, c) => sum + c.owned, 0);
+                        completed = total >= ach.target;
+                        break;
+                    case 'farmCount':
+                        completed = (gameState.miningFarms?.length || 0) >= ach.target;
+                        break;
+                    case 'houseCount':
+                        completed = (gameState.houses?.filter(h => h.owned).length || 0) >= ach.target;
+                        break;
+                    case 'islandCount':
+                        completed = (gameState.islands?.filter(i => i.owned).length || 0) >= ach.target;
+                        break;
+                    case 'calendarClaims':
+                        completed = (gameState.calendar?.claimedDays?.length || 0) >= ach.target;
+                        break;
+                    case 'spaceLevel':
+                        completed = (gameState.space?.level || 0) >= ach.target;
+                        break;
+                    case 'achievementCount':
+                        completed = (gameState.claimedAchievements?.length || 0) >= ach.target;
+                        break;
                 }
                 
                 if (completed) {
@@ -3237,6 +3283,37 @@
                 });
             }
             
+            // ДОМА
+            const houseTaxes = gameState.taxes.filter(t => t.type === 'house');
+            if (houseTaxes.length > 0) {
+                html += '<h4 style="color:#ffd700; margin:16px 0 8px;">🏠 ДОМА</h4>';
+                houseTaxes.forEach((tax, index) => {
+                    const house = gameState.houses.find(h => h.id === tax.id);
+                    if (!house) return;
+                    
+                    const progress = getTaxProgress(tax);
+                    const timeLeft = getTimeLeft(tax);
+                    const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
+                    
+                    html += `
+                        <div class="tax-item ${tax.overdue ? 'tax-overdue' : 'tax-normal'}">
+                            <div class="tax-header">
+                                <span class="tax-name">${house.emoji} ${house.name} ${tax.overdue ? '🔴' : ''}</span>
+                                <span class="tax-amount">${formatMoney(Math.floor(tax.accrued))} / ${formatMoney(tax.totalAmount)}</span>
+                            </div>
+                            <div class="tax-price">💰 Стоимость: ${formatMoney(tax.value)}</div>
+                            <div class="tax-progress">
+                                <div class="tax-progress-bar" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="tax-timer">⏱️ ${tax.overdue ? 'ПРОСРОЧЕНО' : `Осталось: ${hoursLeft}ч`}</div>
+                            ${!tax.paid && tax.accrued > 0 && !tax.overdue ? 
+                                `<button class="tax-btn" onclick="payTaxByIndex(${gameState.taxes.indexOf(tax)})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` : ''}
+                            ${tax.overdue ? '<div style="color:#ff4444; font-size:12px; margin-top:8px;">⚠️ ДОХОД ЗАБЛОКИРОВАН</div>' : ''}
+                        </div>
+                    `;
+                });
+            }
+            
             // КРИПТА
             const cryptoTaxes = gameState.taxes.filter(t => t.type === 'crypto');
             if (cryptoTaxes.length > 0) {
@@ -3274,7 +3351,7 @@
                 });
             }
             
-            // МАЙНИНГ
+            // МАЙНИНГ (все фермы в одном)
             const miningTaxes = gameState.taxes.filter(t => t.type === 'mining');
             if (miningTaxes.length > 0) {
                 const totalMiningAccrued = miningTaxes.reduce((sum, t) => sum + t.accrued, 0);
@@ -3296,6 +3373,37 @@
                         ${anyOverdue ? '<div style="color:#ff4444; font-size:12px; margin-top:8px; font-weight:bold;">⚠️ МАЙНИНГ НЕ РАБОТАЕТ</div>' : ''}
                     </div>
                 `;
+            }
+            
+            // ОСТРОВА
+            const islandTaxes = gameState.taxes.filter(t => t.type === 'island');
+            if (islandTaxes.length > 0) {
+                html += '<h4 style="color:#ffd700; margin:16px 0 8px;">🏝️ ОСТРОВА</h4>';
+                islandTaxes.forEach((tax, index) => {
+                    const island = gameState.islands.find(i => i.id === tax.id);
+                    if (!island) return;
+                    
+                    const progress = getTaxProgress(tax);
+                    const timeLeft = getTimeLeft(tax);
+                    const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
+                    
+                    html += `
+                        <div class="tax-item ${tax.overdue ? 'tax-overdue' : 'tax-normal'}">
+                            <div class="tax-header">
+                                <span class="tax-name">${island.emoji} ${island.name}</span>
+                                <span class="tax-amount">${formatMoney(Math.floor(tax.accrued))} / ${formatMoney(tax.totalAmount)}</span>
+                            </div>
+                            <div class="tax-price">💰 Стоимость: ${formatMoney(tax.value)}</div>
+                            <div class="tax-progress">
+                                <div class="tax-progress-bar" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="tax-timer">⏱️ ${tax.overdue ? 'ПРОСРОЧЕНО' : `Осталось: ${hoursLeft}ч`}</div>
+                            ${!tax.paid && tax.accrued > 0 && !tax.overdue ? 
+                                `<button class="tax-btn" onclick="payTaxByIndex(${gameState.taxes.indexOf(tax)})">ОПЛАТИТЬ ${formatMoney(Math.floor(tax.accrued))}</button>` : ''}
+                            ${tax.overdue ? '<div style="color:#ff4444; font-size:12px; margin-top:8px;">⚠️ ДОХОД ЗАБЛОКИРОВАН</div>' : ''}
+                        </div>
+                    `;
+                });
             }
             
             document.getElementById('content').innerHTML = html;
@@ -3396,7 +3504,122 @@
                         <div class="stat-value">${formatNumber(gameState.totalClicks || 0)}</div>
                     </div>
                 </div>
+                
+                <div class="section-title">
+                    <h3>📊 Откуда доход</h3>
+                </div>
+                
+                <div style="background:#1a1c24; border-radius:16px; padding:16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>👆 Клики</span>
+                        <span style="color:#ffd700;">+${formatMoney(BASE_CLICK_POWER * (gameState.level || 1))}/мин</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>💼 Бизнесы</span>
+                        <span style="color:#ffd700;">+${formatMoney(businessIncome)}/мин</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>📈 Крипта</span>
+                        <span style="color:#ffd700;">+${formatMoney(cryptoIncome)}/мин</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>⛏️ Майнинг</span>
+                        <span style="color:#ffd700;">+${formatMoney(miningIncome)}/мин</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>🏠 Дома</span>
+                        <span style="color:#ffd700;">+${formatMoney(houseIncome)}/мин</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                        <span>🏝️ Острова</span>
+                        <span style="color:#ffd700;">+${formatMoney(islandIncome)}/мин</span>
+                    </div>
+                    ${specialItem.owned ? `
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>💎 Suguru Coin</span>
+                            <span style="color:#ffd700;">+${formatMoney(specialItem.income)}/мин</span>
+                        </div>
+                    ` : ''}
+                    ${spaceBonus > 0 ? `
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>🚀 Космос</span>
+                            <span style="color:#ffd700;">+${spaceBonus}%</span>
+                        </div>
+                    ` : ''}
+                </div>
             `;
+        }
+
+        // ========== РЕНДЕР ИНВЕСТИЦИЙ ==========
+        function renderInvestments() {
+            let totalPortfolio = calculateTotalCryptoPortfolio();
+            let totalIncome = calculateTotalCryptoIncome();
+            
+            const ownedHouses = gameState.houses.filter(h => h.owned).length;
+            const totalHouses = gameState.houses.length;
+            
+            document.getElementById('content').innerHTML = `
+                <div class="houses-section" onclick="showAllHouses()">
+                    <div class="houses-section-header">
+                        <span class="houses-section-title">🏠 Дома</span>
+                        <span class="houses-section-count">${ownedHouses}/${totalHouses}</span>
+                    </div>
+                    <div style="color:#8e8e98; font-size:13px; margin-top:8px;">
+                        Нажмите для управления домами
+                    </div>
+                </div>
+                
+                <div class="portfolio-mini" onclick="showCryptoPortfolio()">
+                    <span class="portfolio-mini-label">📊 КРИПТОПОРТФЕЛЬ</span>
+                    <span class="portfolio-mini-value">${formatMoney(totalPortfolio)}</span>
+                </div>
+            `;
+            
+            if (!specialItem.owned) {
+                document.getElementById('content').innerHTML += `
+                    <div style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1)); border:2px solid #ff00ff; border-radius:16px; padding:16px; margin-bottom:20px; text-align:center; cursor:pointer;" onclick="buySpecialItem()">
+                        <div style="font-size:48px; margin-bottom:8px;">❓</div>
+                        <div style="font-size:20px; font-weight:bold; color:#ff00ff; margin-bottom:8px;">SUGURU COIN</div>
+                        <div style="font-size:16px; color:#ffd700; margin-bottom:8px;">${formatMoney(specialItem.price)}</div>
+                        <div style="font-size:14px; color:#4caf50; margin-bottom:12px;">⏱️ +${formatMoney(specialItem.income)}/мин</div>
+                        <button class="card-btn">КУПИТЬ</button>
+                    </div>
+                `;
+            } else {
+                document.getElementById('content').innerHTML += `
+                    <div style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1)); border:2px solid #ff00ff; border-radius:16px; padding:16px; margin-bottom:20px; text-align:center;">
+                        <div style="font-size:48px; margin-bottom:8px;">💎</div>
+                        <div style="font-size:20px; font-weight:bold; color:#ff00ff; margin-bottom:8px;">SUGURU COIN</div>
+                        <div style="font-size:14px; color:#4caf50; margin-bottom:12px;">⏱️ +${formatMoney(specialItem.income)}/мин</div>
+                        <div style="color:#4caf50;">ВЛАДЕЮ</div>
+                    </div>
+                `;
+            }
+        }
+
+        function buySpecialItem() {
+            if (specialItem.owned) {
+                alert('❌ У вас уже есть Suguru Coin!');
+                return;
+            }
+            
+            if ((gameState.balance || 0) < specialItem.price) {
+                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                return;
+            }
+            
+            if (confirm(`Купить Suguru Coin за ${formatMoney(specialItem.price)}?\n\nДоход: +${formatMoney(specialItem.income)}/мин`)) {
+                gameState.balance -= specialItem.price;
+                specialItem.owned = true;
+                specialItem.revealed = true;
+                
+                saveGame();
+                updateUI();
+                renderInvestments();
+                alert('✅ ПОЗДРАВЛЯЮ!\n\nВы купили легендарный Suguru Coin!');
+                
+                document.getElementById('username').innerHTML += ' <span class="suguru-badge">💎</span>';
+            }
         }
 
         // ========== РЕНДЕР БИЗНЕСОВ ==========
@@ -3814,78 +4037,6 @@
             }
             
             document.getElementById('content').innerHTML = html;
-        }
-
-        // ========== РЕНДЕР ИНВЕСТИЦИЙ ==========
-        function renderInvestments() {
-            let totalPortfolio = calculateTotalCryptoPortfolio();
-            let totalIncome = calculateTotalCryptoIncome();
-            
-            const ownedHouses = gameState.houses.filter(h => h.owned).length;
-            const totalHouses = gameState.houses.length;
-            
-            document.getElementById('content').innerHTML = `
-                <div class="houses-section" onclick="showAllHouses()">
-                    <div class="houses-section-header">
-                        <span class="houses-section-title">🏠 Дома</span>
-                        <span class="houses-section-count">${ownedHouses}/${totalHouses}</span>
-                    </div>
-                    <div style="color:#8e8e98; font-size:13px; margin-top:8px;">
-                        Нажмите для управления домами
-                    </div>
-                </div>
-                
-                <div class="portfolio-mini" onclick="showCryptoPortfolio()">
-                    <span class="portfolio-mini-label">📊 КРИПТОПОРТФЕЛЬ</span>
-                    <span class="portfolio-mini-value">${formatMoney(totalPortfolio)}</span>
-                </div>
-            `;
-            
-            if (!specialItem.owned) {
-                document.getElementById('content').innerHTML += `
-                    <div style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1)); border:2px solid #ff00ff; border-radius:16px; padding:16px; margin-bottom:20px; text-align:center; cursor:pointer;" onclick="buySpecialItem()">
-                        <div style="font-size:48px; margin-bottom:8px;">❓</div>
-                        <div style="font-size:20px; font-weight:bold; color:#ff00ff; margin-bottom:8px;">SUGURU COIN</div>
-                        <div style="font-size:16px; color:#ffd700; margin-bottom:8px;">${formatMoney(specialItem.price)}</div>
-                        <div style="font-size:14px; color:#4caf50; margin-bottom:12px;">⏱️ +${formatMoney(specialItem.income)}/мин</div>
-                        <button class="card-btn">КУПИТЬ</button>
-                    </div>
-                `;
-            } else {
-                document.getElementById('content').innerHTML += `
-                    <div style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,0,255,0.1)); border:2px solid #ff00ff; border-radius:16px; padding:16px; margin-bottom:20px; text-align:center;">
-                        <div style="font-size:48px; margin-bottom:8px;">💎</div>
-                        <div style="font-size:20px; font-weight:bold; color:#ff00ff; margin-bottom:8px;">SUGURU COIN</div>
-                        <div style="font-size:14px; color:#4caf50; margin-bottom:12px;">⏱️ +${formatMoney(specialItem.income)}/мин</div>
-                        <div style="color:#4caf50;">ВЛАДЕЮ</div>
-                    </div>
-                `;
-            }
-        }
-
-        function buySpecialItem() {
-            if (specialItem.owned) {
-                alert('❌ У вас уже есть Suguru Coin!');
-                return;
-            }
-            
-            if ((gameState.balance || 0) < specialItem.price) {
-                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-                return;
-            }
-            
-            if (confirm(`Купить Suguru Coin за ${formatMoney(specialItem.price)}?\n\nДоход: +${formatMoney(specialItem.income)}/мин`)) {
-                gameState.balance -= specialItem.price;
-                specialItem.owned = true;
-                specialItem.revealed = true;
-                
-                saveGame();
-                updateUI();
-                renderInvestments();
-                alert('✅ ПОЗДРАВЛЯЮ!\n\nВы купили легендарный Suguru Coin!');
-                
-                document.getElementById('username').innerHTML += ' <span class="suguru-badge">💎</span>';
-            }
         }
 
         // ========== РЕНДЕР ПРЕДМЕТОВ ==========
